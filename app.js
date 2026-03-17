@@ -7,8 +7,8 @@ app.use(express.json());
 
 
 // ! adding middlewere
-const midllewere = require("./middlewere/logger")
-app.use(midllewere)
+const {logger} = require("./middlewere/logger")
+app.use(logger)
 
 
 app.get("/", (req, res) => {

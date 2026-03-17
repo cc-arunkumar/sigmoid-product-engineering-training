@@ -25,3 +25,22 @@ exports.getProductById= (req, res)=>{
     }
     res.json(product);
 }
+
+exports.createProduct = (req,res)=>{
+    
+    const{name, price, category,stock}=req.body;
+
+    const newP={
+        id: products[products.length-1].id+1,
+        name: name,
+        price: price,
+        category: category,
+        stock: stock
+    }
+    console.log("Newly created Product = ",newP)
+    products.push(newP);
+    res.json({
+        status:201,
+        message:"created"
+    })
+}

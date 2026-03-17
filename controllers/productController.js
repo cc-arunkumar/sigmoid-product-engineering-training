@@ -43,3 +43,15 @@ exports.updateproduct=(req,res)=>{
     product.stock=stock;
     res.status(200).json(product)
 };
+exports.deleteproduct=(req,res)=>{
+    const productId=parseInt(req.params.id);
+    const productIndex=products.find(p=> p.id===productId);
+
+    if(!productIndex){
+        return res.status(400).json({
+        message:"Product not found"
+        });
+    }
+    products.splice(productIndex,1);
+    res.status(200).json("product deleted")
+};

@@ -34,22 +34,22 @@ exports.create = (req, res) => {
     res.status(201).json(add)
 }
 
-// exports.updateById = (req, res) => {
-//     const id = parseInt(req.params.id);
-//     const prod = products.find(i => i.id === id)
-//     if (!prod) {
-//         res.send("Nothing to update")
-//     }
+exports.updateById = (req, res) => {
+    const id = parseInt(req.params.id);
+    const prod = products.find(i => i.id === id)
+    if (!prod) {
+        res.send("Nothing to update")
+    }
 
-//     const { name, price, category, stock } = req.body;
-//     prod.name = name;
-//     prod.price = price;
-//     prod.category = category;
-//     prod.stock = stock;
+    const { name, price, category, stock } = req.body;
+    prod.name = name;
+    prod.price = price;
+    prod.category = category;
+    prod.stock = stock;
 
-//     res.status(200).json(prod)
+    res.status(200).json(prod)
 
-// }
+}
 
 
 // exports.deleteById = (req, res) => {

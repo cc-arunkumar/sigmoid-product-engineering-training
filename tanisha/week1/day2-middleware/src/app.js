@@ -3,7 +3,7 @@ const app=express();
 app.get("/api",(req,res)=>{
     res.send("Welcome to backend");
 })
-const productRoutes =require("./routes/productRoutes");
+const productRoutes =require("./routes/productRoutes.js");
 app.use(express.json());
 const logger=require("./middleware/logger.js");
 app.use(logger);

@@ -1,7 +1,8 @@
 const products = require("../data/products")
+const {successResponse} = require("../utils/apiResponse")
 
 exports.getAllProducts = (req,res) => {
-    res.json(products);
+    successResponse(res, products, "Products retrieved successfully");
 }
 
 exports.getProductById = (req,res,next) => {
@@ -13,7 +14,7 @@ exports.getProductById = (req,res,next) => {
         error.statusCode = 404;
         next(error);
     }
-    res.json(product);
+    successResponse(res, product, "Product retrieved successfully");
 }
 
 exports.createProduct = (req,res) => {
@@ -28,7 +29,7 @@ exports.createProduct = (req,res) => {
 
     products.push(newProduct);
 
-    res.status(201).json(newProduct)
+    successResponse(res, newProduct, "Product created successfully", 201);
 }
 
 exports.updateProduct = (req,res,next) => {
@@ -48,10 +49,10 @@ exports.updateProduct = (req,res,next) => {
     product.price = price;
     product.stock = stock;
 
-    res.status(200).json(product);
+    successResponse(res, product, "Product updated successfully");
 }
 
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct = (req, res,next) => {
   const productId = req.params.id * 1;
   const index = products.findIndex(p => p.id === productId);
 
@@ -64,7 +65,7 @@ exports.deleteProduct = (req, res) => {
 
   products.splice(index, 1);
 
-  res.status(204).send();
+  successResponse(res, null, "Product deleted successfully", 204);
 };
 
 exports.updatePartialProduct = (req,res,next) => {
@@ -83,5 +84,5 @@ exports.updatePartialProduct = (req,res,next) => {
     if (category !== undefined) product.category = category;
     if (stock !== undefined) product.stock = stock;
 
-    res.status(200).json(product)
+    successResponse(res, product, "Product updated successfully");
 }

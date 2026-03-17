@@ -1,4 +1,5 @@
 const products = require("../data/Products");
+const { successResponse } = require("../utils/response");
 
 //GET ALL
 exports.getAllProducts=(req,res)=>{
@@ -20,7 +21,7 @@ exports.getProductById = (req, res, next) => {
     }
 
     // If found
-    return res.status(200).json(product);
+    return successResponse(res, "Product fetched successfully", product);//using the apiResponse utils
 };
 
 //POST

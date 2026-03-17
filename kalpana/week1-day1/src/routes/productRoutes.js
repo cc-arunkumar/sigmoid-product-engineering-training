@@ -6,7 +6,7 @@ router.get('api/products', productController.getAllProducts);
 
 router.get("api/product/:id", productController.getProductById);
 
-router.post("/products", productController.createProduct);
+router.post("api/products", productController.createProduct);
 
 router.put("/product/:id", productController.updateProduct);
 

@@ -1,0 +1,26 @@
+{
+  "name": "week1-node-rest-api",
+  "version": "1.0.0",
+  "description": "Starter Node.js REST API template for Sigmoid Product Engineering training",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "nodemon": "^3.1.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cc-arunkumar/sigmoid-product-engineering-training.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training/issues"
+  },
+  "homepage": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training#readme"
+}

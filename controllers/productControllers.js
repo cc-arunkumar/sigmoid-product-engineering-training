@@ -1,0 +1,89 @@
+const products=require("../data/product.js");
+exports.getAllProducts=(req,res)=>{
+    res.json(products);
+}
+exports.getProductsById=(req,res)=>{
+   
+    const productId=parseInt(req.params.id);
+    console.log(productId)
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        return res.status(400).json({
+            message:"Product not found"
+        });
+    }
+    res.json(product);
+};
+exports.createProduct=(req,res)=>{
+    const {name,price,category,stock}=req.body
+    const product={
+        id:products.length+101,
+        name:name,
+        price:price,
+        category:category,
+        stock:stock
+
+
+    }
+    products.push(product)
+    res.status(201).json(product)
+}
+exports.updateProduct=(req,res)=>{
+    const productId=req.params.id*1;
+    const {name,price,category,stock}=req.body;
+
+    const product=products.find(p=>p.id===productId)
+    if(!product)
+    {
+        res.status(404).json({
+            "message":"Product Not Found"
+        })
+    }
+    product.name=name;
+    product.price=price;
+    product.category=category;
+    product.stock=stock;
+    res.status(200).json(product)
+
+}
+
+exports.deleteProduct=(req,res)=>{
+    const productId=parseInt(req.params.id)
+    const productIndex=products.findIndex(p=>p.id===productId)
+    if(!productIndex){
+        res.status(404).json({
+            "message":"Product Not Found"
+        })
+    }
+    products.splice(productIndex,1);
+    res.status(200).json("Product Deleted")
+}
+exports.updatePartialProduct=(req,res)=>{
+    const productId=parseInt(req.params.id)
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        res.status(404).json({
+            "message":"Product Not Found"
+        })
+    }
+   
+    const {name,price,category,stock}=req.body;
+    if(name!=undefined){
+        product.name=name;
+    }
+    if(price!=undefined){
+        product.price=price;
+    }
+    if(category!=undefined){
+        product.category=category;
+    }
+    if(stock!=undefined)
+    {
+        product.stock=stock;
+    }
+
+
+}
+
+
+

@@ -55,7 +55,27 @@ createProduct = (req,res)=>{
 
 
 
+const updateProducts =(req,res)=>{
+     const productId= Number(req.params.id);
+    console.log(productId);
+    
+    const product=products.find(p=>p.id===productId)
+    if(!product){
+        return res.status(404).json({
+            status:"fial",
+            message:"wrong ID"
+        })
+    }
+     const {name,price,stock,category}=req.body;
+     product.name=name;
+     product.price=price;
+     product.stock=stock;
+     product.category=category;
 
+     res.status(200).json({
+        data:product
+     })
+}
 
 
 
@@ -63,5 +83,6 @@ createProduct = (req,res)=>{
 module.exports={
     getAllProducts,
      getProductById,
-     createProduct
+     createProduct,
+     updateProducts
 }

@@ -17,7 +17,19 @@ function getProductById (req, res) {
     res.json(product);
 }
 
+function handleAddProducts (req, res) {
+    const newProduct = req.body;
+    if (!newProduct) {
+        return res.status(400).json({message: "Body required"});
+    }
+    products.push(newProduct);
+    return res.status(201).json({
+        message: "New product added"
+    });
+}
+
 module.exports = {
     getAllProducts,
-    getProductById
+    getProductById,
+    handleAddProducts
 }

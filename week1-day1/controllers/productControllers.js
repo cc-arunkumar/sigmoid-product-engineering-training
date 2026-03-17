@@ -26,3 +26,18 @@ exports.addProduct = (req, res) => {
     products.push(newProduct);
     res.json(newProduct);
 }
+
+exports.updateProduct = (req, res) => {
+    const productId = Number(req.params.id);
+    const product = products.find(p => p.id === productId);
+
+    if(!product) res.status(404).json({message: `No product found with product id - ${productId}.`});
+
+    const {name, price, category, stock} = req.body;
+    product.name = name;
+    product.price = price;
+    product.category = category;
+    product.stock = stock;
+    
+    res.json(product);
+}

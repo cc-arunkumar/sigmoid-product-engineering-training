@@ -68,3 +68,19 @@ exports.updateProductPartially =(req,res)=> {
         message:"Product updated successfully partially"
     })
 }
+exports.deleteProduct =(req,res)=> {
+    const ProductId=parseInt(req.params.id);
+    
+    const initialLength = products.length;
+    products = products.filter(product => product.id !== productId);
+    if(initialLength>products.length){
+        res.status(201).json({
+            message:"Product deleted successfully"
+        })
+    }
+    res.status(404).json({
+        message:"Product not found"
+    })
+    
+    
+}

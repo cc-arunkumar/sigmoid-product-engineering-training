@@ -12,16 +12,15 @@ getAllProducts = (req, res) => {
 };
 
 
-getProductById=(req,res)=>{
+getProductById=(req,res,next)=>{
     const productId= (req.params.id)*1;
     console.log(productId);
     
     const product=products.find(p=>p.id===productId)
     if(!product){
-        return res.status(404).json({
-            status:"fial",
-            message:"wrong ID"
-        })
+        const error=new Error("wrong ID");
+        error.statusCode=404
+        return next(error)
     }
 
     res.json(product)
@@ -60,11 +59,10 @@ const updateProducts =(req,res)=>{
     console.log(productId);
     
     const product=products.find(p=>p.id===productId)
-    if(!product){
-        return res.status(404).json({
-            status:"fial",
-            message:"wrong ID"
-        })
+   if(!product){
+        const error=new Error("wrong ID");
+        error.statusCode=404
+        return next(error)
     }
      const {name,price,stock,category}=req.body;
      product.name=name;
@@ -83,12 +81,11 @@ const patchProduct = (req, res) => {
 
   const product = products.find(p => p.id === productId);
 
-  if (!product) {
-    return res.status(404).json({
-      status: "fail",
-      message: "wrong ID"
-    });
-  }
+if(!product){
+        const error=new Error("wrong ID");
+        error.statusCode=404
+        return next(error)
+    }
   Object.keys(req.body).forEach(key => {
     product[key] = req.body[key];
   });

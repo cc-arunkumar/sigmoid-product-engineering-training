@@ -16,4 +16,17 @@ exports.getUserById = (req, res) => {
     res.json(user);
 };
 
+exports.createUser = (req, res) => {
+    const { name, email, age } = req.body;
+
+    const newUser = {
+        id: users.length + 1,
+        name: name,
+        email: email,
+        age: age
+    };
+
+    users.push(newUser);
+    res.status(201).json(newUser);
+};
 

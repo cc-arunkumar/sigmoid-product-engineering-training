@@ -4,27 +4,19 @@ exports.getAllProducts=(req, res)=>{
     res.json(products);
 }
 
-exports.getProductById= (req, res)=>{
+exports.getProductById= (req, res, next)=>{
     const productId= parseInt(req.params.id);
     const product= products.find(p=>p.id===productId);
     if(!product){
-        return res.status(400).json({
-            message:"product not found"
-        })
+        const error= new Error("product not found");
+        error.statusCode=404;
+        next(error);
+        
     }
     res.json(product);
 }
 
-exports.getProductById= (req, res)=>{
-    const productId= parseInt(req.params.id);
-    const product= products.find(p=>p.id===productId);
-    if(!product){
-        return res.status(400).json({
-            message:"product not found"
-        })
-    }
-    res.json(product);
-}
+
 
 exports.createProduct = (req,res)=>{
     
@@ -45,13 +37,13 @@ exports.createProduct = (req,res)=>{
     })
 }
 
-exports.updateP= (req,res)=>{
+exports.updateP= (req,res,next)=>{
     const productID= req.params.id*1;
     const product= products.find(p=>p.id===productID);
     if(!product){
-        res.json({
-            message:"product not found"
-        })
+        const error= new Error("product not found");
+        error.statusCode= 404;
+        next(error);
     }
     const{name, price, category,stock}=req.body;
 
@@ -66,9 +58,9 @@ exports.deleteP =(req,res)=>{
     const productID= req.params.id*1;
     const product= products.findIndex(p=>p.id===productID);
     if(product===-1){
-        return res.staus(404).json({
-            message: "not found"
-        })
+        const error= new Error("product not found");
+        error.statusCode= 404;
+        next(error);
     }
     products.splice(product,1);
     res.json({
@@ -80,9 +72,9 @@ exports.patchP= (req,res)=>{
     const productID= req.params.id*1;
     const product= products.find(p=>p.id===productID);
     if(!product){
-        return res.status(404).json({
-            message:"not found"
-        })
+        const error= new Error("product not found");
+        error.statusCode= 404;
+        next(error);
     }
     const{name, price, category,stock}=req.body;
     if(name!=undefined){

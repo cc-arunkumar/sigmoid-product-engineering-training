@@ -3,10 +3,12 @@ const app = express()
 
 const productRoutes= require("./routes/productRouter");
 const loggers= require("./middleware/logger");
+const errorHandler= require("./middleware/errorHandler");
  // middleware so that our express understands the data send in the json format
  app.use(express.json());
 app.use(loggers);
 app.use(productRoutes);
+app.use(errorHandler);
 
 app.get("/api", (req, res)=>{
     res.send("welcome to backend"); // sending the response

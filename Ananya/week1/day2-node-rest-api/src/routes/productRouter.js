@@ -4,6 +4,7 @@ const productController = require("../controllers/productControllers");
 const validateProduct= require("../middleware/validateProduct");
 const validatePartialProduct= require("../middleware/validatePartialProduct");
 
+
 router.get("/api/products", productController.getAllProducts);
 router.get("/api/products/:id", productController.getProductById );
 router.post("/api/products",validateProduct,productController.createProduct);

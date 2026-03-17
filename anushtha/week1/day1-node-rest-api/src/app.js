@@ -1,5 +1,8 @@
 const express = require("express")
 const app = express() //express is initialised and it is kept under a variable app
+app.get("/api",(req,res)=>{
+    res.send("Welcome to backend");
+})
 app.use(express.json());
 const productRoutes=require("./routes/productRoutes");
 app.use(productRoutes);

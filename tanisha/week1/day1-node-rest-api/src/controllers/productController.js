@@ -25,3 +25,19 @@ exports.createProducts=(req,res)=>{
     products.push(newProduct);
     res.status(201).json(newProduct)
 }
+//put
+exports.updateProduct=(req,res)=>{
+    const productId=parseInt(req.params.id);
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product not found"
+        });
+    }
+    const{name,price,category,stock}=req.body;
+    product.name=name;
+    product.price=price;
+    product.category=category;
+    product.stock=stock;
+    res.status(200).json(product);
+}

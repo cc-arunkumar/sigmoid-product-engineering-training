@@ -1,4 +1,4 @@
-const products=require("../data/products")
+let products=require("../data/products")
 exports.getAllProducts=(req,res)=>{
     res.json(products);
 }
@@ -69,14 +69,7 @@ exports.partialUpdateProduct = (req, res) => {
 
 exports.deleteProduct = (req, res) => {
     const productId = req.params.id * 1;
-
-    const product = products.find(p => p.id === productId);
-
-    if (!product) {
-        return res.status(404).json({
-            message: "product not found"
-        });
-    }
+ 
 
     products = products.filter(p => p.id !== productId);
 

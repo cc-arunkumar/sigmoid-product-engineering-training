@@ -3,9 +3,12 @@ const express=require("express")
 const app=express()
 const PORT=3000
 
-app.use(express.json());
+
 const productRoutes=require("./routes/productRoutes");
+const logger=require("./middleware/logger")
+app.use(logger);
+app.use(express.json());
 app.use(productRoutes);
 app.listen(PORT,()=>{
-    console.log("server running on Port 3000")
+    console.log("server running on Port 3000  ")
 });

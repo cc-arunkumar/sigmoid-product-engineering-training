@@ -1,0 +1,24 @@
+  const products=[
+    {
+      id:101,
+      name:"Laptop",
+      price:"100000.0",  
+      category:"Electronics",
+      stock:20
+    },
+    {
+      id:102,
+      name:"Mobile",
+      price:"25000.0",  
+      category:"Electronics",
+      stock:45
+    },
+    {
+      id:103,
+      name:"Headphones",
+      price:"25000.0",  
+      category:"Electronics",
+      stock:50      
+    }
+  ];
+  module.exports=products;

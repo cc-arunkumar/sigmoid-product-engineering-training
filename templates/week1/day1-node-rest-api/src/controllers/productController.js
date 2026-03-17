@@ -74,5 +74,32 @@ exports.deleteProduct = (req,res) =>{
         message: "Product deleted successfully"
     })
 }
+//PATCH - updatepartialproduct
+exports.updatePartialProduct = (req,res) => {
+    const productId = req.params.id * 1;
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message : "Product not found"
+        });
+    }
+
+    const{name,price,category,stock} = req.body;
+
+    if(name != undefined){
+        product.name = name;
+    }
+    if(price != undefined){
+        product.price = price;
+    }
+    if(category != undefined){
+        product.category = category;
+    }
+    if(stock != undefined){
+        product.stock = stock;
+    }
+    res.status(200).json(products);
+};
 
 

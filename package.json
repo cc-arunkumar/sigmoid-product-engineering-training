@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training#readme",
   "dependencies": {
-    "expres": "^0.0.5"
+    "expres": "^0.0.5",
+    "nodemon": "^3.1.14"
   }
 }

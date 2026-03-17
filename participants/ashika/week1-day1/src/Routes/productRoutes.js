@@ -8,7 +8,7 @@ const validateforpatch=require("../middleware/validationpatch")
 
 router.get("/api/products", productController.getallproducts);
 router.get("/api/product/:id", productController.getproductbyId);
-router.post("api//products",validate, productController.createproducts);
+router.post("/api/products",validate, productController.createproducts);
 router.put("/api/product/:id",validate, productController.updateProduct);
 router.delete("/api/product/:id", productController.DeletebyId);
 router.patch("/api/product/:id",validateforpatch, productController.updatePartialProduct);

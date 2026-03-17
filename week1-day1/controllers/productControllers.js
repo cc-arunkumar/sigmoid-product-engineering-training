@@ -41,3 +41,14 @@ exports.updateProduct = (req, res) => {
     
     res.json(product);
 }
+
+exports.partialUpdateProduct = (req, res) => {
+    const productId = Number(req.params.id);
+    const product = products.find(p => p.id === productId);
+
+    if(!product) res.status(404).json({message: `No product found with product id - ${productId}.`});
+
+    Object.keys(req.body).forEach(x => product[x] = req.body[x]);
+    
+    res.json(product);
+}

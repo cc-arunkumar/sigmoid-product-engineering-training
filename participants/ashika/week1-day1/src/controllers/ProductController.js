@@ -1,21 +1,26 @@
 const products=require("../data/products");
 
+const {successresponse}=require("../utils/apiresponses");
+
+
 exports.getallproducts=(req, res)=>{
-    res.json(products);
+    // res.json(products);
+
+    return successresponse(res, "Product displays", products, 200);
 } ;
 
 
 
-exports.getproductbyId=(req,res)=>{
+exports.getproductbyId=(req,res , next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId)
      
     if(!product){
-        return req.status(400).json({
-            message:"data not found"
-        })
+        const error = new Error("ID not found");
+        error.statusCode = 404;
+        next(error);
     }
-    res.json(product);
+    return successresponse(res, "Product get by id ", products, 200);
 }
 
 exports.createproducts=(req,res)=>{
@@ -33,24 +38,24 @@ exports.createproducts=(req,res)=>{
 
     products.push(newProduct)
 
-    res.status(201).json({
-        
-        message:"data added",
-        products:products
-        
-    })
+   return successresponse(
+        res,
+        "Product created successfully",
+        newProduct,
+        201
+    );
     
 }
 
 
-exports.updateProduct=(req,res)=>{
+exports.updateProduct=(req,res, next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId)
      
     if(!product){
-        return req.status(400).json({
-            message:"data not found"
-        });
+        const error = new Error("ID not found");
+        error.statusCode = 404;
+        next(error);
 
     }   
 
@@ -61,32 +66,35 @@ exports.updateProduct=(req,res)=>{
         product.category=category,
         product.stocks=stocks
     
-     res.status(200).json(product)
+     return successresponse(res, "Product updated successfully", product, 200);
 }
 
 
-exports.DeletebyId=(req,res)=>{
+exports.DeletebyId=(req,res, next)=>{
     const productId=req.params.id*1;
     const productIndex=products.findIndex(p=>p.id===productId)
      
     if(!productIndex ){
-        return req.status(400).json({
-            message:"data not found"
-        })
+        const error = new Error("ID not found");
+        error.statusCode = 404;
+        next(error);
     }
 
-   products.splice(productIndex, 1);
-    res.status(200).json(products);
+  
+    const deletedProduct = products.splice(productIndex, 1)[0];
+
+   
+    return successresponse(res, "Product deleted successfully", deletedProduct, 200);
 }
 
-exports.updatePartialProduct=(req,res)=>{
+exports.updatePartialProduct=(req,res, next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId)
      
     if(!product){
-        return req.status(400).json({
-            message:"data not found"
-        });
+         const error = new Error("ID not found");
+        error.statusCode = 404;
+        next(error);
 
     }   
 
@@ -96,5 +104,5 @@ exports.updatePartialProduct=(req,res)=>{
         if(category!=undefined)product.category=category;
         if(stocks!=undefined)product.stocks=stocks;
     
-     res.status(200).json(product)
+      return successresponse(res, "Product updated successfully", product, 200);
 }

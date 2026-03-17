@@ -1,4 +1,4 @@
-const validate=(req, res)=>{
+const validate=(req, res , next)=>{
     const { name , price , category , stocks}=req.body;
 
     if(!name || name.trim===""){
@@ -26,6 +26,7 @@ const validate=(req, res)=>{
             message:"please enter valid stocks"
         })
     }
+    next();
 
 }
 

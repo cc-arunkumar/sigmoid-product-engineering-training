@@ -1,4 +1,4 @@
-const patchvalidate=(req, res)=>{
+const patchvalidate=(req, res , next)=>{
     const { name , price , category , stocks}=req.body;
 
     if(name!==undefined){
@@ -38,6 +38,7 @@ if(stocks!==undefined){
     }
 
 }
+next()
 }
 
 module.exports=patchvalidate;

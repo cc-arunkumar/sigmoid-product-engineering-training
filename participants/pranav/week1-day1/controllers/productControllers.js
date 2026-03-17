@@ -78,11 +78,33 @@ const updateProducts =(req,res)=>{
 }
 
 
+const patchProduct = (req, res) => {
+  const productId = Number(req.params.id);
+
+  const product = products.find(p => p.id === productId);
+
+  if (!product) {
+    return res.status(404).json({
+      status: "fail",
+      message: "wrong ID"
+    });
+  }
+  Object.keys(req.body).forEach(key => {
+    product[key] = req.body[key];
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: product
+  });
+};
+
 
 
 module.exports={
     getAllProducts,
      getProductById,
      createProduct,
-     updateProducts
+     updateProducts,
+     patchProduct
 }

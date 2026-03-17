@@ -9,6 +9,7 @@ router.get("/",productController.getAllProducts)
       .get("/:id",productController.getProductById)
        .post("/",productController.createProduct)
        .put("/:id",productController.updateProducts)
+       .patch("/:id", productController.patchProduct);
 
 
 module.exports= router

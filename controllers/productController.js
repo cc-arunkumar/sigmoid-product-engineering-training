@@ -1,6 +1,9 @@
 const products=require("../data/products");
+const successResponse=require("../utils/apiResponse")
+const errorResponse=require("../utils/apiResponse")
 exports.getAllProducts=(req,res)=>{
-    res.json(products);
+    // res.json(products);
+    successResponse(res,products)
 };
 exports.getProductById=(req, res)=>{
     const productId=parseInt(req.params.id);

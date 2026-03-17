@@ -1,5 +1,7 @@
 let products = require("../data/products");
 
+const apiResponse = require("../utils/apiResponse");
+
 exports.getAllProducts = (req,res) => {
     res.json(products);
 };
@@ -19,9 +21,10 @@ exports.getProductById = (req,res,next) => {
         error.statusCode = 404;
         return next(error);
     }
-    res.json(product);
-};
 
+    // res.json(product);
+    apiResponse.successResponse(res, "Product retrieved successfully", product);
+};
 
 exports.createProduct = (req,res) => {
     const { name, price, category, stock } = req.body;
@@ -36,7 +39,8 @@ exports.createProduct = (req,res) => {
 
     products.push(product);
 
-    res.status(201).json(product)
+    // res.status(201).json(product);
+    apiResponse.successResponse(res, "Product created successfully", product, 201);
 };
 
 exports.updateProduct = (req,res,next) => {
@@ -63,7 +67,8 @@ exports.updateProduct = (req,res,next) => {
     product.category = category;
     product.stock = stock;
 
-    res.json(product);
+    // res.json(product);
+    apiResponse.successResponse(res, "Product updated successfully", product);
 };
 
 exports.deleteProductById = (req,res,next) => {
@@ -83,7 +88,9 @@ exports.deleteProductById = (req,res,next) => {
     }
 
     products=products.filter(p => p.id !== productId);
-    res.status(201).json(products);
+    // res.status(201).json(products);
+
+    apiResponse.successResponse(res, "Product deleted successfully", products);
 };
 
 
@@ -117,6 +124,8 @@ exports.updatePartialProduct = (req, res, next) => {
     if(price != undefined){
         product.price = price;
     }
-    res.status(200).json(product);
+    // res.status(200).json(product);
+    apiResponse.successResponse(res, "Product updated successfully", product);
+
 };
 

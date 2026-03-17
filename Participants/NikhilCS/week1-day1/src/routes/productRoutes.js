@@ -4,4 +4,5 @@ const router = express.Router(); //created a router here we can create multiple 
 const productController = require("../controllers/productController"); //imported the controller here from controller file  ,this is one path
 router.get("/products", productController.getAllProducts);
 router.get("/product/:id",productController.getProductById);
+router.post("/products",productController.createProduct)
 module.exports=router

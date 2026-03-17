@@ -22,3 +22,15 @@ exports.getProductById = (req, res) => {
   }
   res.json(product);
 };
+exports.createProduct = (req, res) => {
+  const { name, price, category, stock } = req.body;
+  const newProduct = {
+    id: products.length + 1,
+    name: name,
+    price: price,
+    category: category,
+    stock: stock,
+  };
+  products.push(newProduct);
+  res.status(201).json(newProduct);
+};

@@ -1,7 +1,7 @@
  const products=require("../data/products")
  const successResponse=require("../utils/apiResponse.js")
  exports.getAllProducts=(req,res)=>{
-    successResponse(res,products,"All products fetched");
+    successResponse(res,"All products fetched",products);
  };
 exports.getProductById=(req,res,next)=>{
     const productId=parseInt(req.params.id);
@@ -10,7 +10,7 @@ exports.getProductById=(req,res,next)=>{
         const error=new Error();
         next(error);
     }
-    successResponse(res,product,"Product by id fetched");
+    successResponse(res,"Product by id fetched",product);
  }
   exports.createProduct=(req,res)=>{
     const {name,price,category,stock}=req.body;
@@ -22,7 +22,7 @@ exports.getProductById=(req,res,next)=>{
         stock:stock
     };
     products.push(newProduct);
-    successResponse(res,newProduct,"Added new products");
+    successResponse(res,"Added new products",newProduct);
  }
  
  exports.updateProduct=(req,res,next)=>{
@@ -39,7 +39,7 @@ exports.getProductById=(req,res,next)=>{
     product.category=category;
     product.stock=stock;
 
-    successResponse(res,product,"Product updated");
+    successResponse(res,"Product updated",product);
 
  }
  exports.deleteProduct=(req,res)=>{
@@ -51,7 +51,7 @@ exports.getProductById=(req,res,next)=>{
     }
     products.splice(product,1);
 
-    successResponse(res,null,"Product deleted");
+    successResponse(res,"Product deleted",null);
 
 }
 exports.updatePartialProduct=(req,res,next)=>{
@@ -74,6 +74,6 @@ exports.updatePartialProduct=(req,res,next)=>{
     if(stock!=undefined){
         product.stock=stock;
     }
-    rsuccessResponse(res,product,"Product partially updated");
+    successResponse(res,"Product partially updated",product);
 
 }

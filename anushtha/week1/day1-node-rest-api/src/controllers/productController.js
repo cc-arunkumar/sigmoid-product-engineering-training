@@ -54,3 +54,18 @@ exports.getProductById=(req,res)=>{
     res.status(200).json(product);
 
  }
+ exports.deleteProduct=(req,res)=>{
+    const productId=req.params.id*1;
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product not found"
+        });
+    }
+    products.splice(product,1);
+
+    res.status(200).json({
+        message:"Product deleted successfully"
+    });
+
+}

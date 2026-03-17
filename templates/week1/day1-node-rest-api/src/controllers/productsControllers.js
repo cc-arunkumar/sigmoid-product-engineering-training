@@ -26,3 +26,18 @@ exports.createProduct = (req, res) => {
     products.push(newProduct);
     res.status(201).json(newProduct);
 };
+
+exports.updateProduct = (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, price, category, stocks } = req.body;
+    const foundProduct = products.find(p => p.id === id);
+    if (foundProduct) {
+        foundProduct.name = name || foundProduct.name;
+        foundProduct.price = price || foundProduct.price;
+        foundProduct.category = category || foundProduct.category;
+        foundProduct.stocks = stocks || foundProduct.stocks;
+        res.json(foundProduct);
+    } else {
+        res.status(404).json({ message: "Product not found" });
+    }
+};

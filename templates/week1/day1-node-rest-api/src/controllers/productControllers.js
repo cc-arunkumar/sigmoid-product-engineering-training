@@ -58,6 +58,32 @@ exports.deleteProduct=(req,res)=>{
     products.splice(productIndex,1);
     res.status(200).json("Product Deleted")
 }
+exports.updatePartialProduct=(req,res)=>{
+    const productId=parseInt(req.params.id)
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        res.status(404).json({
+            "message":"Product Not Found"
+        })
+    }
+   
+    const {name,price,category,stock}=req.body;
+    if(name!=undefined){
+        product.name=name;
+    }
+    if(price!=undefined){
+        product.price=price;
+    }
+    if(category!=undefined){
+        product.category=category;
+    }
+    if(stock!=undefined)
+    {
+        product.stock=stock;
+    }
+
+
+}
 
 
 

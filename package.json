@@ -20,5 +20,6 @@
   "homepage": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training#readme",
   "dependencies": {
     "express": "^5.2.1"
-  }
+  },
+  "devDependencies": {}
 }

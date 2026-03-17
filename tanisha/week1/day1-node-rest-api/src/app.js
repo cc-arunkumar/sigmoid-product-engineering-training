@@ -1,8 +1,8 @@
 const express = require("express");
-const app = express();
-app.get("/",(req,res)=>{
-    res.send("Welcome to backend");
-})
+const app=express();
+const productRoutes =require("./routes/productRoutes");
+app.use(express.json());
+app.use(productRoutes);
 app.listen(3000,()=>{
-    console.log("Server started on port 3000");
+    console.log("server running on port 3000");
 });

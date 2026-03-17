@@ -13,3 +13,17 @@ exports.getProductById=(req,res)=>{
     }
     res.send(product);
 };
+
+exports.createProduct=(req,res)=>{
+    const {name,price,category,stocks}=req.body;
+    const newProduct={
+        id:products.length+1,
+        name:name,
+        price:price,
+        category:category,
+        stocks:stocks
+    };
+    products.push(newProduct);
+    res.status(201).json(newProduct);
+};
+

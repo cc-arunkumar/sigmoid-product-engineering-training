@@ -6,12 +6,15 @@ const productRoutes = require("./routes/productRoutes");
 
 const productLogger = require("./middleware/logger");
 
+const errorHandler = require("./middleware/errorHandler")
 app.use(express.json());
 
 
 app.use(productLogger);
 
 app.use(productRoutes);
+
+app.use(errorHandler);
 
 
 

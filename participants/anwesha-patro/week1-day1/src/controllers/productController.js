@@ -1,18 +1,17 @@
 let products = require("../data/products");
 
-exports.getAllProducts = (req, res) => {
+exports.getAllProducts = (req, res, next) => {
     res.json(products)
 }
 
-exports.getOneProducts = (req, res) => {
+exports.getOneProducts = (req, res, next) => {
     const id = parseInt(req.params.id);
     const prod = products.find(i => i.id === id)
     if (!prod) {
-        return res.status(404).json(
-            {
-                message: "Product not found"
-            }
-        )
+        const err = new Error("Product not found");
+        err.statusCode = 404;
+        return next(err);
+
     }
     res.json(prod)
 
@@ -38,7 +37,9 @@ exports.updateById = (req, res) => {
     const id = parseInt(req.params.id);
     const prod = products.find(i => i.id === id)
     if (!prod) {
-        res.send("Nothing to update")
+        const err = new Error("Product not found");
+        err.statusCode = 404;
+        return next(err);
     }
 
     const { name, price, category, stock } = req.body;
@@ -56,7 +57,9 @@ exports.deleteById = (req, res) => {
     const id = parseInt(req.params.id);
     const prod = products.find(i => i.id === id)
     if (!prod) {
-        res.send("Nothing to delete")
+        const err = new Error("Product not found");
+        err.statusCode = 404;
+        return next(err);
     }
     products = products.filter(i => i.id !== id)
     res.status(200).json(products)
@@ -67,7 +70,9 @@ exports.updatePartial = (req, res) => {
     const id = parseInt(req.params.id);
     const prod = products.find(i => i.id === id)
     if (!prod) {
-        res.send("Nothing to update")
+        const err = new Error("Product not found");
+        err.statusCode = 404;
+        return next(err);
     }
 
     const { name, price, category, stock } = req.body;

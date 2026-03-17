@@ -3,13 +3,15 @@ const express =require("express")
 const router= express.Router()
 
 const productController=require("../controllers/productControllers")
+const validateProduct = require("../middleware/validateProduct")
+const validatePatchProduct = require("../middleware/validatePatchProduct")
 
 
 router.get("/",productController.getAllProducts)
       .get("/:id",productController.getProductById)
-       .post("/",productController.createProduct)
-       .put("/:id",productController.updateProducts)
-       .patch("/:id", productController.patchProduct)
+       .post("/",validateProduct,productController.createProduct)
+       .put("/:id",validateProduct,productController.updateProducts)
+       .patch("/:id",validatePatchProduct, productController.patchProduct)
        .delete("/:id",productController.deleteById)
 
 

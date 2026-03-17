@@ -15,16 +15,6 @@ exports.getProductById= (req, res)=>{
     res.json(product);
 }
 
-exports.getProductById= (req, res)=>{
-    const productId= parseInt(req.params.id);
-    const product= products.find(p=>p.id===productId);
-    if(!product){
-        return res.status(400).json({
-            message:"product not found"
-        })
-    }
-    res.json(product);
-}
 
 exports.createProduct = (req,res)=>{
     

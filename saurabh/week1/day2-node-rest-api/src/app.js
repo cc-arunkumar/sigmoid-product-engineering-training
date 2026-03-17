@@ -10,7 +10,7 @@ app.use(productRoutes);
 
 app.get("/api", (req, res)=>{
     res.send("welcome to backend"); // sending the response
-}) ;
+});
 
 
 app.listen(3000, ()=>{

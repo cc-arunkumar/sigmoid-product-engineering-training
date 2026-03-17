@@ -7,5 +7,8 @@ const {
 
 // Routes
 router.get("/", getAllUsers);
+router.post("/", (req, res) => {
+  res.send("Create a new user");
+});
 
 module.exports = router;

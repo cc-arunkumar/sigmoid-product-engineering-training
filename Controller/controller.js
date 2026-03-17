@@ -46,3 +46,19 @@ exports.putproduct = (req , res)=>{
 
     return res.status(200).json(productfound);
 }
+
+exports.deleteproduct = (req , res)=>{
+    const id = req.params.id * 1;
+
+    const index = product.findIndex(p => p.id === id);
+
+    if(index === -1){
+        return res.status(400).json({
+            message: "Not Found"
+        });
+    }
+
+    const deletedProduct = product.splice(index , 1);
+
+    return res.status(200).json(deletedProduct[0]);
+};

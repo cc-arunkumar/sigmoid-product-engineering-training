@@ -15,3 +15,15 @@ export const getProductById = (req,res) => {
 
 };
 
+export const createProduct = (req,res) =>{
+    const {name,price,stock} = req.body;
+    const new1 = {
+        name,price,stock
+    };
+    products.push(new1);
+    res.status(201).json(new1);
+
+};
+
+
+

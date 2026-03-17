@@ -1,12 +1,12 @@
-const express = require("express");
-const userRoutes = require("./routes/userRoutes");
+const express = require("express")
 
-const app = express();
+const app = express()
+
+const productRoutes = require("./routes/productRoutes");
 
 app.use(express.json());
+app.use(productRoutes);
 
-app.get("/",(req,res) =>{
-  res.send("Welcome to the server");
+app.listen(3000, () => {
+    console.log("Listening on port 3000")
 })
-
-module.exports = app;

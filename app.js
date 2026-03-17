@@ -11,6 +11,11 @@ app.get("/", (req, res) => {
 });
 
 
+
+const productroute = require("./Routes/route")
+app.use(productroute);
+
+
 app.listen(3000, () => {
     console.log("Server running on port 3000");
 });

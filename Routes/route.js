@@ -1,0 +1,10 @@
+
+const express = require("express") ; 
+
+const router = express.Router() ; 
+
+const controller = require("../Controller/controller")
+
+
+
+module.exports = router

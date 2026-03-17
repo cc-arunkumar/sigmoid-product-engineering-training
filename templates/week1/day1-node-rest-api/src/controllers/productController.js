@@ -2,18 +2,20 @@ let products=require("../data/products")
 exports.getAllProducts=(req,res)=>{
     res.json(products);
 }
-exports.getProductById=(req,res)=>{
+exports.getProductById=(req,res,next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId);
     if(!product)
     {
-        return res.status(404).json({
-           
-            error:`not found this ${productId} in product list`
-        });
-    }
+        const error=new Error("Invalid product ID");
+        error.statusCode=404;
+        error.success=false;
+        return next(error);
+        }
+    
     res.json(product);
-};
+}
+
 exports.createProduct=(req,res)=>{
     const {name,price,category,stock}=req.body;
     const newproduct={

@@ -6,8 +6,13 @@ const logger=require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 app.use(logger);
 app.use(express.json());
-app.use(errorHandler)
+
 app.use(productRoutes);
+
+
+
+
+app.use(errorHandler)
 app.listen(PORT,()=>{
     console.log("server running on Port 3000  ")
 });

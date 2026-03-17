@@ -1,10 +1,15 @@
-const express = require("express") //express module
+const express = require("express");
 
-const app = express()//initialization of library , app const is storing the express library
+const app = express();
 
-app.get("/",(req,res)=>{
-    res.send("Welcome backend"); //pass req,res (http objects) , return be the message to the UI in body
-}) //default API we are trying to hit , path to api endpoint
-app.listen(3000,()=>{ //from client to connect to the server use port
-    console.log("server started"); //launch the server using node index.js hit enter calls comes here
-})
+app.use(express.json());
+
+const productRoutes = require("./routes/productRoutes");
+
+app.use(productRoutes);
+
+
+
+app.listen(3000,()=>{
+    console.log("Server started on port 3000");
+});

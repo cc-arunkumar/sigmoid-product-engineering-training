@@ -1,7 +1,11 @@
-const app = require("./app");
+const express= require("express") // express is module with which we will create our apis
+const app = express() // entire express is initialized and kept in the app
 
-const PORT = process.env.PORT || 3000;
+app.get("/", (req, res)=>{
+    res.send("welcome to backend"); // sending the response
+}) ;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(3000, ()=>{
+    console.log("server started")
+    
+})

@@ -39,5 +39,16 @@ export const modifyProduct = (req,res) =>{
     }
 };
 
-
+export const deleteProduct = (req,res) =>{
+    const productId = req.params.id;
+    const product = products.find(p=> p.id == productId);
+    const index = products.findIndex(p=> p.id == productId);
+    if(!product){
+        return res.status(404).json({message:"Product not found"});
+    }
+    else{
+        const deleted = products.splice(index,1);
+        res.status(202).json({message:`Product with ${productId}`});
+    }
+}
 

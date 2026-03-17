@@ -1,11 +1,9 @@
 const express = require("express");
-const userRoutes = require("./routes/userRoutes");
 
 const app = express();
+const PORT = 3000;
 
 app.use(express.json());
-
-// Register routes
-app.use("/api/users", userRoutes);
-
-module.exports = app;
+app.listen(PORT, () => {
+  return console.log(`Server running on port ${PORT}`);
+});

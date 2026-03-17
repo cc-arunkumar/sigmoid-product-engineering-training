@@ -1,15 +1,14 @@
 const validateProductPatch = (req, res, next) => {
     const { name, price, category, stock } = req.body;
 
-    if(name){
-        if(name.trim() === ""){
+
+    if(name!==umdefined && name.trim() === ""){
             return res.status(400).json({
                 success: false,
                 message: "Product name is required"
             })
-        };
-    }
-
+    };
+    
     if(price !== undefined){
         if(price <= 0){
             return res.status(400).json({

@@ -1,2 +1,5 @@
-const product  = require("../Data/data.json")
+const product  = require("../Data/data")
 
+exports.getallProducts = (req , res) =>{
+    res.json(product)
+}

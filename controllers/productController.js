@@ -48,3 +48,21 @@ exports.deleteProduct=(req,res)=>{
         message:"Product deleted"
     });
 };
+
+exports.updatePartialProduct=(req,res)=>{
+    const productId=parseInt(req.params.id);
+    const {name,price}=req.body;
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product not found"
+        });
+    }
+    if(name!==undefined){
+        product.name=name;
+    }
+    if(price!==undefined){
+        product.price=price;
+    }
+    return res.status(200).json(product);
+};

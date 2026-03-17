@@ -4,11 +4,11 @@ const express = require("express") ;
 const router = express.Router() ; 
 
 const controller = require("../Controller/controller")
-router.get("/products" , controller.getallProducts);
-router.get('/product/:id' ,  controller.getproductbyId);
-router.post("/productpost" , controller.postproduct)
-router.put("/productput" , controller.putproduct);
-router.delete("/productdelete/:id" , controller.deleteproduct);
+router.get("/api/products" , controller.getallProducts);
+router.get('/api/product/:id' ,  controller.getproductbyId);
+router.post("/api/productpost" , controller.postproduct)
+router.put("/api/productput" , controller.putproduct);
+router.delete("/api/productdelete/:id" , controller.deleteproduct);
 
 
 module.exports = router

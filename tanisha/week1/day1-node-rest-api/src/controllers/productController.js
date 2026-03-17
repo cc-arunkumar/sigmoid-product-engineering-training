@@ -65,3 +65,17 @@ const productId=parseInt(req.params.id);
     }
     res.json(product);
 }
+//delete
+exports.deleteProduct=(req,res)=>{
+    const productId=parseInt(req.params.id);
+    const product=products.find(p=>p.id===productId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product not found"
+        });
+    }
+    products.splice(product,1);
+    res.status(404).json({
+        message:"Product deleted"
+    });
+}

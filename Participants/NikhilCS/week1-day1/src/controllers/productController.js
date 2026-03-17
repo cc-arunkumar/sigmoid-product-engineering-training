@@ -34,3 +34,23 @@ exports.createProduct = (req, res) => {
   products.push(newProduct);
   res.status(201).json(newProduct);
 };
+exports.updateProduct = (req, res) => {
+  const productId = Number(req.params.id);
+  console.log(productId);
+  const product = products.find((product) => {
+    return product.id === productId;
+  }); //if we search or find here for a non exisent ided object that is an object without the required id ,so non existent product then emptty object ,product has non data response then we go for the status code of 404 being sent
+  //one important thing about the ffind operation in js on array processing is it returns a refeence or a pointer of srots to the same memory location so when weedit this object returned in memory this object is edited at same sport we are not egtting a copy of the object so it is not like we have to pop the object then repush it is by reference
+  //
+  if (!product) {
+    return res.status(404).json({
+      message: "Product not found",
+    });
+  }
+  const { name, price, category, stock } = req.body;
+  product.name = name;
+  product.price = price;
+  product.category = category;
+  product.stock = stock;
+  return res.status(200).send("succesful update done ");
+};

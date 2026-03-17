@@ -45,3 +45,14 @@ exports.updateProduct = (req, res) => {
 
 }
 }
+
+exports.deleteProduct = (req, res) => {
+    const productId = parseInt(req.params.id);
+    const productIndex = products.findIndex(p => p.id === productId);
+
+    if(productIndex === -1){
+        return res.status(404).json({ message: 'Product not found' });
+    }
+    products.splice(productIndex, 1);
+    res.status(204).send();
+}

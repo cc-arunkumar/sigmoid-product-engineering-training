@@ -1,4 +1,4 @@
-const products = require("../data/products")
+let products = require("../data/products")
 
 exports.getAll = (req, res) => {
     res.json(products);
@@ -48,7 +48,16 @@ exports.partialUpdateProduct = (req, res) => {
 
     if(!product) res.status(404).json({message: `No product found with product id - ${productId}.`});
 
-    Object.keys(req.body).forEach(x => product[x] = req.body[x]);
-    
+    Object.keys(req.body).forEach(x => product[x] = req.body[x]);    
     res.json(product);
+}
+
+exports.deleteProduct = (req, res) => {
+    const productId = Number(req.params.id);
+    const product = products.find(p => p.id === productId);
+
+    if(!product) res.status(404).json({message: `No product found with product id - ${productId}.`});
+    
+    products = products.filter(p => p.id !== productId);
+    res.json({message: `Product with product id - ${productId} is deleted succesfully.`})
 }

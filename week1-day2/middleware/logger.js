@@ -1,4 +1,4 @@
-exports.logger = (req, res, nxt) => {
+const logger = (req, res, nxt) => {
     const method = req.method;
     const url = req.url;
     const time = new Date().toISOString();
@@ -6,3 +6,5 @@ exports.logger = (req, res, nxt) => {
 
     nxt();
 }
+
+module.exports = logger;

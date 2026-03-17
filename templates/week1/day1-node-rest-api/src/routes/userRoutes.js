@@ -18,6 +18,9 @@ router.post("/users", (req, res) => {
 router.put("/users/:id", (req, res) => {
   res.send("Update User");
 });
+router.delete("/users/:id", (req, res) => {
+  res.send("Delete User");
+});
 
 
 module.exports = router;

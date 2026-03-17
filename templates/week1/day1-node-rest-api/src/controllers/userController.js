@@ -41,3 +41,14 @@ exports.updateUser = (req, res) => {
 
 }
 }
+
+exports.deleteUser = (req, res) => {
+    const userId = parseInt(req.params.id);
+    const userIndex = users.findIndex(u => u.id === userId);
+
+    if(userIndex === -1){
+        return res.status(404).json({ message: 'User not found' });
+    }
+    users.splice(userIndex, 1);
+    res.status(204).send();
+}

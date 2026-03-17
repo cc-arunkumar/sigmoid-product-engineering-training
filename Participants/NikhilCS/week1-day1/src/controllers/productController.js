@@ -76,3 +76,20 @@ exports.updatePartialProduct = (req, res) => {
   console.log(product)
   return res.status(200).send("succesful partial update done ");
 };
+exports.deleteProduct = (req, res) => {
+  const productId = Number(req.params.id);
+  console.log(productId);
+  const product = products.find((product) => {
+    return product.id === productId;
+  });
+  if (!product) {
+    return res.status(404).json({
+      message: "Product not found",
+    });
+  }
+  // const remproducts=products.filter((product)=>product.id!=productId)
+  // products=remproducts
+  const index = products.indexOf(product);
+  products.splice(index, 1);
+  res.status(200).send("deleted succesfully");
+};

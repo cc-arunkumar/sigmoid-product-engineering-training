@@ -18,3 +18,18 @@ exports.getProductById = (req, res) => {
 
         res.json(product);
     }
+
+    exports.createProduct = (req, res) => {
+        // Extract the name and price from the request body using destructuring assignment. This allows us to easily access the name and price values sent by the client in the POST request.
+        const { id, name, price } = req.body;
+
+        const newProduct = {
+        id: products.length + 101, // Generate a new ID based on the length of the products array
+        name : name,
+        price : price
+        };
+
+        products.push(newProduct);
+
+        res.status(201).json(newProduct);
+    }

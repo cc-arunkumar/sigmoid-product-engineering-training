@@ -1,7 +1,8 @@
-exports.successResponse=(res,message,data,statusCode=200)=>{
+const successResponse = (res, data, message, statusCode = 200) => {
     return res.status(statusCode).json({
-        success:true,
-        message:message,
-        data:data
+        success: true,
+        message,
+        data
     });
 };
+module.exports = successResponse;

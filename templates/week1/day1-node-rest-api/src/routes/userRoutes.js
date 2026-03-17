@@ -15,6 +15,9 @@ router.get("/users/:id", (req, res) => {
 router.post("/users", (req, res) => {
   res.send("Create User");
 });
+router.put("/users/:id", (req, res) => {
+  res.send("Update User");
+});
 
 
 module.exports = router;

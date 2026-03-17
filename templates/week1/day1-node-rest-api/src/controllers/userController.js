@@ -24,3 +24,20 @@ exports.createUser = (req, res) => {
     users.push(newUser);
     res.status(201).json(newUser);
 }
+
+exports.updateUser = (req, res) => {
+    const userId = parseInt(req.params.id);
+    const user = users.find(u => u.id === userId);
+
+    if(!user){
+        return res.status(404).json({ message: 'User not found' });
+    }
+   else{
+    const { name, email } = req.body;
+    user.name = name || user.name;
+    user.email = email || user.email;
+
+    res.status(200).json(user);
+
+}
+}

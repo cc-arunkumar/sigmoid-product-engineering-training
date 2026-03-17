@@ -36,4 +36,13 @@ function deleteProduct(req, res){
     products.splice(product_index,1)
     return res.json({message:"Product deleted successfully"})
 }
-export {getAllProducts,getProductById,createProduct,updateProduct,deleteProduct}
+function partialUpdate(req,res){
+    const productId=parseInt(req.params.id)
+    const product=products.find(p=>p.id===productId)
+    if(!product) return res.status(404).json({message:"Product not found"})
+    const {name,price}=req.body
+    if(name) product.name=name
+    if(price) product.price=price
+    return res.json(product)
+}
+export {getAllProducts,getProductById,createProduct,updateProduct,deleteProduct,partialUpdate}

@@ -18,3 +18,19 @@ exports.getproductbyId = (req , res)=>{
     return res.json(prodfoundid)
 
 }
+
+
+exports.postproduct = (req , res)=>{
+    const {name , price , brand } = req.body;
+    
+
+    const newproduct = {
+        id : product.length+1 , 
+        name : name , 
+        price : price  , 
+        brand : brand , 
+    }
+    product.push(newproduct);
+
+    return res.status(201).json(newproduct) ; 
+}

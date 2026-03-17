@@ -4,10 +4,13 @@ const app = express()
 
 const productRoutes = require("./routes/productRoutes");
 
+const productLogger = require("./middleware/logger");
 
 app.use(express.json());
 
 app.use(productRoutes);
+
+app.use(productLogger)
 
 
 app.listen(4000, () => {

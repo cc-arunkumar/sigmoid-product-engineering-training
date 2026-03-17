@@ -1,11 +1,8 @@
 const express = require("express");
-const userRoutes = require("./routes/userRoutes");
-
-const app = express();
-
-app.use(express.json());
-
-// Register routes
-app.use("/api/users", userRoutes);
-
-module.exports = app;
+const app = express(); 
+app.get("/",(req,res)=>{
+    res.send("Welcome to backend");
+}) 
+app.listen(3000, () => {
+    console.log("Server started on port 3000");
+});

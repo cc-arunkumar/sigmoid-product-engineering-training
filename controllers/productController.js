@@ -65,3 +65,25 @@ exports.getProductById = (req, res) => {
 
         res.status(200).json({message : "Product deleted successfully"});
     }
+
+
+    exports.patchProduct = (req, res) => {
+        const productId = parseInt(req.params.id);
+
+        const product = products.find(p => p.id === productId);
+        if(!product){
+           return res.status(404).json({message : "Product not found"});
+
+        }
+        const  {name,price} = req.body;
+
+        if(name!==undefined){
+            product.name=name;
+        }
+        if(price!==undefined){
+            product.price=price;
+        }
+
+       return res.status(201).json(product);
+
+    }

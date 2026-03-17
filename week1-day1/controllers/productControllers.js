@@ -12,3 +12,17 @@ exports.getProduct = (req, res) => {
 
     res.json(product);
 }
+
+exports.addProduct = (req, res) => {
+    const {name, price, category, stock} = req.body;
+    const newProduct = {
+        id: products.length + 101,
+        name,
+        price,
+        category,
+        stock
+    }
+    
+    products.push(newProduct);
+    res.json(newProduct);
+}

@@ -5,9 +5,10 @@ const app = express();
 app.use(express.json());
 
 const productRoutes = require("./routes/productRoutes");
+const logger = require("./middleware/logger"); //for logger
 
 app.use(productRoutes);
-
+app.use(logger);
 
 
 app.listen(3000,()=>{

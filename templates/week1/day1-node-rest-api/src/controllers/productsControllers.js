@@ -13,3 +13,16 @@ exports.getProductById = (req, res) => {
         res.status(404).json({ message: "Product not found" });
     }
 };
+
+exports.createProduct = (req, res) => {
+    const { name, price, category, stocks } = req.body;
+    const newProduct = {
+        id: products.length + 1,
+        name,
+        price,
+        category,
+        stocks
+    };
+    products.push(newProduct);
+    res.status(201).json(newProduct);
+};

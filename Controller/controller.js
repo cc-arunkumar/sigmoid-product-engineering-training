@@ -34,3 +34,15 @@ exports.postproduct = (req , res)=>{
 
     return res.status(201).json(newproduct) ; 
 }
+
+exports.putproduct = (req , res)=>{
+    const {id , name , price  , brand } = req.body ; 
+
+    const productfound = product.find(p => p.id== id) ; 
+
+    productfound.name = name ; 
+    productfound.price = price ; 
+    productfound.brand = brand ; 
+
+    return res.status(200).json(productfound);
+}

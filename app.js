@@ -5,10 +5,11 @@ const app = express();
 
 app.use(express.json());
 
-
 // ! adding middlewere
+const {errorHandler} = require("./middlewere/logger")
 const {logger} = require("./middlewere/logger")
 app.use(logger)
+app.use(errorHandler);
 
 
 app.get("/", (req, res) => {

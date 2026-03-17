@@ -49,3 +49,22 @@ exports.createProduct=(req,res)=>{
         message:"Product updated successfully"
     })
 }
+exports.updateProductPartially =(req,res)=> {
+    const ProductId=parseInt(req.params.id);
+    const product=products.find((p)=>p.product_id===ProductId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product not found"
+        })
+    }
+    const{product_name,product_price,category,Stock}=req.body;
+    product.product_name = product_name ?? product.product_name;
+    product.product_price = product_price ?? product.product_price;
+    product.category = category ?? product.category;
+    product.Stock = Stock ?? product.Stock;
+       
+    
+    res.status(201).json({
+        message:"Product updated successfully partially"
+    })
+}

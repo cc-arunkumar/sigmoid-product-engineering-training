@@ -63,29 +63,29 @@ exports.updateById = (req, res) => {
 
 // }
 
-// exports.updatePartial = (req, res) => {
-//     const id = parseInt(req.params.id);
-//     const prod = products.find(i => i.id === id)
-//     if (!prod) {
-//         res.send("Nothing to update")
-//     }
+exports.updatePartial = (req, res) => {
+    const id = parseInt(req.params.id);
+    const prod = products.find(i => i.id === id)
+    if (!prod) {
+        res.send("Nothing to update")
+    }
 
-//     const { name, price, category, stock } = req.body;
+    const { name, price, category, stock } = req.body;
 
-//     if (name != undefined) {
-//         prod.name = name;
-//     }
-//     if (price != undefined) {
-//         prod.price = price;
-//     }
-//     if (category != undefined) {
-//         prod.category = category;
-//     }
-//     if (stock != undefined) {
-//         prod.stock = stock;
-//     }
+    if (name != undefined) {
+        prod.name = name;
+    }
+    if (price != undefined) {
+        prod.price = price;
+    }
+    if (category != undefined) {
+        prod.category = category;
+    }
+    if (stock != undefined) {
+        prod.stock = stock;
+    }
 
-//     res.json(prod)
+    res.json(prod)
 
 
-// }
+}

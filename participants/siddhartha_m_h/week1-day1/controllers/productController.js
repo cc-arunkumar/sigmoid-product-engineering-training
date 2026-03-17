@@ -42,9 +42,29 @@ function handleDeleteProductById (req, res) {
     });
 }
 
+function handleUpdateProducts (req, res) {
+    const id = parseInt(req.params.id);
+    const product = products.find(p => p.id === id);
+    
+    if(!product) {
+        return res.status(404).json({
+            message : "Product Not Found"
+        });
+    }
+
+    const { name, price, category, stock } = req.body;
+    product.name = name;
+    product.price = price;
+    product.category = category;
+    product.stock = stock;
+
+    return res.status(200).json(product);
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
     handleAddProducts,
-    handleDeleteProductById
+    handleDeleteProductById,
+    handleUpdateProducts
 }

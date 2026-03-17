@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-app.get("/",(req,res)=>{
+app.get("/api",(req,res)=>{
     res.send("Welcome to backend");
 })
 app.listen(3000,()=>{

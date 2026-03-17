@@ -1,0 +1,81 @@
+let products = require("../Data/products");
+
+function getAllProducts(req,res){
+    res.json(products);
+}
+
+function getProductById(req,res){
+    const productId=parseInt(req.params.id);
+    console.log(req.params);
+    const product=products.find(p => p.id === productId);
+    
+    if(!product){
+        return res.status(404).json({
+          message:"Product Not Found"  
+        })
+    }
+    res.json(product);
+}
+
+function createProduct(req,res){
+    const {name,price}=req.body;
+    const product = {
+        id:products.length + 1,
+        name:name,
+        price:price
+    };
+    products.push(product);
+    return res.status(201).json(product);
+}
+
+function updateProduct(req,res){
+    const productId=parseInt(req.params.id);
+    const product = products.find(p => p.id === productId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product Not Found"
+        });
+    }
+    const {name,price} = req.body;
+    product.name=name;
+    product.price=price;
+
+    return res.status(200).json(product);
+}
+
+function deleteProduct(req,res){
+    const productId = parseInt(req.params.id);
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message:"Product Not Found"
+        });
+    }
+
+    const remainingProducts = products.filter(p => p.id!=productId);
+    products = remainingProducts;
+
+    return res.status(200).json({
+        message:"Deleted Successfully"
+    });
+}
+
+function updatePartialProduct(req,res){
+    const productId = parseInt(req.params.id);
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message:"Product Not Found"
+        });
+    }
+
+    const {name,price} = req.body;
+    if(name != undefined) product.name=name;
+    if(price != undefined) product.price = price;
+
+    return res.status(200).json(product);
+}
+
+module.exports = {getAllProducts,getProductById,createProduct,updateProduct,deleteProduct,updatePartialProduct};

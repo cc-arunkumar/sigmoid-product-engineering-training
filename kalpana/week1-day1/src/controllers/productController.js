@@ -51,3 +51,18 @@ exports.updateProduct = (req,res) => {
 
     res.json(product);
 };
+
+exports.deleteProductById = (req,res) => {
+    const productId = req.params.id * 1;
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message : "product not found"
+        })
+    }
+
+    products=products.filter(p => p.id !== productId);
+    res.status(201).json(products);
+};
+

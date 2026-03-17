@@ -3,6 +3,7 @@ const router=express.Router();
 const productController=require("../controllers/productController")
 
 const validateProduct=require("../middleware/validateProduct");
+const validateProductPartial = require("../middleware/validateProductPartial");
 
 router.get("/api/products",productController.getProducts)
 
@@ -14,7 +15,7 @@ router.put("/api/product/:id",validateProduct,productController.updateProduct)
 
 router.delete("/api/product/:id",productController.deleteProduct)
 
-router.patch("/api/product/:id",productController.updatePartialProduct) 
+router.patch("/api/product/:id",validateProductPartial,productController.updatePartialProduct) 
 
 // router.get("/api/products",productController.getProducts)
 // router.get("/api/product/:id",productController.getProductById)

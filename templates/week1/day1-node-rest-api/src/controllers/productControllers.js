@@ -52,3 +52,21 @@ export const deleteProduct = (req,res) =>{
     }
 }
 
+export const patchProduct = (req,res) =>{
+    const id = req.params.id;
+    const product = products.find(p=> p.id == id);
+    if(!product){
+        return res.status(404).json({message:"Product not found"});
+    }
+    else{
+        const {name,price,stock} = req.body;
+    if (name !== undefined) {
+    product.name = name;
+    }
+    if(price!==undefined)
+    product.price = price;
+    if(stock!=undefined)
+    product.stock = stock;
+    res.status(200).json(product);
+    }
+}

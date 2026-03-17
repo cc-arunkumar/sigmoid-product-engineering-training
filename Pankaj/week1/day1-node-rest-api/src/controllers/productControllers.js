@@ -4,13 +4,15 @@ exports.getAllProducts = (req, res) => {
     res.json(products);
 };
 
-exports.getProductById = (req, res) => {
+exports.getProductById = (req, res, next) => {
     const id = parseInt(req.params.id);
     const product = products.find(p => p.id === id);
     if (product) {
         res.json(product);
     } else {
-        res.status(404).json({ message: "Product not found" });
+        const error = new Error();
+        error.statusCode = 404;
+        next(error);
     }
 };  
 exports.createProduct = (req, res) => {

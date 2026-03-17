@@ -19,3 +19,22 @@ exports.getProductById=(req,res)=>{
    //if matches directly here
    res.json(product);
 }
+
+//POST
+exports.createProduct = (req,res) => {
+    const {name,price,category,stock} = req.body; //from req body read all attributes present in code 
+
+    //creating new product with the values
+    const newProduct = {
+        id:products.length+1,
+        name:name,
+        price:price,
+        category:category,
+        stock:stock
+    }
+    products.push(newProduct);
+    return res.status(201).json({
+        message: "Product created successfully",
+        product: newProduct
+    })
+}

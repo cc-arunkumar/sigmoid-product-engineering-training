@@ -1,10 +1,10 @@
 import express from "express";
 import { getAllProducts,getProductById , createProduct , modifyProduct , deleteProduct , patchProduct} from "../controllers/productControllers.js";
 const router = express.Router();
-router.get("/products" , getAllProducts);
-router.get("/product/:id" ,getProductById);
-router.post("/products" ,createProduct);
-router.put("/products",modifyProduct);
-router.delete("/product/:id",deleteProduct);
-router.patch("/product/:id",patchProduct);
+router.get("/api/products" , getAllProducts);
+router.get("/api/product/:id" ,getProductById);
+router.post("/api/products" ,createProduct);
+router.put("/api/products",modifyProduct);
+router.delete("/api/product/:id",deleteProduct);
+router.patch("/api/product/:id",patchProduct);
 export default router;

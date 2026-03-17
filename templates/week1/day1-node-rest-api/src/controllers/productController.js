@@ -45,3 +45,24 @@ exports.updateProduct=(req,res)=>{
     product.stock=stock;
     res.status(200).json(product)
 }
+
+exports.partialUpdateProduct = (req, res) => {
+    const productId = req.params.id * 1;
+
+    const product = products.find(p => p.id === productId);
+
+    if (!product) {
+        return res.status(404).json({
+            message: "not found"
+        });
+    }
+
+    const { name, price, category, stock } = req.body;
+
+    if ("name" in req.body) product.name = name;
+    if ("price" in req.body) product.price = price;
+    if ("category" in req.body) product.category = category;
+    if ("stock" in req.body) product.stock = stock;
+
+    res.json(product);
+}

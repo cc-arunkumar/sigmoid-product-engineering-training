@@ -2,13 +2,12 @@
  exports.getAllProducts=(req,res)=>{
     res.json(products);
  };
-exports.getProductById=(req,res)=>{
+exports.getProductById=(req,res,next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     res.json(product);
  }
@@ -24,25 +23,13 @@ exports.getProductById=(req,res)=>{
     products.push(newProduct);
     res.status(201).json(newProduct);
  }
-  exports.createProduct=(req,res)=>{
-    const {name,price,category,stock}=req.body;
-    const newProduct={
-        id:100+products.length + 1,
-        name:name,
-        price:price,
-        category:category,
-        stock:stock
-    };
-    products.push(newProduct);
-    res.status(201).json(newProduct);
- } 
- exports.updateProduct=(req,res)=>{
+ 
+ exports.updateProduct=(req,res,next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     const {name,price,category,stock}=req.body;
 
@@ -58,9 +45,8 @@ exports.getProductById=(req,res)=>{
     const productId=req.params.id*1;
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     products.splice(product,1);
 
@@ -69,13 +55,12 @@ exports.getProductById=(req,res)=>{
     });
 
 }
-exports.updatePartialProduct=(req,res)=>{
+exports.updatePartialProduct=(req,res,next)=>{
     const productId=req.params.id*1;
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     const {name,price,category,stock}=req.body;
     if(name!=undefined){

@@ -4,14 +4,20 @@ exports.getAllProducts = (req,res) => {
     res.json(products);
 };
 
-exports.getProductById = (req,res) => {
+exports.getProductById = (req,res,next) => {
     const productId = parseInt(req.params.id);      // in request params are all the parameters from there select on eparameter id
     const product = products.find(p => p.id === productId);
 
+    // if(!product){
+    //     return res.status(404).json({
+    //         message : "Not Found!"
+    //     });
+    // }
+
     if(!product){
-        return res.status(404).json({
-            message : "Not Found!"
-        });
+        const error = new Error("Product Id not found");
+        error.statusCode = 404;
+        return next(error);
     }
     res.json(product);
 };
@@ -33,17 +39,25 @@ exports.createProduct = (req,res) => {
     res.status(201).json(product)
 };
 
-exports.updateProduct = (req,res) => {
+exports.updateProduct = (req,res,next) => {
     const productId = parseInt(req.params.id);
     const { name, price, category, stock } = req.body;
 
     const product = products.find(p => p.id === productId);
 
+    // if(!product){
+    //     return res.status(404).json({
+    //         message : "Not Found!"
+    //     });
+    // }
+
     if(!product){
-        return res.status(404).json({
-            message : "Not Found!"
-        });
+        const error = new Error("Product not found to update");
+        error.statusCode = 404;
+        return next(error);
     }
+
+
     product.name = name;
     product.price = price;
     product.category = category;
@@ -52,14 +66,20 @@ exports.updateProduct = (req,res) => {
     res.json(product);
 };
 
-exports.deleteProductById = (req,res) => {
+exports.deleteProductById = (req,res,next) => {
     const productId = req.params.id * 1;
     const product = products.find(p => p.id === productId);
 
+    // if(!product){
+    //     return res.status(404).json({
+    //         message : "product not found"
+    //     })
+    // }
+
     if(!product){
-        return res.status(404).json({
-            message : "product not found"
-        })
+        const error = new Error("Product not found to delete");
+        error.statusCode = 404;
+        return next(error);
     }
 
     products=products.filter(p => p.id !== productId);
@@ -67,15 +87,22 @@ exports.deleteProductById = (req,res) => {
 };
 
 
-exports.updatePartialProduct = (req, res) => {
+exports.updatePartialProduct = (req, res, next) => {
     const productId = req.params.id * 1;
     const product = products.find(p => p.id === productId);
 
+    // if(!product){
+    //     return res.status(404).json({
+    //         message : "product not found"
+    //     })
+    // } 
+
     if(!product){
-        return res.status(404).json({
-            message : "product not found"
-        })
+        const error = new Error("Product Id not found to partially update");
+        error.statusCode = 404;
+        return next(error);
     } 
+
     const {name, category, stock, price} = req.body;
     
     if(name != undefined){

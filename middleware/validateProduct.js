@@ -23,10 +23,12 @@ const validateProduct=(req,res,next)=>{
     }
 
     if(stock===undefined||stock<0){
-        return res.status(400).json({
-            status:false,
-            message:"Stock cannot be negative"
-        });
+        // return res.status(400).json({
+        //     status:false,
+        //     message:"Stock cannot be negative"
+        // });
+        const err=new Error();
+        return next(err);
     }
 
     next();

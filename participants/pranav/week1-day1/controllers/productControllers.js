@@ -12,6 +12,24 @@ getAllProducts = (req, res) => {
 };
 
 
+getProductById=(req,res)=>{
+    const productId= (req.params.id)*1;
+    console.log(productId);
+    
+    const product=products.find(p=>p.id===productId)
+    if(!product){
+        return res.status(404).json({
+            status:"fial",
+            message:"wrong ID"
+        })
+    }
+
+    res.json(product)
+}
+
+
+
+
 
 
 
@@ -21,6 +39,6 @@ getAllProducts = (req, res) => {
 
 
 module.exports={
-    getAllProducts
-
+    getAllProducts,
+     getProductById
 }

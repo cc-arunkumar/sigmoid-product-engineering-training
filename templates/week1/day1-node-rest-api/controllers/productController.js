@@ -1,6 +1,8 @@
 let products = require("../data/products");
+const { successResponse } = require("../utils/apiResponse");
 
 exports.getAllProducts = (req, res) => {
+  successResponse(res, "Products fetched successfully", products);
   res.json(products);
 };
 
@@ -14,6 +16,8 @@ exports.getProductById = (req, res, next) => {
     err.statusCode = 404;
     return next(err);
   }
+
+  successResponse(res, "Product ID fetched successfully", products);
 
   res.json(product);
 };

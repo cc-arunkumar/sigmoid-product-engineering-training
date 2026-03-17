@@ -52,16 +52,16 @@ exports.updateById = (req, res) => {
 }
 
 
-// exports.deleteById = (req, res) => {
-//     const id = parseInt(req.params.id);
-//     const prod = products.find(i => i.id === id)
-//     if (!prod) {
-//         res.send("Nothing to delete")
-//     }
-//     products = products.filter(i => i.id !== id)
-//     res.status(200).json(products)
+exports.deleteById = (req, res) => {
+    const id = parseInt(req.params.id);
+    const prod = products.find(i => i.id === id)
+    if (!prod) {
+        res.send("Nothing to delete")
+    }
+    products = products.filter(i => i.id !== id)
+    res.status(200).json(products)
 
-// }
+}
 
 exports.updatePartial = (req, res) => {
     const id = parseInt(req.params.id);

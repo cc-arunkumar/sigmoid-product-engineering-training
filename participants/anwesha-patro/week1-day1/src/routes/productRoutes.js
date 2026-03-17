@@ -15,7 +15,7 @@ router.post("/products", productController.create);
 router.put("/products/:id", productController.updateById);
 
 
-// router.delete("/products/:id", productController.deleteById);
+router.delete("/products/:id", productController.deleteById);
 
 router.patch("/products/:id", productController.updatePartial);
 

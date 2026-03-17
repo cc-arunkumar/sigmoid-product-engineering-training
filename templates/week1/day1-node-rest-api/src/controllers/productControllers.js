@@ -50,3 +50,19 @@ exports.deleteProduct = (req, res) => {
         res.status(404).json({ message: "Product not Found" });
     }
 };
+exports.updatePartialProduct = (req, res) => {
+    const productId = req.params.id * 1;
+    const { name, price, category, stock } = req.body;
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        if (name) product.name = name;
+        if (price) product.price = price;
+        if (category) product.category = category;
+        if (stock) product.stock = stock;
+        res.status(201).json(product);
+    } else {
+        res.status(404).json({ message: "Product not Found" });
+    }
+
+    
+};

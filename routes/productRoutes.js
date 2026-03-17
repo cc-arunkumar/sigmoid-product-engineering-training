@@ -5,14 +5,14 @@ const router = express.Router();
 const productController = require("../controllers/productControllers");
 
 //product routes
-router.get("/products", productController.getAllProducts);
+router.get("api/products", productController.getAllProducts);
 
-router.get("/product/:id", productController.getProductById);
+router.get("api/product/:id", productController.getProductById);
 
-router.post("/product", productController.createProduct);
+router.post("api/product", productController.createProduct);
 
-router.put("/product/:id", productController.updateProduct);
+router.put("api/product/:id", productController.updateProduct);
 
-router.delete("/product/:id", productController.deleteProduct);
+router.delete("api/product/:id", productController.deleteProduct);
 
 module.exports = router;

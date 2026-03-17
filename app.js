@@ -3,9 +3,11 @@ const port = 8080;
 
 const app = express();
 
+const logger = require("./middleware/logger");
 const productRoutes = require("./routes/productRoutes");
 
 app.use(express.json()); //this is middlleware which helps use express json
+app.use(logger);
 
 app.use(productRoutes);
 

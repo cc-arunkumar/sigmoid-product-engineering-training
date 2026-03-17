@@ -16,3 +16,14 @@ function getProductById(req,res){
     }
     res.json(product);
 }
+
+function createProduct(req,res){
+    const {name,price}=req.body;
+    const product = {
+        id:products.length + 1,
+        name:name,
+        price:price
+    };
+    products.push(product);
+    return res.status(201).json(product);
+}

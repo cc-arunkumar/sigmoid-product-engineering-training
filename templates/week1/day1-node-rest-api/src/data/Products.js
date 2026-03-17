@@ -1,0 +1,32 @@
+const products = [
+    {
+        id:1,
+        name:"Headhones",
+        price:30000,
+        category:"Electronics",
+        stock:80
+    },
+    {
+        id:2,
+        name:"Mobile",
+        price:36000,
+        category:"Electronics",
+        stock:90
+    },
+    {
+        id:4,
+        name:"TV",
+        price:300000,
+        category:"Electronics",
+        stock:80
+    },
+    {
+        id:3,
+        name:"Laptop",
+        price:900000,
+        category:"Electronics",
+        stock:80
+    }
+];
+
+module.exports=products;

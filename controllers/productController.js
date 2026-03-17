@@ -73,6 +73,15 @@ exports.deleteProduct = (req , res) =>{
   })
   }
 
-  // patch product
-  
+// patch product
+exports.patchProduct = (req, res) => {
+  const productId = parseInt(req.params.id);
+  const findProduct = products.find(p => p.id === productId);
 
+  if (!findProduct) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  Object.assign(findProduct, req.body);
+  res.json(findProduct);
+};

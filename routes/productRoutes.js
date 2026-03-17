@@ -10,6 +10,6 @@ router.get("/product/:id" , productController.getProductById);
 router.post("/product", productController.createProduct);
 router.put("/product/:id", productController.updateProduct);
 router.delete("/product/:id" , productController.deleteProduct);
-
+router.patch("/product/:id", productController.patchProduct);
 
 module.exports = router;

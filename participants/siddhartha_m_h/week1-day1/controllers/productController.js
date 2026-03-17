@@ -28,8 +28,23 @@ function handleAddProducts (req, res) {
     });
 }
 
+function handleDeleteProductById (req, res) {
+    const id = parseInt(req.params.id);
+    const index = products.findIndex(p => p.id === id);
+    if(index === -1){
+        return res.status(404).json({
+            message: "Product not found"
+        })
+    }
+    products.splice(index,1);
+    return res.status(200).json({
+        message: "Deleted successfully"
+    });
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
-    handleAddProducts
+    handleAddProducts,
+    handleDeleteProductById
 }

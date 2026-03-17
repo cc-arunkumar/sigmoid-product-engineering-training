@@ -5,11 +5,13 @@ exports.getProducts=(req,res)=>{
     res.json(products);
 };
 
-exports.getProductById=(req,res)=>{
+exports.getProductById=(req,res,next)=>{
     const pId=parseInt(req.params.id);
     const product=products.find(p=>p.id===pId);
     if(!product){
-        return res.status(404).json({message:"Product not found"});
+        const error=new Error("Product not found");
+        error.statusCode=404;
+        return next(error);
     }
     res.send(product);
 };
@@ -28,11 +30,13 @@ exports.createProduct=(req,res)=>{
 };
 
 
-exports.updateProduct=(req,res)=>{
+exports.updateProduct=(req,res,next)=>{
     const pId=req.params.id*1;
     const product=products.find(p=>p.id===pId);
     if(!product){
-        return res.status(404).json({message:"Product not found"});
+        const error=new Error("Product not found");
+        error.statusCode=404;
+        return next(error);
     }
     const {name,price,category,stocks}=req.body;
     product.name=name || product.name;
@@ -42,21 +46,25 @@ exports.updateProduct=(req,res)=>{
 
     res.json(product);
 };
-exports.deleteProduct=(req,res)=>{
+exports.deleteProduct=(req,res,next)=>{
     const pId=req.params.id*1;
     const productIndex=products.findIndex(p=>p.id===pId);
     if(productIndex===-1){
-        return res.status(404).json({message:"Product not found"});
+        const error=new Error("Product not found");
+        error.statusCode=404;
+        return next(error);
     }
     products.splice(productIndex,1);
     res.json({message:"Product deleted successfully"});
 }
 
-exports.updatePartialProduct=(req,res)=>{
+exports.updatePartialProduct=(req,res,next)=>{
     const pId=req.params.id*1;
     const product=products.find(p=>p.id===pId);
     if(!product){
-        return res.status(404).json({message:"Product not found"});
+        const error=new Error("Product not found");
+        error.statusCode=404;
+        return next(error);
     }
     const {name,price,category,stocks}=req.body;
     if(name != undefined) product.name=name;

@@ -4,19 +4,18 @@ exports.getAllProducts = (req, res) => {
   res.json(products);
 };
 
-exports.getProductById = (req, res) => {
-  let prodId = parseInt(req.params.id);
-  // let prodId = Number(req.params.id);
+exports.getProductById = (req, res, next) => {
+  const prodId = parseInt(req.params.id);
 
   const product = products.find((p) => p.id === prodId);
 
   if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
-    });
+    const err =  new Error("Product not found");
+    err.statusCode = 404;
+    return next(err);
   }
 
-  res.send(product);
+  res.json(product);
 };
 
 exports.createProduct = (req, res) => {
@@ -29,7 +28,7 @@ exports.createProduct = (req, res) => {
   };
 
   products.push(newProduct);
-  res.send(newProduct);
+  res.json(newProduct);
 };
 
 exports.updateProduct = (req, res) => {
@@ -65,4 +64,23 @@ exports.deleteProduct = (req, res) => {
   products = newProducts;
 
   res.status(200).send(products);
+};
+
+exports.updatePartialProduct = (req, res) => {
+  const productId = Number(req.params.id);
+
+  const product = products.find(p => p.id === productId);
+
+  if (!product) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  const { name, price, category, stock } = req.body;
+
+  if (name !== undefined) product.name = name;
+  if (price !== undefined) product.price = price;
+  if (category !== undefined) product.category = category;
+  if (stock !== undefined) product.stock = stock;
+
+  res.json(product);
 };

@@ -1,0 +1,24 @@
+{
+  "name": "sigmoid-product-engineering-training",
+  "version": "1.0.0",
+  "description": "Training repository for Sigmoid Product Engineering program covering backend, frontend, databases, testing, DevOps, and cloud practices.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cc-arunkumar/sigmoid-product-engineering-training.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training/issues"
+  },
+  "homepage": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training#readme",
+  "dependencies": {
+    "expres": "^0.0.5"
+  }
+}

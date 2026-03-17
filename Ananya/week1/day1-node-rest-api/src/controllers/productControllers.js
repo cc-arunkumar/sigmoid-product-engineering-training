@@ -62,3 +62,16 @@ exports.updateP= (req,res)=>{
 
     res.status(200).json(product);
 }
+exports.deleteP =(req,res)=>{
+    const productID= req.params.id*1;
+    const product= products.findIndex(p=>p.id===productID);
+    if(product===-1){
+        return res.staus(404).json({
+            message: "not found"
+        })
+    }
+    products.splice(product,1);
+    res.json({
+        message: "product deleted"
+    });
+}

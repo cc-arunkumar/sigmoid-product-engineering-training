@@ -5,12 +5,17 @@ const app = express()
 const productRoutes = require("./routes/productRoutes");
 
 const logger = require("./middlewares/logger");
+const error = require("./middlewares/errorHandler")
 
 app.use(express.json());
+
+
 
 app.use(logger);
 
 app.use(productRoutes);
+
+app.use(error);
 
 
 

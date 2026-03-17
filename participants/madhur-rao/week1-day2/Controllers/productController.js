@@ -4,15 +4,15 @@ function getAllProducts(req,res){
     res.json(products);
 }
 
-function getProductById(req,res){
+function getProductById(req,res,next){
     const productId=parseInt(req.params.id);
     console.log(req.params);
     const product=products.find(p => p.id === productId);
     
     if(!product){
-        return res.status(404).json({
-          message:"Product Not Found"  
-        })
+        const error = new Error("wrong ID");
+        error.statusCode = 404;
+        return next(error);
     }
     res.json(product);
 }
@@ -30,13 +30,13 @@ function createProduct(req,res){
     return res.status(201).json(product);
 }
 
-function updateProduct(req,res){
+function updateProduct(req,res,next){
     const productId=parseInt(req.params.id);
     const product = products.find(p => p.id === productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product Not Found"
-        });
+       const error = new Error("Wrong ID");
+       error.statusCode = 404;
+       return next(error);
     }
     const {name,price, category, stock} = req.body;
     product.name=name;
@@ -47,14 +47,14 @@ function updateProduct(req,res){
     return res.status(200).json(product);
 }
 
-function deleteProduct(req,res){
+function deleteProduct(req,res,next){
     const productId = parseInt(req.params.id);
     const product = products.find(p => p.id === productId);
 
     if(!product){
-        return res.status(404).json({
-            message:"Product Not Found"
-        });
+        const error = new Error("Wrong ID");
+        error.statusCode = 404;
+        return next(error);
     }
 
     const remainingProducts = products.filter(p => p.id!=productId);
@@ -65,14 +65,14 @@ function deleteProduct(req,res){
     });
 }
 
-function updatePartialProduct(req,res){
+function updatePartialProduct(req,res,next){
     const productId = parseInt(req.params.id);
     const product = products.find(p => p.id === productId);
 
     if(!product){
-        return res.status(404).json({
-            message:"Product Not Found"
-        });
+        const error = new Error("Wrong ID");
+        error.statusCode = 404;
+        return next(error);
     }
 
     const {name,price,category,stock} = req.body;

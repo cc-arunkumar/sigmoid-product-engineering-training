@@ -10,7 +10,7 @@ const logger = (req , res , next)=>{
 
     const print = `method: ${method} , url : ${url} , time : ${time}` ; 
     console.log(print);
-    res.json(print) ; 
+    // res.json(print) ; 
 
 
     next();

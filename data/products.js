@@ -10,7 +10,7 @@ const products = [
   {
     "id": 2,
     "name": "Bluetooth Headphones",
-    "price": 1499,
+    "price": 14944,
     "category": "Electronics",
     "stock": 30,
     "brand": "Boat"

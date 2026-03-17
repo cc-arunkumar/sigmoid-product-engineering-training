@@ -61,10 +61,44 @@ function handleUpdateProducts (req, res) {
     return res.status(200).json(product);
 }
 
+function handlePatchProduct (req, res) {
+    const id = parseInt(req.params.id);
+    const product = products.find(p => p.id === id);
+    
+    if(!product) {
+        return res.status(404).json({
+            message : "Product not found"
+        });
+    }
+
+    const { name, price, category, stock } = req.body;
+    
+    if (name != undefined) {
+        product.name = name;
+    }
+
+    if (price != undefined) {
+        product.price = price;
+    }
+
+    if (category != undefined) {
+        product.category = category;
+    }
+
+    if (stock != undefined) {
+        product.stock = stock;
+    }
+
+    return res.status(200).json({
+        message : "Patch successful"
+    });
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
     handleAddProducts,
     handleDeleteProductById,
-    handleUpdateProducts
+    handleUpdateProducts,
+    handlePatchProduct
 }

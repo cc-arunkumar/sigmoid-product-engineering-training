@@ -8,9 +8,12 @@ const productLogger = require("./middleware/logger");
 
 app.use(express.json());
 
+
+app.use(productLogger);
+
 app.use(productRoutes);
 
-app.use(productLogger)
+
 
 
 app.listen(4000, () => {

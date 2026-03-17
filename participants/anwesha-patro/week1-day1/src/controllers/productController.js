@@ -4,19 +4,19 @@ exports.getAllProducts = (req, res) => {
     res.json(products)
 }
 
-// exports.getOneProducts = (req, res) => {
-//     const id = parseInt(req.params.id);
-//     const prod = products.find(i => i.id === id)
-//     if (!prod) {
-//         return res.status(404).json(
-//             {
-//                 message: "Product not found"
-//             }
-//         )
-//     }
-//     res.json(prod)
+exports.getOneProducts = (req, res) => {
+    const id = parseInt(req.params.id);
+    const prod = products.find(i => i.id === id)
+    if (!prod) {
+        return res.status(404).json(
+            {
+                message: "Product not found"
+            }
+        )
+    }
+    res.json(prod)
 
-// }
+}
 
 
 // exports.create = (req, res) => {

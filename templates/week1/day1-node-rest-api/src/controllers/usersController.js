@@ -48,3 +48,14 @@ const updateUser = (req, res) => {
         res.status(404).json({ message: "User not found" });
     }
 };
+
+const updatePartialUser = (req, res) => {
+    const id = parseInt(req.params.id);
+    const foundUser = users.find(u => u.id === id);
+    if (foundUser) {
+        Object.assign(foundUser, req.body);
+        res.json(foundUser);
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+};

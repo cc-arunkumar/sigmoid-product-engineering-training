@@ -23,4 +23,8 @@ router.put("/:id", (req, res) => {
   res.send(`Update user with ID ${req.params.id}`);
 });
 
+router.patch("/:id", (req, res) => {
+  res.send(`Partially update user with ID ${req.params.id}`);
+});
+
 module.exports = router;

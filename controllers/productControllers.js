@@ -18,3 +18,16 @@ exports.getProductById = (req, res) => {
 
   res.send(product);
 };
+
+exports.createProduct = (req, res) => {
+  const { name, price } = req.body;
+
+  const newProduct = {
+    id: products.length + 101,
+    name: name,
+    price: price,
+  };
+
+  products.push(newProduct);
+  res.send(newProduct);
+};

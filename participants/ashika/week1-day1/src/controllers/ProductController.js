@@ -17,3 +17,28 @@ exports.getproductbyId=(req,res)=>{
     }
     res.json(product);
 }
+
+
+exports.createproducts=(req,res)=>{
+    // const newProduct = { id:108, name:"tablet", price:40000 };
+
+    const {name , price, category , stocks}=req.body
+
+    const newProduct={
+        id:100+products.length+1,
+        name:name,
+        price:price,
+        category:category,
+        stocks:stocks
+    }
+
+    products.push(newProduct)
+
+    res.status(201).json({
+        
+        message:"data added",
+        products:products
+        
+    })
+    
+}

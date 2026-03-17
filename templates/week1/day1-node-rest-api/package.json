@@ -4,10 +4,10 @@
   "description": "Starter Node.js REST API template for Sigmoid Product Engineering training",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node src/app.js",
     "dev": "node src/server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.22.1"
   }
 }

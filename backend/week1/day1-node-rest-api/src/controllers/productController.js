@@ -61,3 +61,12 @@ exports.updatePost = (req, res) => {
     data: pr,
   });
 };
+
+exports.deletePost = (req, res) => {
+  const id = req.params.productId * 1;
+
+  products = products.filter((ele) => ele.id !== id);
+  res.status(201).json({
+    message: "product deleted successfully",
+  });
+};

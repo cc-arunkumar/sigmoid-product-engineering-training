@@ -47,3 +47,17 @@ exports.updateUser = (req, res) => {
     res.status(200).json(user);
 };
 
+exports.deleteUser = (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    const user = users.find(u => u.id === userId);
+
+    if(!user){
+        return res.status(404).json({ message: "User not found!" });
+    }
+
+    let newUsers = users.filter(u => u.id !== userId);
+    users = newUsers;
+
+    res.status(200).json({ message: "User deleted successfully!" });
+};
+

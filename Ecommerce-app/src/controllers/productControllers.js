@@ -31,14 +31,14 @@ exports.createProduct = (req,res) => {
     res.status(201).json(newProduct)
 }
 
-exports.updateProduct = (req,res) => {
+exports.updateProduct = (req,res,next) => {
     const productId = req.params.id * 1;
     const product = products.find( p => p.id === productId)
 
     if(!product){
-        return res.status(404).json({
-            message : "product not found"
-        })
+        const error = new Error("Product ID not found");
+        error.statusCode = 404;
+        next(error);
     }
 
     const {name,price,category,stock} = req.body;
@@ -67,14 +67,14 @@ exports.deleteProduct = (req, res) => {
   res.status(204).send();
 };
 
-exports.updatePartialProduct = (req,res) => {
+exports.updatePartialProduct = (req,res,next) => {
     const productId = Number(req.params.id)
     const product = products.find(p => p.id === productId)
 
     if(!product){
-        return res.status(404).json({
-            message : "product not found"
-        })
+        const error = new Error("Product ID not found");
+        error.statusCode = 404;
+        next(error);
     }
     const {name,price,category,stock} = req.body;
 

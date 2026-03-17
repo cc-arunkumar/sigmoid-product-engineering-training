@@ -32,3 +32,22 @@ exports.createProduct = (req,res) => {
 
     res.status(201).json(product)
 };
+
+exports.updateProduct = (req,res) => {
+    const productId = parseInt(req.params.id);
+    const { name, price, category, stock } = req.body;
+
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message : "Not Found!"
+        });
+    }
+    product.name = name;
+    product.price = price;
+    product.category = category;
+    product.stock = stock;
+
+    res.json(product);
+};

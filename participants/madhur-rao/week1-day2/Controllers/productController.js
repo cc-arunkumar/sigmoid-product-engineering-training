@@ -1,7 +1,8 @@
 let products = require("../Data/products");
+const {successResponse} = require("../utils/apiResponse");
 
 function getAllProducts(req,res){
-    res.json(products);
+    return successResponse(res, "Products fetched successfully", products);
 }
 
 function getProductById(req,res,next){
@@ -14,7 +15,7 @@ function getProductById(req,res,next){
         error.statusCode = 404;
         return next(error);
     }
-    res.json(product);
+    return successResponse(res, "Product fetched successfully", product);
 }
 
 function createProduct(req,res){
@@ -27,7 +28,7 @@ function createProduct(req,res){
         stock:stock
     };
     products.push(product);
-    return res.status(201).json(product);
+    return successResponse(res, "Product created successfully", product, 201);
 }
 
 function updateProduct(req,res,next){
@@ -44,7 +45,7 @@ function updateProduct(req,res,next){
     product.category=category;
     product.stock = stock;
 
-    return res.status(200).json(product);
+    return successResponse(res, "Product updated successfully", product);
 }
 
 function deleteProduct(req,res,next){
@@ -60,9 +61,7 @@ function deleteProduct(req,res,next){
     const remainingProducts = products.filter(p => p.id!=productId);
     products = remainingProducts;
 
-    return res.status(200).json({
-        message:"Deleted Successfully"
-    });
+    return successResponse(res, "Deleted successfully", null);
 }
 
 function updatePartialProduct(req,res,next){
@@ -81,7 +80,7 @@ function updatePartialProduct(req,res,next){
     if(category !== undefined) product.category = category;
     if(stock !== undefined) product.stock = stock;
 
-    return res.status(200).json(product);
+    return successResponse(res, "Product partially updated", product);
 }
 
 module.exports = {getAllProducts,getProductById,createProduct,updateProduct,deleteProduct,updatePartialProduct};

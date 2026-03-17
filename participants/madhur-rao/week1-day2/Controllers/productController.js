@@ -18,11 +18,13 @@ function getProductById(req,res){
 }
 
 function createProduct(req,res){
-    const {name,price}=req.body;
+    const {name,price,category,stock}=req.body;
     const product = {
         id:products.length + 1,
         name:name,
-        price:price
+        price:price,
+        category:category,
+        stock:stock
     };
     products.push(product);
     return res.status(201).json(product);
@@ -36,9 +38,11 @@ function updateProduct(req,res){
             message:"Product Not Found"
         });
     }
-    const {name,price} = req.body;
+    const {name,price, category, stock} = req.body;
     product.name=name;
     product.price=price;
+    product.category=category;
+    product.stock = stock;
 
     return res.status(200).json(product);
 }
@@ -71,9 +75,11 @@ function updatePartialProduct(req,res){
         });
     }
 
-    const {name,price} = req.body;
-    if(name != undefined) product.name=name;
-    if(price != undefined) product.price = price;
+    const {name,price,category,stock} = req.body;
+    if(name !== undefined) product.name=name;
+    if(price !== undefined) product.price = price;
+    if(category !== undefined) product.category = category;
+    if(stock !== undefined) product.stock = stock;
 
     return res.status(200).json(product);
 }

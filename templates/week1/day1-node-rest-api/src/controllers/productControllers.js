@@ -13,3 +13,20 @@ exports.getProductById=(req,res)=>{
  }
  res.json(product);
 }
+exports.createProduct=(req,res)=>{
+    const{product_name,product_price,category,stock}=req.body;
+    const new_product={
+       
+            product_id: products.length + 1,
+            product_name: product_name,
+            product_price: product_price,
+            category: category,
+            stock: stock
+        };
+    
+    
+    products.push(new_product);
+    res.status(201).json({
+        message:"Product created successfully"
+    })
+   }

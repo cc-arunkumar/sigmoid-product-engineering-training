@@ -75,3 +75,28 @@ exports.deleteP =(req,res)=>{
         message: "product deleted"
     });
 }
+
+exports.patchP= (req,res)=>{
+    const productID= req.params.id*1;
+    const product= products.find(p=>p.id===productID);
+    if(!product){
+        return res.status(404).json({
+            message:"not found"
+        })
+    }
+    const{name, price, category,stock}=req.body;
+    if(name!=undefined){
+        product.name= name;
+    }
+    if(price!=undefined){
+        product.price= price;
+    }
+    if(category!=undefined){
+        product.category= category;
+    }
+    if(stock!= undefined){
+        product.stock= stock;
+    }
+    res.status(200).json(product)
+
+}

@@ -15,3 +15,14 @@ exports.getProductById=(req,res)=>{
     }
     res.json(product);
 };
+
+exports.postProduct=(req,res)=>{
+    const {name,price}=req.body;
+    const newProduct={
+        id:products.length+1,
+        name:name,
+        price:price
+    }
+    products.push(newProduct);
+    return res.status(201).json(newProduct);
+}

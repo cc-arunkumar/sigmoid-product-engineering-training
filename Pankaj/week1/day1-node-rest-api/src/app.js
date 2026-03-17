@@ -7,6 +7,9 @@ app.use(express.json());
 
 app.use("/api", productRoutes);
 
+const logger = require("./middleware/logger");
+app.use(logger);
+
 app.use("/", (req, res) => {
     res.send("Welcome to the Backend !!");
 });

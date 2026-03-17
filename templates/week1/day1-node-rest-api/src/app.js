@@ -5,7 +5,8 @@ const app = express();
 
 app.use(express.json());
 
-// Register routes
-app.use("/api/users", userRoutes);
+app.get("/",(req,res) =>{
+  res.send("Welcome to the server");
+})
 
 module.exports = app;

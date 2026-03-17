@@ -8,4 +8,14 @@ function getProductById(req, res){
     if(!product) return res.status(404).json({message:"Product not found"})
     else return res.json(product)      
 }
-export {getAllProducts,getProductById}
+function createProduct(req, res){
+    const {name,price}=req.body
+    const newProduct={
+        id: products.length+1,
+        name:name,
+        price:price
+    }
+    products.push(newProduct)
+    res.status(201).json(newProduct)
+}
+export {getAllProducts,getProductById,createProduct}

@@ -38,3 +38,26 @@ exports.createProduct = (req,res) => {
         product: newProduct
     })
 }
+
+//PUT
+exports.updateProduct = (req,res) => {
+    const productID = req.params.id * 1; //with id like 101s params will take as int now after multiplication it will be 101s
+    const product = products.find(p => p.id === productID);
+
+    //if not product
+    if(!product){
+        return res.status(404).json({
+            message:"Product not found"
+        });
+    }
+    const {name,price,category,stock} = req.body;
+
+    product.name=name;
+    product.price=price;
+    product.category=category;
+    product.stock=stock;
+
+    res.status(200).json(product)
+};
+
+

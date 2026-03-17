@@ -14,10 +14,12 @@ export const validateProduct = (req,res,next) => {
         });
     }
     if(stock===undefined || stock < 0){
-        return res.status(400).json({
-            success:false,
-            message:"Product stock invalid value"
-        });
+        // return res.status(400).json({
+        //     success:false,
+        //     message:"Product stock invalid value"
+        // });
+        const err= new Error();
+        return next(err);
     }
     next();
 }

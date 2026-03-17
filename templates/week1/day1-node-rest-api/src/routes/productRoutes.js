@@ -1,6 +1,7 @@
 import express from "express";
 import { validateProduct } from "../middleware/validateProduct.js";
 import { validatePatch } from "../middleware/validatePatch.js";
+import { errorHandler } from "../middleware/errorHandler.js";
 import { getAllProducts,getProductById , createProduct , modifyProduct , deleteProduct , patchProduct} from "../controllers/productControllers.js";
 const router = express.Router();
 router.get("/api/products" , getAllProducts);

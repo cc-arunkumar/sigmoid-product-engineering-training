@@ -5,6 +5,7 @@ const router = express.Router();
 const productController = require("../controllers/productController");
 
 const validateProduct = require("../middleware/validateProduct")
+const validatePartialProduct = require("../middleware/validatePartialProduct")
 
 router.get("/product", productController.getAllProducts);
 
@@ -24,7 +25,7 @@ router.put(
 
 router.patch(
     "/product/:id",
-    validateProduct, 
+    validatePartialProduct, 
     productController.updatePartialProduct
 );
 

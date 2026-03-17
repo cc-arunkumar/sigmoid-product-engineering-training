@@ -4,16 +4,16 @@ exports.getAllProducts = (req, res) => {
   res.json(products);
 };
 
-exports.getProductById = (req, res) => {
+exports.getProductById = (req, res, next) => {
   let prodId = parseInt(req.params.id);
   // let prodId = Number(req.params.id);
 
   const product = products.find((p) => p.id === prodId);
 
   if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
-    });
+    const error = new Error("Internal server error");
+    error.statusCode = 404;
+    return next(error);
   }
 
   res.send(product);

@@ -77,3 +77,21 @@ exports.updatePartialProduct = (req, res) => {
     
     return res.status(200).json(product);
 }
+
+exports.deleteProduct = (req, res) => {
+    const productId = req.params.id * 1
+    console.log("id - ",productId)
+    const product = products.find(p => p.id === productId)
+    console.log("Product - ",product)
+
+    if(!product){
+        return res.status(404).json({
+            message: "The product is not found"
+        });
+    }
+    const index = products.indexOf(product)
+    products.splice(index, 1)
+    res.status(200).json({
+        message:"This record was deleted"
+    })
+}

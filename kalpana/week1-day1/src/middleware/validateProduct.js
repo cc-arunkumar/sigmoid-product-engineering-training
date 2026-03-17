@@ -1,10 +1,17 @@
 const validateProduct = (req, res, next) => {
-    const { name, price, category, stock } = req.body;
+    const { name, category,price, stock } = req.body;
 
-    if (!name || name.trim() === "" || name.length() <= 0) {
+    if (!name || name.trim() === "" || name.length <= 0) {
         return res.status(400).json({
             success: false,
             message: "product name is required"
+        });
+    }
+
+     if (!category || category.trim() === "") {
+        return res.status(400).json({
+            success: false,
+            message: "Category is required"
         });
     }
 
@@ -14,16 +21,10 @@ const validateProduct = (req, res, next) => {
             message: "price must be greater than 0"
         })
     }
-    if (!category || category.trim() === "") {
-        return res.status(400).json({
-            success: false,
-            message: "Category is required"
-        });
-    }
     if (stock === undefined || stock < 0) {
         return res.status(400).json({
-                success: false,
-                message: "Stock cannot be negative"
+            success: false,
+            message: "Stock cannot be negative"
         });
     }
     next();

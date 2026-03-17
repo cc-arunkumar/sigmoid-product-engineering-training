@@ -1,8 +1,15 @@
+// import express from "express"
+// const app = express();
+// app.get("/", (req, res) => {
+//   res.send("Server is working");
+// });
+// app.listen(3000, () => {
+//   console.log("Server running on port 3000");
+// });
 import express from "express"
+import router from "./routes/product_routes.js";
 const app = express();
-app.get("/", (req, res) => {
-  res.send("Server is working");
-});
+app.use(router)
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });

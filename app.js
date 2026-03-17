@@ -4,7 +4,11 @@ const app = express()
 
 const productRoutes = require("./routes/productRoutes");
 
+const logger = require("./middlewares/logger");
+
 app.use(express.json());
+
+app.use(logger);
 
 app.use(productRoutes);
 

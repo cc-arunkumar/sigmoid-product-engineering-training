@@ -18,4 +18,13 @@ function createProduct(req, res){
     products.push(newProduct)
     res.status(201).json(newProduct)
 }
-export {getAllProducts,getProductById,createProduct}
+function updateProduct(req, res){
+    const productId=parseInt(req.params.id)
+    const product=products.find(p=>p.id===productId)
+    if(!product) return res.status(404).json({message:"Product not found"})
+    const {name,price}=req.body
+    product.name=name
+    product.price=price
+    res.json(product)
+}
+export {getAllProducts,getProductById,createProduct,updateProduct}

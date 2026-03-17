@@ -50,3 +50,19 @@ exports.updateProduct = (req,res) => {
 
     res.status(200).json(product);
 }
+
+exports.deleteProduct = (req, res) => {
+  const productId = req.params.id * 1;
+  const index = products.findIndex(p => p.id === productId);
+
+  if (index === -1) {
+    return res.status(404).json({
+      status: "fail",
+      message: "Product not found"
+    });
+  }
+
+  products.splice(index, 1);
+
+  res.status(204).send();
+};

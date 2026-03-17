@@ -51,3 +51,18 @@ exports.deleteProduct=(req,res)=>{
     products.splice(productIndex,1);
     res.json({message:"Product deleted successfully"});
 }
+
+exports.updatePartialProduct=(req,res)=>{
+    const pId=req.params.id*1;
+    const product=products.find(p=>p.id===pId);
+    if(!product){
+        return res.status(404).json({message:"Product not found"});
+    }
+    const {name,price,category,stocks}=req.body;
+    if(name != undefined) product.name=name;
+    if(price != undefined) product.price=price;
+    if(category != undefined) product.category=category;
+    if(stocks != undefined) product.stocks=stocks;
+
+    res.status(200).json(product);
+};

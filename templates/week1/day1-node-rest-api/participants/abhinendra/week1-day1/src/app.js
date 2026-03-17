@@ -1,13 +1,12 @@
-const express = require("express");
+const express= require("express")
 
-const app = express();
+const app= express();
 
-app.use(express.json());
+const productRoutes= require("./routes/productRoutes");
 
-app.get("/", (req,res) => {
-    console.log("Welcome to backend !!");
-    res.send("welcome to backend");
-})
+app.use("/api",productRoutes);
+
+app.use(productRoutes);
 
 app.listen(3000,()=>{
     console.log("Server running on 3000")

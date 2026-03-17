@@ -2,10 +2,9 @@ import express from "express";
 
 const app = express()
 
-app.get("/",(req,res) =>{
-  res.send("Welcome to the server");
-})
-
+import productRoutes from "./routes/productRoutes.js"
+app.use(express.json());
+app.use(productRoutes);
 app.listen(3000, () => {
     console.log("SERVER ON 3000")
 })

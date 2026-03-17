@@ -49,3 +49,20 @@ exports.updateProduct = (req, res) => {
 
   res.status(200).send(product);
 };
+
+exports.deleteProduct = (req, res) => {
+  let prodId = parseInt(req.params.id);
+  let product = products.find((p) => p.id === prodId);
+
+  if (!product) {
+    return res.status(404).json({
+      message: "Product not found",
+    });
+  }
+
+  let newProducts = products.filter((p) => p.id != prodId);
+
+  products = newProducts;
+
+  res.status(200).send(products);
+};

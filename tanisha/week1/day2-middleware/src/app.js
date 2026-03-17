@@ -5,6 +5,8 @@ app.get("/api",(req,res)=>{
 })
 const productRoutes =require("./routes/productRoutes");
 app.use(express.json());
+const logger=require("./middleware/logger.js");
+app.use(logger);
 app.use(productRoutes);
 app.listen(3000,()=>{
     console.log("server running on port 3000");

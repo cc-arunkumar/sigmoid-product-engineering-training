@@ -10,7 +10,7 @@ const validateProduct = (req, res, next) => {
             });
         }
 
-        if (price === undefined || price <= 0) {
+        if (price === undefined || typeof price !== "number" || price <= 0) {
             return res.status(400).json({
                 success: false,
                 message: "Price must be greater than 0"
@@ -24,7 +24,7 @@ const validateProduct = (req, res, next) => {
             });
         }
 
-        if (stock === undefined || stock < 0) {
+        if (stock === undefined || typeof stock !== "number" || stock < 0) {
             return res.status(400).json({
                 success: false,
                 message: "Stock must be 0 or more"
@@ -40,11 +40,13 @@ const validateProduct = (req, res, next) => {
             });
         }
 
-        if (price !== undefined && price <= 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Price must be greater than 0"
-            });
+        if (price !== undefined) {
+            if (typeof price !== "number" || price <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Price must be greater than 0 and number"
+                });
+            }
         }
 
         if (category !== undefined && category.trim() === "") {
@@ -54,11 +56,13 @@ const validateProduct = (req, res, next) => {
             });
         }
 
-        if (stock !== undefined && stock < 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Stock cannot be negative"
-            });
+        if (stock !== undefined) {
+            if (typeof stock !== "number" || stock < 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Stock cannot be negative or text"
+                });
+            }
         }
     }
 

@@ -3,14 +3,16 @@ const express = require("express");
 const app = express();
 
 const productRoutes = require("./routes/productRoutes");
-app.use(express.json());
-
-app.use("/api", productRoutes);
 
 const logger = require("./middleware/logger");
+app.use(express.json());
+
+
 app.use(logger);
 
-app.use("/", (req, res) => {
+app.use(productRoutes);
+
+app.get("/api", (req, res) => {
     res.send("Welcome to the Backend !!");
 });
 

@@ -47,6 +47,23 @@ exports.updateUser = (req, res) => {
     res.status(200).json(user);
 };
 
+exports.updatePartialUser = (req, res) => {
+    const userId = (req.params.id)*1;
+    const user = users.find(u => u.id === userId);
+
+    if(!user){
+        return res.status(404).json({ message: "User not found!" });
+    }
+
+    const { name, email, age } = req.body;
+
+    if (name !== undefined) user.name = name;
+    if (email !== undefined) user.email = email;
+    if (age !== undefined) user.age = age;
+
+    res.status(200).json(user);
+};
+
 exports.deleteUser = (req, res) => {
     const userId = parseInt(req.params.id, 10);
     const user = users.find(u => u.id === userId);

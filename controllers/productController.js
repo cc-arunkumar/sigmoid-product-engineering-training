@@ -65,4 +65,23 @@ exports.deleteProduct = (req, res) => {
    
     });
 };
+exports.patchProduct= (req , res) => {
+    const productid = parseInt(req.params.id);
+    const product = products.find(p => p.id === productid);
+    if(!product){
+        return res.status(404).json(
+            {
+                message: "Product Not found"
+            }
+        )
+    }
+    const {name , price} = req.body;
+    if(name !== undefined){
+        product.name = name;
+    }
+    if(price !== undefined){
+        product.price = price;
+    }
+    return res.status(201).json(product);
+}
 

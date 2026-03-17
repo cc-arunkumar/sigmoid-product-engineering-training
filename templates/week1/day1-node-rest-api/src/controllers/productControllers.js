@@ -25,5 +25,19 @@ export const createProduct = (req,res) =>{
 
 };
 
+export const modifyProduct = (req,res) =>{
+    const {id,name,price,stock} = req.body;
+    const product = products.find(p=> p.id == id);
+    if(!product){
+        return res.status(404).json({message:"Product not found"});
+    }
+    else{
+    product.name = name;
+    product.price = price;
+    product.stock = stock;
+    res.status(200).json(product);
+    }
+};
+
 
 

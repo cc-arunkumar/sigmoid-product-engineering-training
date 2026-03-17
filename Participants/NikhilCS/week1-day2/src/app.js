@@ -43,12 +43,14 @@
 // import express from "express"
 const express = require("express");
 const app = express();
+const errorhandler=require("./middleware/errorHandler")
 const logger=require("./middleware/logger")
 //named export version
 //const {productRouter}=require("./routes/productRoutes");
 const productRoutes = require("./routes/productRoutes");
 app.use(express.json())
 app.use(logger)
+app.use(errorhandler)
 app.use(productRoutes); //here to app.use we can add url as first parameter like /api/v1 then we dont need to change anythig anywehre but then our prodcts will lie oin url
 //localhost:3000/api/v1/products because the app.use url is basically adde to product router url it is basically acting as base url to use at start
 module.exports=app

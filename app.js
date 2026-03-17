@@ -1,12 +1,13 @@
 const express = require("express");
-const productRoutes = require("./routes/productRoutes");
-
 const app = express();
-const PORT = 3000;
+
+const productRoutes = require("./routes/productRoutes");
+const logger = require("./middleware/logger");
 
 app.use(express.json());
+app.use(logger);
 app.use("/", productRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(4000, () => {
+    console.log(`Server running at http://localhost:4000`);
 });

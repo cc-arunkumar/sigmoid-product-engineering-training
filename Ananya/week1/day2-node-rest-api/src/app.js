@@ -8,6 +8,11 @@ const loggers= require("./middleware/logger");
 app.use(loggers);
 app.use(productRoutes);
 
+app.get("/api", (req, res)=>{
+    res.send("welcome to backend"); // sending the response
+}) ;
+
+
 app.listen(3000, ()=>{
     console.log("server started")
     

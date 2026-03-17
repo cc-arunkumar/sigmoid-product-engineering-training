@@ -46,3 +46,23 @@ console.log(products)
    res.status(201).json(product)
 
 }
+
+exports.deleteProduct = (req, res) => {
+    const productid = parseInt(req.params.id);
+
+    const index = products.findIndex(p => p.id === productid);
+
+    if (index === -1) {
+        return res.status(404).json({
+            message: "Product Not Found"
+        });
+    }
+
+    const deletedProduct = products.splice(index, 1);
+
+    return res.status(200).json({
+        message: "Product deleted successfully",
+   
+    });
+};
+

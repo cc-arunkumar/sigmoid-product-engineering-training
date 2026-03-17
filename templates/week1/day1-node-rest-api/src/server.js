@@ -1,7 +1,11 @@
-const app = require("./app");
+import express from "express";
 
-const PORT = process.env.PORT || 3000;
+const app = express()
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.get("/",(req,res) =>{
+  res.send("Welcome to the server");
+})
+
+app.listen(3000, () => {
+    console.log("SERVER ON 3000")
+})

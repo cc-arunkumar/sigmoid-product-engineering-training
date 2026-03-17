@@ -1,11 +1,11 @@
-const express = require("express");
-const userRoutes = require("./routes/userRoutes");
+import express from "express";
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.get("/",(req,res) =>{
+  res.send("Welcome to the server");
+})
 
-// Register routes
-app.use("/api/users", userRoutes);
-
-module.exports = app;
+app.listen(3000, () => {
+    console.log("SERVER ON 3000")
+})

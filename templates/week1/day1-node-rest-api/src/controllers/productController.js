@@ -5,20 +5,23 @@ exports.getAllProducts=(req,res)=>{
     res.json(products);// getting from data->Products.js conversion in  controller 
 };//get back to routes
 
-//GET by ID
-exports.getProductById=(req,res)=>{
-   const productId=parseInt(req.params.id);//whatever written in URL is considered as String therefore change to int for matching 
-   const product=products.find(p => p.id ===productId);//pid coming from products and productID from URL
+// GET product by ID - with testing of error handler 
+exports.getProductById = (req, res, next) => {
 
-   //if it doesnt match
-   if(!product){
-       return res.status(404).json({
-           message:"Product not found"
-       });
-   }
-   //if matches directly here
-   res.json(product);
-}
+    const id = parseInt(req.params.id);
+
+    const product = products.find(p => p.id === id);
+
+    //  If product not found → send error
+    if (!product) {
+        const error = new Error("Product not found");
+        //error.statusCode = 404; //when commented the 500 code will be shown as in error handler 
+        return next(error);   //  goes to error handler
+    }
+
+    // If found
+    return res.status(200).json(product);
+};
 
 //POST
 exports.createProduct = (req,res) => {
@@ -59,6 +62,7 @@ exports.updateProduct = (req,res) => {
 
     res.status(200).json(product)
 };
+
 //DELETE
 exports.deleteProduct = (req,res) =>{
     const productId = req.params.id * 1;
@@ -74,6 +78,7 @@ exports.deleteProduct = (req,res) =>{
         message: "Product deleted successfully"
     })
 }
+
 //PATCH - updatepartialproduct
 exports.updatePartialProduct = (req,res) => {
     const productId = req.params.id * 1;
@@ -101,5 +106,3 @@ exports.updatePartialProduct = (req,res) => {
     }
     res.status(200).json(products);
 };
-
-

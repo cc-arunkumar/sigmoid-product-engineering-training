@@ -6,9 +6,14 @@ exports.getAllproducts = (req, res) => {
   });
 };
 
-exports.getProductsById = (req, res) => {
+exports.getProductsById = (req, res, next) => {
   const id = req.params.productId * 1;
   const product = products.find((ele) => ele.id === id);
+  if (!product) {
+    const error = new Error("Invalid product Id!");
+    error.statusCode = 400;
+    return next(error);
+  }
   res.status(201).json(product);
 };
 

@@ -11,3 +11,21 @@ exports.getProductsById = (req, res) => {
   const product = products.find((ele) => ele.id === id);
   res.status(201).json(product);
 };
+
+exports.createPost = (req, res) => {
+  const { name, price, stock, category } = req.body;
+
+  const newProduct = {
+    id: products.length + 1,
+    name,
+    price,
+    category,
+    stock,
+  };
+  products.push(newProduct);
+
+  res.status(201).json({
+    message: "New product added",
+    data: newProduct,
+  });
+};

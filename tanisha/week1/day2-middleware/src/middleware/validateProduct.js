@@ -9,7 +9,7 @@ const validateProduct =(req,res,next)=>{
     if(price===undefined||price<=0){
         return res.status(400).json({
             success:false,
-            message:"price must be greater than zero"
+           message:"price must be greater than zero"
         })
     }
     if(!category||category.trim()===""){

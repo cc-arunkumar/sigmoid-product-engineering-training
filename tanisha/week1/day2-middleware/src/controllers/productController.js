@@ -2,13 +2,12 @@ const products = require("../data/product");
 exports.getAllProducts = (req,res)=>{
     res.json(products);
 };
-exports.getProductsById = (req,res)=>{
+exports.getProductsById = (req,res,next)=>{
     const productID=parseInt(req.params.id);
     const product=products.find(p=>p.id===productID);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     res.json(product);
 }
@@ -26,13 +25,12 @@ exports.createProducts=(req,res)=>{
     res.status(201).json(newProduct)
 }
 //put
-exports.updateProduct=(req,res)=>{
+exports.updateProduct=(req,res,next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     const{name,price,category,stock}=req.body;
     product.name=name;
@@ -42,13 +40,12 @@ exports.updateProduct=(req,res)=>{
     res.status(200).json(product);
 }
 //patch
-exports.updatePartialProduct=(req,res)=>{
+exports.updatePartialProduct=(req,res,next)=>{
 const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     const{name,price,category,stock}=req.body;
     if(name!=undefined){
@@ -66,13 +63,12 @@ const productId=parseInt(req.params.id);
     res.json(product);
 }
 //delete
-exports.deleteProduct=(req,res)=>{
+exports.deleteProduct=(req,res,next)=>{
     const productId=parseInt(req.params.id);
     const product=products.find(p=>p.id===productId);
     if(!product){
-        return res.status(404).json({
-            message:"Product not found"
-        });
+        const error=new Error();
+        next(error);
     }
     products.splice(product,1);
     res.status(404).json({

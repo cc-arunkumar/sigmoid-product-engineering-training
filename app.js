@@ -6,6 +6,11 @@ const app = express();
 app.use(express.json());
 
 
+// ! adding middlewere
+const midllewere = require("./middlewere/logger")
+app.use(midllewere)
+
+
 app.get("/", (req, res) => {
     res.send("Hello World");
 });

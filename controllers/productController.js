@@ -50,3 +50,18 @@ exports.getProductById = (req, res) => {
         res.status(201).json(product)
 
     }
+
+    //now to delete we will write a new function in the controller and then we will create a new route for that in the routes file and then we will test it using postman.
+    exports.deleteProduct =(req,res) =>{
+        const productId = parseInt(req.params.id);
+
+        const product = products.find(p => p.id === productId);
+        if(!product){
+           return res.status(404).json({message : "Product not found"});
+        }
+   // The indexOf method is used to find the index of the product in the products array. If the product is found, it returns the index; otherwise, it returns -1. The splice method is then used to remove the product from the array at the specified index.
+        const index = products.indexOf(product);
+        products.splice(index,1);
+
+        res.status(200).json({message : "Product deleted successfully"});
+    }

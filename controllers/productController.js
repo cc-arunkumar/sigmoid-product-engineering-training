@@ -26,3 +26,11 @@ exports.postProduct=(req,res)=>{
     products.push(newProduct);
     return res.status(201).json(newProduct);
 }
+
+exports.updateProduct=(req,res)=>{
+    const {id, name, price}=req.body;
+    const product=products.find(p=>p.id===id);
+    product.name=name;
+    product.price=price;
+    return res.status(200).json(product);
+}

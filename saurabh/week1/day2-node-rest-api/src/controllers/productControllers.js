@@ -9,7 +9,7 @@ exports.getProductById= (req, res)=>{
     const product= products.find(p=>p.id===productId);
     if(!product){
         return res.status(400).json({
-            message:"product not found"
+            success: false,
         })
     }
     res.json(product);

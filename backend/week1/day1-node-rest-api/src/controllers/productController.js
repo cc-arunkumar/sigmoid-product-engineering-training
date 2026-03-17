@@ -30,6 +30,21 @@ exports.createPost = (req, res) => {
   });
 };
 
+exports.editPost = (req, res) => {
+  const id = req.params.productId * 1;
+
+  let pr = products.find((ele) => ele.id === id);
+
+  Object.keys(req.body).forEach((key) => {
+    pr[key] = req.body[key];
+  });
+
+  res.status(201).json({
+    message: "product edited successfully",
+    data: pr,
+  });
+};
+
 exports.updatePost = (req, res) => {
   const id = req.params.productId * 1;
   const { name, price, stock, category } = req.body;
@@ -43,21 +58,6 @@ exports.updatePost = (req, res) => {
 
   res.status(201).json({
     message: "product updated successfully",
-    data: pr,
-  });
-};
-
-exports.editPost = (req, res) => {
-  const id = req.params.productId * 1;
-
-  let pr = products.find((ele) => ele.id === id);
-
-  Object.keys(req.body).forEach((key) => {
-    pr[key] = req.body[key];
-  });
-
-  res.status(201).json({
-    message: "product edited successfully",
     data: pr,
   });
 };

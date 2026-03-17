@@ -1,7 +1,8 @@
 const products = require("../data/product");
+const {successResponse}= require("../utils/apiResponse")
 
 exports.getAllProducts=(req, res)=>{
-    res.json(products);
+    successResponse(res, products, "Product fetched");
 }
 
 exports.getProductById= (req, res, next)=>{
@@ -13,7 +14,8 @@ exports.getProductById= (req, res, next)=>{
         next(error);
         
     }
-    res.json(product);
+     successResponse(res, product, "Product fetched");
+    
 }
 
 
@@ -31,10 +33,7 @@ exports.createProduct = (req,res)=>{
     }
     console.log("Newly created Product = ",newP)
     products.push(newP);
-    res.json({
-        status:201,
-        message:"created"
-    })
+    successResponse(res, newP, "Product fetched",201);
 }
 
 exports.updateP= (req,res,next)=>{
@@ -52,7 +51,7 @@ exports.updateP= (req,res,next)=>{
     product.category= category;
     product.stock= stock;
 
-    res.status(200).json(product);
+     successResponse(res, product, "Product fetched");
 }
 exports.deleteP =(req,res)=>{
     const productID= req.params.id*1;
@@ -63,9 +62,7 @@ exports.deleteP =(req,res)=>{
         next(error);
     }
     products.splice(product,1);
-    res.json({
-        message: "product deleted"
-    });
+    successResponse(res, null, "Product DELETED",204);
 }
 
 exports.patchP= (req,res)=>{
@@ -89,6 +86,6 @@ exports.patchP= (req,res)=>{
     if(stock!= undefined){
         product.stock= stock;
     }
-    res.status(200).json(product)
+     successResponse(res, product, "product updated");
 
 }

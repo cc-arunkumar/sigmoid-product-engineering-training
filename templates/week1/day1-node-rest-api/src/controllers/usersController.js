@@ -35,3 +35,16 @@ const deleteUser = (req, res) => {
         res.status(404).json({ message: "User not found" });
     }
 };
+
+const updateUser = (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, email } = req.body;
+    const foundUser = users.find(u => u.id === id);
+    if (foundUser) {
+        foundUser.name = name;
+        foundUser.email = email;
+        res.json(foundUser);
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+};

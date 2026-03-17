@@ -59,5 +59,20 @@ exports.updateProduct = (req,res) => {
 
     res.status(200).json(product)
 };
+//DELETE
+exports.deleteProduct = (req,res) =>{
+    const productId = req.params.id * 1;
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message: "Product not found"
+        });
+    }
+    products.pop(product);
+    return res.status(201).json({
+        message: "Product deleted successfully"
+    })
+}
 
 

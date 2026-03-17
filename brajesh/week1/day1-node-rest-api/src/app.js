@@ -5,7 +5,7 @@ const app = express();
 const productRoutes = require("./routes/productRoutes");
 
 app.use(express.json());
-app.use(productRoutes);
+app.use("/api", productRoutes);
 
 app.get("/", (req,res) => {
     res.send("Welcome to Backend !!");

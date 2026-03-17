@@ -4,16 +4,16 @@ const router = express.Router()
 
 const productController = require("../controllers/productControllers")
 
-router.get("/products",productController.getAllProducts)
+router.get("/api/products",productController.getAllProducts)
 
-router.get("/product/:id",productController.getProductById)
+router.get("/api/product/:id",productController.getProductById)
 
-router.post("/products", productController.createProduct)
+router.post("/api/products", productController.createProduct)
 
-router.put("/products/:id",productController.updateProduct)
+router.put("/api/products/:id",productController.updateProduct)
 
-router.delete("/product/:id",productController.deleteProduct)
+router.delete("/api/product/:id",productController.deleteProduct)
 
-router.patch("/product/:id",productController.updatePartialProduct);
+router.patch("/api/product/:id",productController.updatePartialProduct);
 
 module.exports = router;

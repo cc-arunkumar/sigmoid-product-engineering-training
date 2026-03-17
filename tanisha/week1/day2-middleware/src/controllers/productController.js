@@ -1,6 +1,7 @@
 const products = require("../data/product");
+const successResponse=require("../utils/apiResponse");
 exports.getAllProducts = (req,res)=>{
-    res.json(products);
+    successResponse(res,products,"All products fetched");
 };
 exports.getProductsById = (req,res,next)=>{
     const productID=parseInt(req.params.id);
@@ -9,7 +10,7 @@ exports.getProductsById = (req,res,next)=>{
         const error=new Error();
         next(error);
     }
-    res.json(product);
+    successResponse(res,product,"Product by id fetched");
 }
 //post
 exports.createProducts=(req,res)=>{
@@ -22,7 +23,7 @@ exports.createProducts=(req,res)=>{
         stock:stock
     }
     products.push(newProduct);
-    res.status(201).json(newProduct)
+     successResponse(res,newProduct,"added new products");
 }
 //put
 exports.updateProduct=(req,res,next)=>{
@@ -37,7 +38,7 @@ exports.updateProduct=(req,res,next)=>{
     product.price=price;
     product.category=category;
     product.stock=stock;
-    res.status(200).json(product);
+     successResponse(res,product,"Product updated");
 }
 //patch
 exports.updatePartialProduct=(req,res,next)=>{
@@ -60,7 +61,7 @@ const productId=parseInt(req.params.id);
     if(stock!=undefined){
         product.stock=stock;
     }
-    res.json(product);
+     successResponse(res,product,"product partially updated");;
 }
 //delete
 exports.deleteProduct=(req,res,next)=>{
@@ -71,7 +72,5 @@ exports.deleteProduct=(req,res,next)=>{
         next(error);
     }
     products.splice(product,1);
-    res.status(404).json({
-        message:"Product deleted"
-    });
+     successResponse(res,null,"product deleted");
 }

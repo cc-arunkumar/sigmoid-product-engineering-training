@@ -54,3 +54,42 @@ exports.updateProduct= (req, res)=>{
     res.status(200).json(product);
 
 }
+
+exports.deleteProduct = (req, res) => {
+    const productID = Number(req.params.id);
+
+    const updatedProducts = products.filter(p => p.id !== productID);
+
+    if (updatedProducts.length === products.length) {
+        return res.status(404).json({
+            message: "Product not Found"
+        });
+    }
+
+    products = updatedProducts;
+
+    res.status(200).json(products);
+};
+
+
+exports.updatePartialProduct = (req, res)=>{
+
+    const productID = parseInt(req.params.id);
+
+    const product = products.find(p => p.id=== productID);
+
+    if(!product){
+        return req.status(400).json({
+            message:"data not found"
+        })
+    }
+
+    const {name,price,category,stock}= req.body;
+
+    if(name!= undefined) product.name=name;
+    if(price!= undefined) product.price=price;
+    if(category!= undefined) product.category=category;
+    if(stock!= undefined) product.stock=stock;
+
+    res.status(200).json(product);
+}

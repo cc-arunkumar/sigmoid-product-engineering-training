@@ -100,11 +100,26 @@ const patchProduct = (req, res) => {
 };
 
 
+const deleteById=(req,res)=>{
+const productId= Number(req.params.id);
+  products=  products.filter((p)=>p.id!==productId)
+
+
+
+res.status(200).json({
+    products
+})
+        
+}
+
+
+
 
 module.exports={
     getAllProducts,
      getProductById,
      createProduct,
      updateProducts,
-     patchProduct
+     patchProduct,
+     deleteById
 }

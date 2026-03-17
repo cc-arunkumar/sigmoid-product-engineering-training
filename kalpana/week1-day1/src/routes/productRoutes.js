@@ -10,7 +10,7 @@ router.post("api/products", productController.createProduct);
 
 router.put("api/product/:id", productController.updateProduct);
 
-router.delete("/product/:id", productController.deleteProductById);
+router.delete("api/product/:id", productController.deleteProductById);
 
 router.patch("/product/:id", productController.updatePartialProduct);
 

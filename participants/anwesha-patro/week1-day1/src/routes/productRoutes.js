@@ -10,7 +10,7 @@ router.get("/product/:id", productController.getOneProducts);
 
 
 
-// router.post("/products", productController.create);
+router.post("/products", productController.create);
 
 // router.put("/products/:id", productController.updateById);
 

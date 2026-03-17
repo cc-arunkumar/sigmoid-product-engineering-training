@@ -19,20 +19,20 @@ exports.getOneProducts = (req, res) => {
 }
 
 
-// exports.create = (req, res) => {
-//     const { name, price, category, stock } = req.body;
-//     const add = {
-//         id: 100 + products.length + 1,
-//         name: name,
-//         price: price,
-//         category: category,
-//         stock: stock
-//     }
+exports.create = (req, res) => {
+    const { name, price, category, stock } = req.body;
+    const add = {
+        id: 100 + products.length + 1,
+        name: name,
+        price: price,
+        category: category,
+        stock: stock
+    }
 
-//     products.push(add)
+    products.push(add)
 
-//     res.status(201).json(add)
-// }
+    res.status(201).json(add)
+}
 
 // exports.updateById = (req, res) => {
 //     const id = parseInt(req.params.id);

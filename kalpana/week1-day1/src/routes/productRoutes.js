@@ -4,7 +4,7 @@ const productController = require("../controllers/productController");
 
 router.get('api/products', productController.getAllProducts);
 
-router.get("/product/:id", productController.getProductById);
+router.get("api/product/:id", productController.getProductById);
 
 router.post("/products", productController.createProduct);
 

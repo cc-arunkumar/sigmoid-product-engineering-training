@@ -4,11 +4,12 @@ const express = require("express");
 const router = express.Router(); //for multiple paths
 
 const productController = require("../controllers/productController");
+const validateProduct = require("../middleware/validateProduct");
 
 router.get("/products",productController.getAllProducts);
 router.get("/product/:id",productController.getProductById);
-router.post("/products",productController.createProduct);
-router.put("/product/:id",productController.updateProduct);
+router.post("/products",validateProduct,productController.createProduct);
+router.put("/product/:id",validateProduct,productController.updateProduct);
 router.delete("/product/:id",productController.deleteProduct);
-router.patch("/product/:id",productController.updatePartialProduct);
+router.patch("/product/:id",validateProduct,productController.updatePartialProduct);
 module.exports=router;

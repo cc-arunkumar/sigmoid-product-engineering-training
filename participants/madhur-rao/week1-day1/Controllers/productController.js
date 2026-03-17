@@ -42,3 +42,21 @@ function updateProduct(req,res){
 
     return res.status(200).json(product);
 }
+
+function deleteProduct(req,res){
+    const productId = parseInt(req.params.id);
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({
+            message:"Product Not Found"
+        });
+    }
+
+    const remainingProducts = products.filter(p => p.id!=productId);
+    products = remainingProducts;
+
+    return res.status(200).json({
+        message:"Deleted Successfully"
+    });
+}

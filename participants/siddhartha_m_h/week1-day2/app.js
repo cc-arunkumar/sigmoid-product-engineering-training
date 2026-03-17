@@ -7,12 +7,16 @@ const app = express();
 
 app.use(express.json());
 app.use(logger);
-app.use(errorHandler);
+
 
 
 app.use('/api/products', productRoutes);
+
 app.get("/", (req, res) => {
   res.send("Welcome to Backend !!!");
 });
+
+
+app.use(errorHandler);
 
 module.exports = app;

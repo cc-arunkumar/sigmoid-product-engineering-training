@@ -12,6 +12,9 @@ app.get("/api", (req, res)=>{
     res.send("welcome to backend"); // sending the response
 });
 
+const errorHandler= require("./middleware/errorHandler");
+app.use(errorHandler);
+
 
 app.listen(3000, ()=>{
     console.log("server started")

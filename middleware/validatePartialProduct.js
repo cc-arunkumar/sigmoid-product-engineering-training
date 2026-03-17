@@ -2,21 +2,21 @@
 const validateProduct = (req, res , next) =>{
   const { name , price , category , stock , brand} = req.body;
 
-   if(!name || name.trim()===""){
+   if(name !== undefined || name.trim()===""){
     return res.status(400).json({
       success : false,
       message : " product name is required"
     })
    }
 
-   if(price === undefined || price <= 0){
+   if(price !== undefined || price <= 0){
     return res.status(400).json({
       success : false,
       message : "Valid product price is required"
     })
    }
 
-   if(!category || category.trim()===""){
+   if(category !== undefined || category.trim()===""){
     return res.status(400).json({
       success : false,
       message : " product category is required"
@@ -29,7 +29,7 @@ const validateProduct = (req, res , next) =>{
       message : "Valid product stock is required"
     })
    }
-   if(!brand || brand.trim()===""){
+   if(brand !== undefined || brand.trim()===""){
     return res.status(400).json({
       success : false,
       message : " product brand is required"
@@ -38,5 +38,6 @@ const validateProduct = (req, res , next) =>{
 
    next();
 }
+
 
 module.exports = validateProduct;

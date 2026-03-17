@@ -4,3 +4,5 @@ Training repository for Sigmoid Product Engineering program covering backend, fr
 
 <!-- 
 git push origin participants/shubham/week1-day1 -->
+
+<!-- git push origin participants/shubham/week1-day2 -->

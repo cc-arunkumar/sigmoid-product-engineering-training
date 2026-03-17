@@ -1,7 +1,7 @@
 const validatePatchProduct = (req, res, next) => {
     const { name, price, category, stock } = req.body;
 
-    // Validate only if fields are present
+
     if (name !== undefined && name.trim() === "") {
         return res.status(400).json({
             success: false,

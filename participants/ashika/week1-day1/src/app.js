@@ -2,7 +2,7 @@ const express=require("express");
 
 const app= express();
 
-const productRoutes=require("./routes/productRoutes")
+const productRoutes=require("./Routes/productRoutes")
 
 app.use(express.json()); //enable middleware to express read json
 

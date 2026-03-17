@@ -27,3 +27,18 @@ function createProduct(req,res){
     products.push(product);
     return res.status(201).json(product);
 }
+
+function updateProduct(req,res){
+    const productId=parseInt(req.params.id);
+    const product = products.find(p => p.id === productId);
+    if(!product){
+        return res.status(404).json({
+            message:"Product Not Found"
+        });
+    }
+    const {name,price} = req.body;
+    product.name=name;
+    product.price=price;
+
+    return res.status(200).json(product);
+}

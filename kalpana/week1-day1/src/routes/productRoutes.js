@@ -12,6 +12,7 @@ router.put("/product/:id", productController.updateProduct);
 
 router.delete("/product/:id", productController.deleteProductById);
 
+router.patch("/product/:id", productController.updatePartialProduct);
 
 
 

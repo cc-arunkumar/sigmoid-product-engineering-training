@@ -4,7 +4,7 @@
   "description": "Training repository for Sigmoid Product Engineering program covering backend, frontend, databases, testing, DevOps, and cloud practices.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,13 @@
-const express = require("express")
+const express = require("express");
 
-const app = express()
+const app = express();
+const PORT = 3000
 
-app.get("/", () => {
-    res.send("Hello Backend from Ayush");
-});
+const productRoutes = require("./routes/productRoutes");
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000")
+app.use(express.json()); // this is a middleware that converts JSON format data into javascript object (node can read the javascript object not JSON)
+app.use(productRoutes);
+
+app.listen(PORT, () => {
+    console.log(`Server running on port http://localhost:${PORT}`)
 })

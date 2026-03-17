@@ -4,7 +4,8 @@
   "description": "Training repository for Sigmoid Product Engineering program covering backend, frontend, databases, testing, DevOps, and cloud practices.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/cc-arunkumar/sigmoid-product-engineering-training#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
   }
 }

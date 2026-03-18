@@ -12,4 +12,6 @@ router.post('/api/product', productController.createProduct);
 
 router.put('/api/product/:id', productController.updateProduct);
 
+router.patch('/api/product/:id', productController.updatePartialProduct);
+
 module.exports = router;

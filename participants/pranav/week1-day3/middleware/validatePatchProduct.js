@@ -1,3 +1,5 @@
+const { errorResponse } = require("../utils/apiResponse");
+
 const validatePatchProduct = (req, res, next) => {
     const { name, stock, price, category } = req.body;
     const errors = [];
@@ -27,10 +29,7 @@ const validatePatchProduct = (req, res, next) => {
     }
 
     if (errors.length > 0) {
-        return res.status(400).json({
-            success: false,
-            errors
-        });
+        return errorResponse(res, errors, 400);
     }
 
     next();

@@ -1,26 +1,26 @@
 const validate=(req, res , next)=>{
     const { name , price , category , stocks}=req.body;
 
-    if(!name || name.trim===""){
+    if(!name || name.trim==="" || typeof name!=="string"){
         return res.status(400).json({
             success:false,
-            message:"please enter name"
+            message:"please enter valid name"
         })
     }
 
-    if(!price || price<=0 ){
+    if(!price || price<=0 || typeof price!=="number"){
          return res.status(400).json({
             success:false,
-            message:"proce cannot be negative"
+            message:"price cannot be negative"
         })
     }
-    if(!category || category.trim===""){
+    if(!category || category.trim===""|| typeof category!=="string"){
          return res.status(400).json({
             success:false,
             message:"category is required"
         })
     }
-    if(stocks===undefined||stocks<0){
+    if(stocks===undefined||stocks<0 || typeof stocks!=="number"){
          return res.status(400).json({
             success:false,
             message:"please enter valid stocks"

@@ -5,6 +5,7 @@ const productRoutes = require("./src/routes/productRoutes");
 const authRoutes= require("./src/routes/authRoutes");
 const errorHandler = require("./src/middleware/errorHandler");
 const logger= require("./src/middleware/logger");
+const { apiLimiter } = require("./src/middleware/rateLimiter");
 
 app.use(express.json());
 
@@ -16,6 +17,8 @@ app.use(logger);
 
 // error handler (ALWAYS LAST)
 app.use(errorHandler);
+
+app.use("/api", apiLimiter);
 
 app.listen(3000,()=>{
     console.log("Server running on 3000")

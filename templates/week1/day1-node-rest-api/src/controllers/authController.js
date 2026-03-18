@@ -5,7 +5,7 @@ const AppError = require("../utils/AppError");
 // Hardcoded user (for training purpose)
 const USER = {
     id: 1,
-    username: "admin",
+    username: "abhi",
     password: "1234"
 };
 

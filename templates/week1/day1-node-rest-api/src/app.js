@@ -8,8 +8,8 @@ const errorHandler = require("./middleware/errorHandler");
 app.use(logger);
 app.use(express.json());
 
-app.use("/api/products",productRoutes);
-app.use("/api/auth",authRoutes);
+app.use("/api",productRoutes);
+app.use("/api",authRoutes);
 
 
 

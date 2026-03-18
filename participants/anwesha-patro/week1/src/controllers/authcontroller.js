@@ -2,11 +2,19 @@ const jwt = require("jsonwebtoken");
 const AppError = require("../utils/appError");
 const { successResponse } = require("../utils/apiResponse");
 
-const USER = {
+const USER = [{
     id: 1,
     username: "admin",
-    password: "admin123"
-};
+    password: "admin123",
+    role: "admin"
+},
+{
+    id: 1,
+    username: "user",
+    password: "user123",
+    role: "user"
+}
+];
 
 exports.login = (req, res, next) => {
     try {
@@ -16,17 +24,20 @@ exports.login = (req, res, next) => {
             return next(new AppError("Fields are mandatory", 400));
         }
 
-        if (username !== USER.username || password !== USER.password) {
+        const users = USER.find(u => u.username === username);
+
+        if (!users || users.password !== password) {
             return next(new AppError("Invalid credentials", 401));
         }
 
         const token = jwt.sign(
             {
-                userId: USER.id,
-                username: USER.username
+                userId: users.id,
+                username: users.username,
+                role: users.role
             },
             process.env.JWT_SECRET || "mysecretkey",
-            { expiresIn: "1h" }
+            { expiresIn: "1000ms" }
         );
 
         return successResponse(res, "Login Successful", { token });

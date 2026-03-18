@@ -14,7 +14,7 @@ const protect = (req, res, next) => {
         ) {
             token = req.headers.authorization.split(" ")[1];
         }
-
+        // verify
         if (!token) {
             return next(new AppError("Access Denied! No token provided", 401))
         }
@@ -28,17 +28,17 @@ const protect = (req, res, next) => {
         req.user = decoded;
         next();
     }
-    catch {
+    catch (error) {
 
         if (error.name === "JsonWebTokenError") {
-            return next(new AppError("Inavlid Token", 401))
+            return next(new AppError("Invalid Token", 401))
         }
 
-        if (error.name === "TokenExpiredErroe") {
+        if (error.name === "TokenExpiredError") {
             return next(new AppError("Token Expired", 401))
         }
 
-        return next(new AppError("Authenticiation", 401))
+        return next(new AppError("Authenticiation Failed", 401))
     }
 
 }

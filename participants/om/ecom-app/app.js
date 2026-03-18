@@ -1,20 +1,19 @@
-const express = require('express');
-const PORT = 8000;
+const express = require("express");
+const port = 8000;
 
 const app = express();
 
-const productRoutes = require('./routes/productRoutes');
+const logger = require("./middleware/logger");
+const productRoutes = require("./routes/productRoutes");
+// const validate = require("./middleware/validateProduct");
+const errorHandler = require("./middleware/errorHandler");
 
-const logger = require('./middleware/logger');
-
-const errorHandler = require('./middleware/errorHandler');
-
-app.use(express.json());
+app.use(express.json()); //this is middlleware which helps use express json
 app.use(logger);
+app.use(productRoutes);
+// app.use(validate);
 app.use(errorHandler);
 
-app.use(productRoutes);
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT} 🚀`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

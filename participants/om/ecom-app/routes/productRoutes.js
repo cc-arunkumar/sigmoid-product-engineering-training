@@ -14,8 +14,8 @@ router.post('/api/product', validateProduct, productController.createProduct);
 
 router.put('/api/product/:id', validateProduct, productController.updateProduct);
 
-router.patch('/api/product/:id', validateProductPartial, productController.updatePartialProduct);
+router.patch('/api/product/:id', validateProductPartial, productController.patchProduct);
 
-router.delete('/api/product/:id', validateProduct, productController.deleteProduct);
+router.delete('/api/product/:id', productController.deleteProduct);
 
 module.exports = router;

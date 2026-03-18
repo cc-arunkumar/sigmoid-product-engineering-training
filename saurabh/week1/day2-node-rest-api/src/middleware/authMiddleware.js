@@ -15,7 +15,7 @@ const protect = (req, res, next) => {
 
     // 2. If no token
     if (!token) {
-      return next(new AppError("Access denied. No token provided", 401));
+      return next(new AppError("Access denied. No token provided. Please login first.", 401));
     }
 
     // 3. Verify token

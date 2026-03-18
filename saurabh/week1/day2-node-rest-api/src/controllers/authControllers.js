@@ -2,39 +2,52 @@ const jwt = require("jsonwebtoken");
 const { successResponse } = require("../utils/apiResponse");
 const AppError = require("../utils/appError");
 
-// hardcoded user for demonstration
-const user = {
-  id: 1,
-  username: "admin",
-  password: "password"
-};
+// Mock users
+const USERS = [
+  {
+    id: 1,
+    username: "admin",
+    password: "1234",
+    role: "admin"
+  },
+  {
+    id: 2,
+    username: "user",
+    password: "1234",
+    role: "user"
+  }
+];
 
 exports.login = (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // validate input
+    // Validate input
     if (!username || !password) {
       return next(new AppError("Username and password are required", 400));
     }
 
-    // check credentials
-    if (username === user.username && password === user.password) {
-      // Generate JWT token
-      const token = jwt.sign(
-        { id: user.id, username: user.username },
-        process.env.JWT_SECRET || "my_secret_key",
-        { expiresIn: "1h" }
-      );
+    // Find user
+    const user = USERS.find(u => u.username === username);
 
-      // send response
-      return successResponse(res, "Login successful", { token, userId: user.id, username: user.username });
+    if (!user || user.password !== password) {
+      return next(new AppError("Invalid credentials", 401));
     }
 
-    // invalid credentials
-    return next(new AppError("Invalid username or password", 401));
+    // Generate token with role
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        username: user.username,
+        role: user.role
+      },
+      process.env.JWT_SECRET || "mysecretkey",
+      { expiresIn: "1h" }
+    );
+
+    return successResponse(res, "Login successful", { token, user: { userId: user.id, username: user.username, role: user.role } });
 
   } catch (error) {
-    return next(new AppError(error.message, 500));
+    return next(new AppError(error.message || "Login failed", 500));
   }
 };

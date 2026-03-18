@@ -5,9 +5,11 @@ const productRoutes= require("./routes/productRouter");
 const loggers= require("./middleware/logger");
 const errorHandler= require("./middleware/errorHandler");
 const authRoute= require("./routes/authRouter");
+const {apiLimiter}=require("./middleware/rateLimiter")
  // middleware so that our express understands the data send in the json format
  app.use(express.json());
 app.use(loggers);
+app.use(apiLimiter);
 
 app.use(productRoutes);
 app.use("/api",authRoute);

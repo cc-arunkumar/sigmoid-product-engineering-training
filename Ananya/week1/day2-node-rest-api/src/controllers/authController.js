@@ -1,3 +1,19 @@
+const jwt= require("jsonwebtoken")
+const AppError = require("../utils/AppError")
+const{successResponse}= require("../utils/apiResponse");
+
+const User=[{
+    id:1,
+    username:"Ananya",
+    password:"Ananya@123",
+    role:"admin"
+},
+{
+    id:2,
+    username:"user1",
+    password:"user@123",
+    role:"user"
+}]
 exports.login = (req, res, next) => {
     try {
         const { username, password } = req.body;

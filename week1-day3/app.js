@@ -1,13 +1,17 @@
 const express = require("express");
-const router = require("./routes/productRoutes");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 app.use(express.json());
 
+
+const productRouter = require("./routes/productRoutes");
+const authRouter = require("./routes/authRoutes");
+
 app.use(logger);
-app.use("/api", router)
+app.use("/api", productRouter)
+app.use("/api/auth", authRouter);
 
 app.use(errorHandler);
 

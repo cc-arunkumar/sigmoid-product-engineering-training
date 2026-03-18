@@ -1,5 +1,5 @@
 exports.successResponse = (res, message, data, statusCode = 200) => {
-    return res.status(statusCode).json({
+    return res.status(200).json({
         success: true,
         message,
         data

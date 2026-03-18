@@ -1,4 +1,4 @@
-const products = require("../data/products");
+const products = require("../data/product");
 
 const { successResponse } = require("../utils/apiResponse");
 
@@ -8,7 +8,7 @@ const AppError = require("../utils/appError");
 // GET all products
 
 exports.getAllProducts = (req, res, next) => {
-
+    
     try {
 
         return successResponse(res, "All products fetched successfully", products);

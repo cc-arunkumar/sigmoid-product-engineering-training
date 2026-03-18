@@ -9,8 +9,8 @@ const authRoutes = require("./routes/authRoutes");
 const logger = require("./middleware/logger"); //for logger
 const errorHandler = require("./middleware/errorHandler");// for error handler
 
-app.use(productRoutes);
 app.use(logger);
+app.use(productRoutes);
 app.use(authRoutes);
 app.use(errorHandler);
 

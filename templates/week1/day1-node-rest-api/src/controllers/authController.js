@@ -3,10 +3,18 @@ const{successResponse} = require("../utils/apiResponse");
 const AppError = require("../utils/AppError");
 
 //dummy user 
-const USER = {
+const USERS =
+[ {
     username: "admin",
-    password: "1234"
-};
+    password: "1234",
+    role:"admin"
+},
+{
+   username: "user",
+    password: "1234",
+    role:"user"
+}
+]
 
 exports.login = (req,res,next)=>{
     try{
@@ -17,16 +25,21 @@ exports.login = (req,res,next)=>{
             return next(new AppError("Username and password are required",400));
         }
 
-        //2. Checking if credentials match
-        if(username !== USER.username || password !== USER.password){
-            return next(new AppError("Invalid Credentials",401));
-        }
+        //Find user
+        const user = USERS.find(u => u.username === username);
 
+         //2. Checking if credentials match
+         if(!user || user.password !== password){
+             return next(new AppError("Invalid Credentials",401));
+         }
+
+        
         //3. Generate token
         const token = jwt.sign(
             {
-            userId: USER.id,
-            username: USER.username
+            userId: user.id,
+            username: user.username,
+            role:user.role
             },
             process.env.JWT_SECRET || "mysecretkey",
             {

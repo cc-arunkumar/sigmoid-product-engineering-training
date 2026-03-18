@@ -7,9 +7,12 @@ const validateProduct = require("../middleware/validateProduct");
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 
+const cache = require
+("../middleware/cache");
+
 // added /products
-router.get("/products", productController.getAllProducts);
-router.get("/product/:id", productController.getProductById);
+router.get("/products", cache(60000) , productController.getAllProducts);
+router.get("/product/:id", cache(60000) ,productController.getProductById);
 // create product
 router.post("/product", protect , authorize('user') ,validateProduct , productController.createProduct);
 router.put("/product/:id", protect , authorize('user') ,validateProduct, productController.updateProduct);

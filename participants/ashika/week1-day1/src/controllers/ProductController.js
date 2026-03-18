@@ -117,10 +117,10 @@ const AppError = require("../utils/appError");
 // GET all products
 
 exports.getallproducts = (req, res, next) => {
-
+  let time=new Date();
     try {
 
-        return successResponse(res, "Product displays", products, 200);
+        return successResponse(res, `Product displays. ${time}`, products, 200);
 
     } catch (error) {
 

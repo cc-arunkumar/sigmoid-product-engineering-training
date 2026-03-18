@@ -1,5 +1,6 @@
 const ratelimit=require("express-rate-limit");
-const AppError=require("../utils/appError");
+const AppError = require("../utils/appError");
+
 
 const apiLimiter=ratelimit({
     windowMs:15*60*1000,
@@ -8,7 +9,7 @@ const apiLimiter=ratelimit({
     legacyHeaders:false,
 
     handler:(req, res, next)=>{
-        return next(new AppError(" too many requests, try again later" , 429));
+        return next(new AppError(" too many requests, try again laterj" , 429));
     }
 });
 
@@ -19,8 +20,9 @@ const authLimiter=ratelimit({
 legacyHeaders: false,
 
     handler:(req, res, next)=>{
-        return next(new AppError(" too many login attempts, try again later" , 429));
+        return next(new AppError(" too many login attempts, try again laterj" , 429));
     }
+   
 });
 
 module.exports={

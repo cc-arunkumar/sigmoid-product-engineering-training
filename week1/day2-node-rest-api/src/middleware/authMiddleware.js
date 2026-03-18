@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const AppError = require("../utils/appError");
 
-const protect = (req, res, next) => {
+exports.protect = (req, res, next) => {
     try {
         let token;
 
@@ -15,7 +15,7 @@ const protect = (req, res, next) => {
         }
 
         // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || "mysecretkey");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "my_secret_key");
 
         req.user = decoded;
 

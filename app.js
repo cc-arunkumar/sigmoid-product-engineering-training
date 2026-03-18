@@ -9,8 +9,12 @@ const authRoute = require("./routes/authRoutes");
 const validate = require("./middleware/validate");
 const errorHandler = require("./middleware/errorHandler");
 
+const { apilimiter } = require("./middleware/rateLimiter");
+
 app.use(express.json()); //this is middlleware which helps use express json
 // app.use(logger);
+
+app.use(apilimiter);
 
 app.use(productRoutes);
 app.use(authRoute);

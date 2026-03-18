@@ -2,11 +2,20 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../utils/AppError.js";
 import { AppResponse} from "../utils/AppResponse.js";
 // Hardcoded user for demonstration
-const User = {
-    id: 1,
-    username: "admin",
-    password: "1234"
-};
+const USERS=[
+    {
+        id:1,
+        username:"admin",
+        password:"1234",
+        role:"admin"
+    },
+    {
+        id:2,
+        username:"user",
+        password:"1234",
+        role:"user"
+    }
+]
 
 function login(req, res, next){
     try {
@@ -14,11 +23,12 @@ function login(req, res, next){
         if(!username || !password){
             return next(new AppError("Username and password are required", 400));
         }
-        if(username !== User.username || password !== User.password){
+        const user=USERS.find(u=>u.username===username)
+        if(!user || user.password !== password){
             return next(new AppError("Invalid username or password", 401));
         }
         const token = jwt.sign(
-            { userId: User.id, username: User.username },
+            { userId: user.id, username: user.username, role: user.role },
             process.env.JWT_SECRET || "mysecretkey", 
             { expiresIn: "1h" }
         );

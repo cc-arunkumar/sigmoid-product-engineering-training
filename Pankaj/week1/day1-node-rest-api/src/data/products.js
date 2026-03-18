@@ -5,6 +5,7 @@ const products=[{
     category: "Electronics",
     stock: 20
 },
+
 {
     id: 2,
     price: 25000,
@@ -12,6 +13,7 @@ const products=[{
     category: "Electronics",
     stock: 50      
 },
+
 {
     id: 3,
     name: "Headphones",
@@ -19,6 +21,7 @@ const products=[{
     category: "Accessories",
     stock: 30
 },
+
 {
     id: 4,
     name: "Keyboard",

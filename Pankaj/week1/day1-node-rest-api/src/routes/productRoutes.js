@@ -1,16 +1,30 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const productController = require('../controllers/productControllers');
-const validateProduct = require('../middleware/validateProduct'); 
-const validateProductPartial = require('../middleware/validateProductPartial');
+const productController = require("../controllers/productControllers");
+const validateProduct = require("../middleware/validateProduct");
+const validateProductPartial = require("../middleware/validateProductPartial");
 
+// GET all products
 router.get("/api/products", productController.getAllProducts);
-router.get("/api/products/:id", productController.getProductById);
-router.post("/api/products", validateProduct, productController.createProduct);
-router.put("/api/products/:id",validateProduct, productController.updateProduct);
-router.delete("/api/products/:id", productController.deleteProduct);
-router.patch("/api/products/:id",validateProductPartial, productController.updatePartialProduct);
 
+// GET product by ID
+router.get("/api/products/:id", productController.getProductById);
+
+// CREATE product
+router.post("/api/products", validateProduct, productController.createProduct);
+
+// UPDATE product (PUT)
+router.put("/api/products/:id", validateProduct, productController.updateProduct);
+
+// DELETE product
+router.delete("/api/products/:id", productController.deleteProduct);
+
+// PATCH product ✅ (FIXED)
+router.patch(
+  "/api/products/:id",
+  validateProductPartial,
+  productController.patchProduct
+);
 
 module.exports = router;

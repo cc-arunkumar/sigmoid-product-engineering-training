@@ -1,15 +1,13 @@
 const products = require("../data/products");
 const { successResponse } = require("../utils/apiResponse");
+const AppError = require("../utils/appError")
 
 // GET all products
 exports.getAllProducts = (req, res, next) => {
   try {
     return successResponse(res, "All products fetched successfully", products);
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to fetch products"
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 
@@ -28,10 +26,7 @@ exports.getProductById = (req, res, next) => {
 
     return successResponse(res, "Product fetched successfully", product);
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to fetch product"
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 
@@ -52,10 +47,7 @@ exports.createProduct = (req, res, next) => {
 
     return successResponse(res, "Product created successfully", newProduct);
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to create product"
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 
@@ -84,10 +76,7 @@ exports.updateProduct = (req, res, next) => {
 
     return successResponse(res, "Product updated successfully", products[index]);
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to update product"
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 
@@ -108,10 +97,7 @@ exports.updatePartialProduct = (req, res, next) => {
 
     return successResponse(res, "Product updated partially", product);
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to patch product"
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 
@@ -132,10 +118,7 @@ exports.deleteProduct = (req, res, next) => {
 
     return successResponse(res, "Product deleted successfully", deleted);
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to delete product"
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 

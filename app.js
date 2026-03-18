@@ -7,9 +7,12 @@ const authRotes = require("./routes/authRoutes")
 const logger = require("./middleware/logger");
 const errorhandler = require("./middleware/errorHandler" );
 
+const {appLimiter} = require("./middleware/rateLimiter");
+
 app.use(express.json());
 app.use(logger);
 
+app.use(appLimiter);
 app.use("/api", productRoutes);
 app.use("/api/auth", authRotes);
 

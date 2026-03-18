@@ -90,7 +90,7 @@ exports.login = (req, res, next) => {
         }
 
         // Find user
-        const user = uses.find(u => user.username === username);
+        const user = USER.find(u => u.username === username);
 
         if(!user|| user.password !== password){
             return next(new AppError("Invalid credentials", 401));

@@ -4,6 +4,10 @@ const router = express.Router();
 
 const {login} = require('../controllers/authController');
 
-// base api
-router.post('/login', login);
+const {authLimiter} = require('../middleware/rateLimiter');
+
+// apply strict limiter only to login
+router.post('/login', authLimiter, login);
+
+
 module.exports = router;

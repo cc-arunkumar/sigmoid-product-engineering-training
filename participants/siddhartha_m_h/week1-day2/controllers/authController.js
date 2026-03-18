@@ -25,15 +25,17 @@ exports.login = (req, res, next) => {
             if(!username || !password) {
                 return next(new AppError("Username and password are required", 400));
             }
-            
-            if(username !== USER.username || password !== USER.password) {
+
+            const user = USERS.find(u => u.username === username);
+
+            if(!user || user.password !== password) {
                 return next(new AppError("Invalid username or password", 401));
             }
 
             const token = jwt.sign({ 
-                userId: USER.id, 
-                username: USER.username,
-                role: USER.role
+                userId: user.id, 
+                username: user.username,
+                role: user.role
             }, process.env.JWT_SECRET || "mysecretkey", 
             { expiresIn: '1h' }
         );

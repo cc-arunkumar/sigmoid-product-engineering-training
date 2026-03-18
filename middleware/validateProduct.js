@@ -1,31 +1,39 @@
-const validateProduct =(req,res,next)=>{
-    const {name, price,category,stock}=req.body;
+const validateProduct = (req, res, next) => {
+    const { name, price, category, stock } = req.body;
 
-    if(!name || name.trim()===""){
+    // NAME
+    if (typeof name !== "string" || name.trim() === "") {
         return res.status(400).json({
             success: false,
-            message:"Product name is required"
+            message: "Product name must be a non-empty string",
         });
     }
-    if(price===undefined ||price<=0){
+
+    // PRICE
+    if (typeof price !== "number" || isNaN(price) || price <= 0) {
         return res.status(400).json({
             success: false,
-            message:"Price must be greater than 0"
+            message: "Price must be a number greater than 0",
         });
     }
-    if(!category || category.trim()===""){
+
+    // CATEGORY
+    if (typeof category !== "string" || category.trim() === "") {
         return res.status(400).json({
             success: false,
-            message:"Category is required"
+            message: "Category must be a non-empty string",
         });
     }
-    if(stock===undefined || stock<0){
+
+    // STOCK
+    if (typeof stock !== "number" || isNaN(stock) || stock < 0) {
         return res.status(400).json({
-            success:false,
-            message:"Stock cannot be negative"
+            success: false,
+            message: "Stock must be a non-negative number",
         });
     }
+
     next();
 };
 
-module.exports=validateProduct;
+module.exports = validateProduct;

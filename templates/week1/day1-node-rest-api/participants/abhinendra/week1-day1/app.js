@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const productRoutes = require("./src/routes/productRoutes");
+const authRoutes= require("./src/routes/authRoutes");
 const errorHandler = require("./src/middleware/errorHandler");
 const logger= require("./src/middleware/logger");
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 // routes
 app.use(productRoutes);
+app.use(authRoutes);
 
 app.use(logger);
 

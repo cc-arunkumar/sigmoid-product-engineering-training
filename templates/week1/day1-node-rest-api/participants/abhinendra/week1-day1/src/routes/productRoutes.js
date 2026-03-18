@@ -39,10 +39,13 @@ const router = express.Router();
 
 const productController = require("../controllers/productController");
 
+const protect = require("../middleware/authMiddleware");
 
 const validateProduct = require("../middleware/validateProduct");
 
 const validateProductForPatch= require("../middleware/validateProductForPatch");
+
+const authorize= require("../middleware/authorize");
 
 // ✅ Make sure names MATCH EXACTLY
 
@@ -51,13 +54,17 @@ router.get("/api/products", productController.getAllProducts);
 router.get("/api/products/:id", productController.getProductById);
 
 router.post(
-    "/api/products", 
+    "/api/products",
+    protect, 
+    authorize("user"),
     validateProduct,
     productController.createProduct
 );
 
 router.put(
     "/api/products/:id", 
+    protect,
+    authorize("user"),
     validateProduct,
     productController.updateProduct
 );
@@ -65,10 +72,12 @@ router.put(
 
 router.patch(
   "/api/products/:id",
+  protect,
+  authorize("admin"),
   validateProductForPatch,
   productController.patchProduct
 );
 
-router.delete("/api/products/:id", productController.deleteProduct);
+router.delete("/api/products/:id",protect,authorize("admin"), productController.deleteProduct);
 
 module.exports = router;

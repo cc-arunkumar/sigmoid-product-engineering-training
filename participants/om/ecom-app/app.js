@@ -5,12 +5,14 @@ const app = express();
 
 const logger = require("./middleware/logger");
 const productRoutes = require("./routes/productRoutes");
-const validate = require("./middleware/validateProduct");
+// const validate = require("./middleware/validateProduct");
 const errorHandler = require("./middleware/errorHandler");
+const { apiLimiter } = require("./middleware/rateLimiter");
 const authRoutes = require("./routes/authRoutes");
 
 app.use(express.json()); //this is middleware which helps use express json
 app.use(logger);
+app.use(apiLimiter);
 
 app.use(productRoutes);
 // app.use(validate);

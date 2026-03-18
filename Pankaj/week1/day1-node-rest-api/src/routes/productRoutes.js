@@ -5,14 +5,18 @@ const productController = require("../controllers/productControllers");
 const validateProduct = require("../middleware/validateProduct");
 const validateProductPartial = require("../middleware/validateProductPartial");
 
-// ✅ Correct import
+
+
+//  Correct import
 const { protect, authorize } = require("../middleware/authMiddleware");
 
+const cache = require("../middleware/cache");
+
 // GET all products (public)
-router.get("/products", productController.getAllProducts);
+router.get("/products", cache(60000), productController.getAllProducts);
 
 // GET product by ID (public)
-router.get("/products/:id", productController.getProductById);
+router.get("/products/:id", cache(60000), productController.getProductById);
 
 // CREATE product (protected)
 router.post(

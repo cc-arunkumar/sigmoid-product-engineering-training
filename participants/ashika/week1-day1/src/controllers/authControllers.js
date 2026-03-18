@@ -3,28 +3,37 @@ const AppError = require("../utils/appError");
 
 const jwt= require("jsonwebtoken");
 
-const USER={
+const USER=[{
     id:1,
     username:"admin",
-    password:"1234"
-};
+    password:"1234",
+    role:"admin"
+},
+{
+    id:2,
+    username:"user",
+    password:"1234",
+    role:"user"
+}
+    
+];
 
 exports.login=(req, res, next)=>{
     try{
 
       const { username, password}=req.body;
 
-      if(!username || !password ){
-        return  next(new AppError("please enter credentials" , 400));
+       const user=USER.find(u=>u.username===username);
+
+      if(!user || !user.password ===password){
+        return  next(new AppError("please enter valid credentials" , 401));
       }
 
-        if(username!==USER.username || password!==USER.password ){
-        return  next(new AppError("please enter valid credentials" , 400));
-      }
 
       const token=jwt.sign({
          userid:USER.id,
-         username:USER.username
+         username:USER.username,
+          role:user.role
       },
       process.env.JWT_SECRET||"MYSECRETKEY",
       {

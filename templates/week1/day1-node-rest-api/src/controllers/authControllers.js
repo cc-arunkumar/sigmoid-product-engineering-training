@@ -4,11 +4,21 @@ import AppError from "../utils/appError.js";
 
 // Hardcoded user credentials
 
-const user = {
+const users = [
+    {
     id:1,
-    username:"admin",
-    password:"admin@123"
-};
+    username:"admin1",
+    password:"admin@123",
+    role:"admin"
+},
+{
+    id:2,
+    username:"user1",
+    password:"user@123",
+    role:"user"
+}
+
+];
 
 export const login = (req,res,next) => {
     try{
@@ -17,18 +27,20 @@ export const login = (req,res,next) => {
         if(!username || !password){
             return next(new AppError("You forgot to put username or password",400));
         }
+        const user = users.find(u => u.username === username);
 
         //2. Validate credentials
         if(username!=user.username || password!=user.password){
             return next(new AppError("Wrong credentials",401));
         }
-
+        
         // 3. generate token
 
         const token = jwt.sign(
             {
                 userId:user.id,
-                username:user.username
+                username:user.username,
+                role:user.role
             },
             process.env.JWT_SECRET || "mysecretkey",
             {

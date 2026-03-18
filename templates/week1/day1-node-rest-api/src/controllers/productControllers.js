@@ -71,16 +71,14 @@
 //     }
 // }
 
-const { products } = require("../data/products");
-
-const { successResponse } = require("../utils/apiResponse");
-
-const AppError = require("../utils/appError");
+import products from "../data/products.js"
+import { successResponse } from "../utils/apiResponse.js";
+import AppError from "../utils/appError.js";
 
 
 // GET all products
 
-exports.getAllProducts = (req, res, next) => {
+export const getAllProducts = (req, res, next) => {
 
 try {
 
@@ -97,7 +95,7 @@ return next(new AppError(error.message || "Failed to fetch products", 500));
 
 // GET product by ID
 
-exports.getProductById = (req, res, next) => {
+export const getProductById = (req, res, next) => {
 
 try {
 
@@ -126,7 +124,7 @@ return next(new AppError(error.message || "Failed to fetch product", 500));
 
 // CREATE product
 
-exports.createProduct = (req, res, next) => {
+export const createProduct = (req, res, next) => {
 
 
 
@@ -166,7 +164,7 @@ return next(new AppError(error.message || "Failed to create product", 500));
 
 // UPDATE product (PUT - full update)
 
-exports.modifyProduct = (req, res, next) => {
+export const modifyProduct = (req, res, next) => {
 
 try {
 
@@ -213,7 +211,7 @@ return next(new AppError(error.message || "Failed to update product", 500));
 
 // PATCH product (partial update)
 
-exports.patchProduct = (req, res, next) => {
+export const patchProduct = (req, res, next) => {
 
 try {
 
@@ -245,7 +243,7 @@ return next(new AppError(error.message || "Failed to patch product", 500));
 
 // DELETE product
 
-exports.deleteProduct = (req, res, next) => {
+export const deleteProduct = (req, res, next) => {
 
 try {
 

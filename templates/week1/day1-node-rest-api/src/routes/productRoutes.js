@@ -1,12 +1,14 @@
 import express from "express";
 import { validateProduct } from "../middleware/validateProduct.js";
 import { validatePatch } from "../middleware/validatePatch.js";
+import { protect } from "../middleware/authMiddleware.js";
+import { authorize } from "../middleware/authorize.js";
 import { getAllProducts,getProductById , createProduct , modifyProduct , deleteProduct , patchProduct} from "../controllers/productControllers.js";
 const router = express.Router();
 router.get("/api/products" , getAllProducts);
 router.get("/api/product/:id" ,getProductById);
-router.post("/api/products" ,validateProduct,createProduct);
-router.put("/api/product/:id",validateProduct,modifyProduct);
-router.delete("/api/product/:id",deleteProduct);
-router.patch("/api/product/:id" , validatePatch,patchProduct);
+router.post("/api/products" ,protect,authorize("user") , validateProduct,createProduct);
+router.put("/api/product/:id",protect,authorize("user"),validateProduct,modifyProduct);
+router.delete("/api/product/:id",protect,authorize("admin"),deleteProduct);
+router.patch("/api/product/:id" , protect,authorize("admin"),validatePatch,patchProduct);
 export default router;

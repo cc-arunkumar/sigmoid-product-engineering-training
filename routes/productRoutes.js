@@ -10,6 +10,6 @@ router.get('/api/products/:id', productController.getProductById);
 
 router.post("/api/products", validateProduct, productController.createProduct);
 router.put("/api/products/:id", validateProduct, productController.updateProduct);
-router.patch("/api/products/:id", validateProductPartial, productController.partialUpdateProduct);
+router.patch("/api/products/:id", validateProductPartial, productController.patchProduct);
 
 module.exports = router;

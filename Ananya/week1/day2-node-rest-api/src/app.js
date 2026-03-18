@@ -1,18 +1,21 @@
 const express= require("express") // express is module with which we will create our apis
-const app = express() 
+const app = express(); 
 
 const productRoutes= require("./routes/productRouter");
 const loggers= require("./middleware/logger");
 const errorHandler= require("./middleware/errorHandler");
+const authRoute= require("./routes/authRouter");
  // middleware so that our express understands the data send in the json format
  app.use(express.json());
 app.use(loggers);
+
 app.use(productRoutes);
-app.use(errorHandler);
+app.use("/api",authRoute);
 
 app.get("/api", (req, res)=>{
     res.send("welcome to backend"); // sending the response
 }) ;
+app.use(errorHandler);
 
 
 app.listen(3000, ()=>{

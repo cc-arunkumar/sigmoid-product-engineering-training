@@ -2,6 +2,7 @@ const express= require("express");
 const router = express.Router();
 const productController = require("../controllers/productControllers");
 const validateProduct= require("../middleware/validateProduct");
+const validateProductPartial = require("../middleware/validateProductPartial");
 const errorHandler = require("../middleware/errorHandler");
 
 router.get("/api/products", errorHandler, productController.getAllProducts);

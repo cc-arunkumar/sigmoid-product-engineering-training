@@ -3,7 +3,7 @@ const {successResponse}=require("../utils/apiResponse");
 const AppError =require("../utils/AppError");
 const USER ={
     id:1,
-    username:"admin",
+    username:"tanisha",
     password:"1234"
 };
 exports.login=(req,res,next)=>{

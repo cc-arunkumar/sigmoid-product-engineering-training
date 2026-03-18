@@ -1,43 +1,30 @@
-exports.validateProduct = (req, res, next) => {
+const { errorResponse } = require("../utils/apiResponse");
+
+const validateProduct = (req, res, next) => {
+
     const { name, price, category, stock } = req.body;
 
-    const isPartial = req.method === "PATCH";
-
-    if (!isPartial || name !== undefined) {
-        if (!name || typeof name !== "string" || name.trim() === "") {
-            return res.status(400).json({
-                success: false,
-                message: isPartial ? "Product name cannot be empty" : "Product name is required"
-            });
-        }
+    // NAME
+    if (typeof name !== "string" || name.trim() === "") {
+        return errorResponse(res, "Product name must be a non-empty string", 400);
     }
 
-    if (!isPartial || price !== undefined) {
-        if (price === undefined || typeof price !== "number" || price <= 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Price must be greater than 0"
-            });
-        }
+    // PRICE
+    if (typeof price !== "number" || isNaN(price) || price <= 0) {
+        return errorResponse(res, "Price must be a number greater than 0", 400);
     }
 
-    if (!isPartial || category !== undefined) {
-        if (!category || typeof category !== "string" || category.trim() === "") {
-            return res.status(400).json({
-                success: false,
-                message: isPartial ? "Category cannot be empty" : "Category is required"
-            });
-        }
+    // CATEGORY
+    if (typeof category !== "string" || category.trim() === "") {
+        return errorResponse(res, "Category must be a non-empty string", 400);
     }
 
-    if (!isPartial || stock !== undefined) {
-        if (stock === undefined || typeof stock !== "number" || stock < 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Stock cannot be negative"
-            });
-        }
+    // STOCK
+    if (typeof stock !== "number" || isNaN(stock) || stock < 0) {
+        return errorResponse(res, "Stock must be a non-negative number", 400);
     }
 
     next();
 };
+
+module.exports = { validateProduct };

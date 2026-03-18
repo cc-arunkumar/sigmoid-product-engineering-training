@@ -4,11 +4,12 @@ const validateProduct = require('../middleware/validateProduct')
 const protect = require('../middleware/authMiddleware')
 const validateProductPartial = require('../middleware/validateProductPartial')
 const authorize = require('../middleware/authorize')
+const cache = require('../middleware/cache')
 
 const router = express.Router();
 
-router.get('/', productController.getAllProducts);
-router.get('/:id', productController.getProductById)
+router.get('/', cache(60000), productController.getAllProducts);
+router.get('/:id', cache(60000), productController.getProductById);
 
 
 

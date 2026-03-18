@@ -1,15 +1,18 @@
 
-
 const express = require("express");
 const app = express();
-
 app.use(express.json());
 
+
+
 // ! adding middlewere
-const {errorHandler} = require("./middlewere/logger")
-const {logger} = require("./middlewere/logger")
+const {errorHandler ,logger} = require("./middlewere/logger")
 app.use(logger)
-app.use(errorHandler);
+
+
+const productroute = require("./Routes/route")
+app.use(productroute);
+
 
 
 app.get("/", (req, res) => {
@@ -18,8 +21,7 @@ app.get("/", (req, res) => {
 
 
 
-const productroute = require("./Routes/route")
-app.use(productroute);
+app.use(errorHandler);
 
 
 app.listen(3000, () => {

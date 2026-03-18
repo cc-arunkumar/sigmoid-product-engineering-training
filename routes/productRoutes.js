@@ -7,29 +7,29 @@ const productController = require("../controllers/productController");
 const validateProduct = require("../middleware/validateProduct")
 const validatePartialProduct = require("../middleware/validatePartialProduct")
 
-router.get("/product", productController.getAllProducts);
+router.get("/", productController.getAllProducts);
 
-router.get("/product/:id", productController.getProductById);
+router.get("/:id", productController.getProductById);
 
 router.post(
-    "/product",
+    "/",
     validateProduct,
     productController.createProduct
 );
 
 router.put(
-    "/product/:id",
+    "/:id",
     validateProduct,
     productController.updateProduct
 );
 
 router.patch(
-    "/product/:id",
+    "/:id",
     validatePartialProduct, 
     productController.updatePartialProduct
 );
 
-router.delete("/product/:id", productController.deleteProduct);
+router.delete("/:id", productController.deleteProduct);
 
 module.exports = router
 

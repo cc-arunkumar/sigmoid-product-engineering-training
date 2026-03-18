@@ -3,7 +3,7 @@ const router = express.Router();
 const productController = require("../controllers/productController");
 const validateProduct = require("../middlewares/validateProduct");
 const validateProductPatch = require("../middlewares/validateProductPatch");
-router.get("/api/products" , productController.getALLProducts);
+router.get("/api/products" , productController.getAllProducts);
 router.get("/api/products/:id", productController.getProductById);
 router.post("/api/products/create" ,validateProduct, productController.createProduct);
 router.put("/api/products/:id" ,validateProduct, productController.updateProduct);

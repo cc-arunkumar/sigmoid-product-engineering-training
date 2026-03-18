@@ -1,5 +1,5 @@
 const validateProductPatch = (req, res, next) => {
-    const {name , price} = req.body;
+    const {name , price , category , stock} = req.body;
 
     if(name){
         if(name.trim() === ""){

@@ -4,13 +4,16 @@ const productController = require("../controllers/productControllers");
 const validateProduct= require("../middleware/validateProduct");
 const validateProductPartial = require("../middleware/validateProductPartial");
 const protect = require("../middleware/authMiddleware");
+const authorize = require("../middleware/authorize");
 
-router.get("/api/products", productController.getAllProducts);
-router.get("/api/products/:id", productController.getProductById );
-router.post("/api/products", protect, validateProduct,productController.createProduct);
-router.put("/api/products/:id", protect, validateProduct,productController.updateP);
-router.delete("/api/products/:id", protect, productController.deleteProduct);
-router.patch("/api/products/:id", protect, validateProductPartial,productController.patchProduct );
+router.get("/api/products", protect, authorize("user", "admin"), productController.getAllProducts);
+router.get("/api/products/:id", protect, authorize("user", "admin"), productController.getProductById);
+
+
+router.post("/api/products", protect, authorize("admin"), validateProduct,productController.createProduct);
+router.put("/api/products/:id", protect, authorize("admin"), validateProduct,productController.updateP);
+router.delete("/api/products/:id", protect, authorize("admin"), productController.deleteProduct);
+router.patch("/api/products/:id", protect, authorize("admin"), validateProductPartial,productController.patchProduct );
 
 
 

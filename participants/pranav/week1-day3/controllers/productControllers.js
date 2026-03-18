@@ -1,124 +1,7 @@
-// const { successResponse } = require("../utils/apiResponse");
-// let products = require("../data/products");
-
-
-// const getAllProducts = (req, res) => {
-//   return successResponse(
-//     res,
-//     "Products fetched successfully",
-//     {
-//       results: products.length,
-//       products
-//     }
-//   );
-// };
-
-
-// const getProductById = (req, res, next) => {
-//   const productId = Number(req.params.id);
-
-//   const product = products.find(p => p.id === productId);
-
-//   if (!product) {
-//     const error = new Error("Wrong ID");
-//     error.statusCode = 404;
-//     return next(error);
-//   }
-
-//   return successResponse(res, "Product fetched successfully", product);
-// };
-
-
-// const createProduct = (req, res) => {
-//   const { name, price, stock, category } = req.body;
-
-//   const newProduct = {
-//     id: products.length + 1,
-//     name,
-//     price,
-//     category,
-//     stock
-//   };
-
-//   products.push(newProduct);
-
-//   return successResponse(res, "Product created", newProduct, 201);
-// };
-
-
-// const updateProducts = (req, res, next) => {
-//   const productId = Number(req.params.id);
-
-//   const product = products.find(p => p.id === productId);
-
-//   if (!product) {
-//     const error = new Error("Wrong ID");
-//     error.statusCode = 404;
-//     return next(error);
-//   }
-
-//   const { name, price, stock, category } = req.body;
-
-//   product.name = name;
-//   product.price = price;
-//   product.stock = stock;
-//   product.category = category;
-
-//   return successResponse(res, "Product updated", product);
-// };
-
-
-// const patchProduct = (req, res, next) => {
-//   const productId = Number(req.params.id);
-
-//   const product = products.find(p => p.id === productId);
-
-//   if (!product) {
-//     const error = new Error("Wrong ID");
-//     error.statusCode = 404;
-//     return next(error);
-//   }
-
-//   Object.keys(req.body).forEach(key => {
-//     product[key] = req.body[key];
-//   });
-
-//   return successResponse(res, "Product partially updated", product);
-// };
-
-
-// const deleteById = (req, res, next) => {
-//   const productId = Number(req.params.id);
-
-//   const product = products.find(p => p.id === productId);
-
-//   if (!product) {
-//     const error = new Error("Wrong ID");
-//     error.statusCode = 404;
-//     return next(error);
-//   }
-
-//   products = products.filter(p => p.id !== productId);
-
-//   return successResponse(res, "Product deleted", null);
-// };
-
-
-// module.exports = {
-//   getAllProducts,
-//   getProductById,
-//   createProduct,
-//   updateProducts,
-//   patchProduct,
-//   deleteById
-// };
-
-
-
-
-
 const products = require("../data/products");
 const { successResponse } = require("../utils/apiResponse");
+const AppError = require("../utils/appError");
+
 
 // GET all products
 exports.getAllProducts = (req, res, next) => {
@@ -129,10 +12,7 @@ exports.getAllProducts = (req, res, next) => {
       products
     );
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to fetch products",
-    });
+    return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
 
@@ -143,10 +23,7 @@ exports.getProductById = (req, res, next) => {
     const product = products.find((p) => p.id === productId);
 
     if (!product) {
-      return next({
-        statusCode: 404,
-        message: "Product not found",
-      });
+      return next(new AppError("Product not found", 404));
     }
 
     return successResponse(
@@ -155,16 +32,13 @@ exports.getProductById = (req, res, next) => {
       product
     );
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to fetch product",
-    });
+    return next(new AppError(error.message || "Failed to fetch product", 500));
   }
 };
 
 // CREATE product (POST)
 exports.createProduct = (req, res, next) => {
-    try {
+  try {
     const { name, price, category, stock } = req.body;
 
     const newProduct = {
@@ -183,10 +57,7 @@ exports.createProduct = (req, res, next) => {
       newProduct
     );
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to create product",
-    });
+    return next(new AppError(error.message || "Failed to create product", 500));
   }
 };
 
@@ -197,10 +68,7 @@ exports.updateProduct = (req, res, next) => {
     const index = products.findIndex((p) => p.id === productId);
 
     if (index === -1) {
-      return next({
-        statusCode: 404,
-        message: "Product not found",
-      });
+      return next(new AppError("Product not found", 404));
     }
 
     const { name, price, category, stock } = req.body;
@@ -212,16 +80,14 @@ exports.updateProduct = (req, res, next) => {
       category,
       stock,
     };
-        return successResponse(
+
+    return successResponse(
       res,
       "Product updated successfully",
       products[index]
     );
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to update product",
-    });
+    return next(new AppError(error.message || "Failed to update product", 500));
   }
 };
 
@@ -232,10 +98,7 @@ exports.patchProduct = (req, res, next) => {
     const product = products.find((p) => p.id === productId);
 
     if (!product) {
-      return next({
-        statusCode: 404,
-        message: "Product not found",
-      });
+      return next(new AppError("Product not found", 404));
     }
 
     Object.assign(product, req.body);
@@ -246,10 +109,7 @@ exports.patchProduct = (req, res, next) => {
       product
     );
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to patch product",
-    });
+    return next(new AppError(error.message || "Failed to patch product", 500));
   }
 };
 
@@ -260,10 +120,7 @@ exports.deleteProduct = (req, res, next) => {
     const index = products.findIndex((p) => p.id === productId);
 
     if (index === -1) {
-            return next({
-        statusCode: 404,
-        message: "Product not found",
-      });
+      return next(new AppError("Product not found", 404));
     }
 
     const deleted = products.splice(index, 1);
@@ -274,9 +131,6 @@ exports.deleteProduct = (req, res, next) => {
       deleted
     );
   } catch (error) {
-    return next({
-      statusCode: 500,
-      message: error.message || "Failed to delete product",
-    });
+    return next(new AppError(error.message || "Failed to delete product", 500));
   }
 };

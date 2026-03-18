@@ -10,10 +10,12 @@ import express from "express"
 import router from "./routes/product_routes.js";  
 import logger from "./middlewares/logger.js";
 import errorHandler from "./middlewares/errorHandler.js";
-import appRouter from "./routes/app_routes.js";
+import appRouter from "./routes/auth_routes.js";
+import { apiLimiter } from "./middlewares/rateLimiter.js";
 const app = express();
 app.use(express.json());
 app.use(logger)
+app.use(apiLimiter)
 app.use(router)
 app.use(appRouter)
 app.use(errorHandler)

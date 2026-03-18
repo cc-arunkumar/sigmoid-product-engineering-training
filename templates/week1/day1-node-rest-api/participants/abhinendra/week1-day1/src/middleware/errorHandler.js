@@ -1,13 +1,10 @@
-const errorHandler= (err, req, res, next)=>{
+const { errorResponse } = require("../utils/apiResponse");
 
-    console.error(err.stack);
+const errorHandler = (err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
 
-    const statuscode= err.statuscode || 500;
+    return errorResponse(res, message, statusCode);
+};
 
-    res.status(statusCode).json({
-        success:false,
-        message : err.message || "Internal Server Error"
-    })
-}
-
-module.exports= errorHandler;
+module.exports = errorHandler;

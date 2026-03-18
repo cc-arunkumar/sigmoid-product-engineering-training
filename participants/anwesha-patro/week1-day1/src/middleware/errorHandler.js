@@ -1,14 +1,32 @@
+const { errorResponse } = require("../utils/apiResponse");
+
 const errorHandler = (err, req, res, next) => {
 
-    console.error(err.stack);
+    // 1. Log full error (better visibility in dev)
+    console.error("ERROR:", {
+        message: err?.message,
+        statusCode: err?.statusCode,
+        stack: err?.stack
+    });
 
-    const statusCode = err.statusCode || 500;
+    // 2. Default values
+    let statusCode = 500;
+    let message = "Internal Server Error";
 
-    res.status(statusCode).json({
-        sucess: false,
-        message: err.message
-    })
+    // 3. Extract safe values from error
+    if (err && typeof err === "object") {
 
+        if (typeof err.statusCode === "number") {
+            statusCode = err.statusCode;
+        }
 
-}
+        if (typeof err.message === "string" && err.message.trim() !== "") {
+            message = err.message;
+        }
+    }
+
+    // 4. Send standardized error response
+    return errorResponse(res, message, statusCode);
+};
+
 module.exports = errorHandler;

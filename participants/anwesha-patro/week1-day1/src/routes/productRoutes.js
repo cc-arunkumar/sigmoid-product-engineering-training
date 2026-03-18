@@ -8,18 +8,18 @@ const validateProduct = require("../middleware/validateProduct");
 
 router.get("/api/products", productController.getAllProducts);
 
-router.get("/api/product/:id", productController.getOneProducts);
+router.get("/api/product/:id", productController.getProductById);
 
 
 
-router.post("/api/products", validateProduct, productController.create);
+router.post("/api/products", validateProduct, productController.createProduct);
 
-router.put("/api/products/:id", validateProduct, productController.updateById);
+router.put("/api/products/:id", validateProduct, productController.updateProduct);
 
 
-router.delete("/api/products/:id", productController.deleteById);
+router.delete("/api/products/:id", productController.deleteProduct);
 
-router.patch("/api/products/:id", validateProduct, productController.updatePartial);
+router.patch("/api/products/:id", validateProduct, productController.patchProduct);
 
 
 module.exports = router;

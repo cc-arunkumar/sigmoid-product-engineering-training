@@ -1,30 +1,24 @@
+const { errorResponse } =require("../utils/apiResponse");
+
 const validate=(req, res , next)=>{
     const { name , price , category , stocks}=req.body;
 
     if(!name || name.trim==="" || typeof name!=="string"){
-        return res.status(400).json({
-            success:false,
-            message:"please enter valid name"
-        })
+        return errorResponse( res, "please enter valid name" , 400 );
     }
 
     if(!price || price<=0 || typeof price!=="number"){
-         return res.status(400).json({
-            success:false,
-            message:"price cannot be negative"
-        })
+       
+        return errorResponse( res, "price cannot be negativ" , 400 )
     }
     if(!category || category.trim===""|| typeof category!=="string"){
-         return res.status(400).json({
-            success:false,
-            message:"category is required"
-        })
+      
+        return errorResponse( res, "category is required" , 400 )
+        
     }
     if(stocks===undefined||stocks<0 || typeof stocks!=="number"){
-         return res.status(400).json({
-            success:false,
-            message:"please enter valid stocks"
-        })
+        return errorResponse( res, "please enter valid stocks" , 400 )
+
     }
     next();
 

@@ -7,11 +7,15 @@ const logger = require("./middleware/logger");
 const productRoutes = require("./routes/productRoutes");
 const validate = require("./middleware/validateProduct");
 const errorHandler = require("./middleware/errorHandler");
+const authRoutes = require("./routes/authRoutes");
 
-app.use(express.json()); //this is middlleware which helps use express json
+app.use(express.json()); //this is middleware which helps use express json
 app.use(logger);
+
 app.use(productRoutes);
-app.use(validate);
+// app.use(validate);
+app.use(authRoutes);
+
 app.use(errorHandler);
 
 app.listen(port, () => {

@@ -2,11 +2,20 @@ const jwt = require("jsonwebtoken");
 const {successResponse} = require("../utils/apiResponse");
 const AppError = require("../utils/appError");
 
-const USER = {
-    id: 1, 
-    username: "admin",
-    password: "1234"
-}
+const USER = [
+    {
+        id: 1, 
+        username: "admin",
+        password: "1234",
+        role: "admin"
+    },
+    {
+        id: 2, 
+        username: "user",
+        password: "1234",
+        role: "user"
+    }
+]
 
 exports.login = (req, res, next) => {
     try{
@@ -17,15 +26,18 @@ exports.login = (req, res, next) => {
             return next(new AppError("Username and password are required", 400));
         }
 
-        // Check credentials
-        if(username != USER.username || password != USER.password){
-            return next(new AppError("Invalid Credentials", 401));
+        // Find user
+        const user = USER.find(u => u.username === username);
+
+        if(!user|| user.password !== password){
+            return next(new AppError("Invalid credentials", 401));
         }
 
         const token = jwt.sign(
             {
-                userId: USER.id,
-                username: USER.username
+                userId: user.id,
+                username: user.username,
+                role: user.role
             },
             process.env.JWT_SECRET || "mysecretkey",{
                 expiresIn: "1h"

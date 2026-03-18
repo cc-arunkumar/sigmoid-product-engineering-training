@@ -1,44 +1,51 @@
-const jwt = require('jsonwebtoken');
-const {successResponse, errorResponse} = require('../utils/apiResponse');
-const AppError = require('../utils/appError');
+const jwt = require("jsonwebtoken")
+const { successResponse } = require("../utils/apiResponse");
+const AppError = require("../utils/appError")
 
-//hardcoded user for demonstration purposes
-const user = {
-  id: 1,
-  username: 'admin',
-  password: '1234' // In production, use hashed passwords and a database
-};
+const USER = [
+    {
+        id: 1,
+        username: "admin",
+        password: "1234",
+        role: "admin"
+    },
+    {
+        id: 2,
+        username: "user",
+        password: "1234",
+        role: "user"
+    }
+]
 
 exports.login = (req, res, next) => {
     try{
-        const { username, password } = req.body;
-
-        //validate input
-        if(!username || !password) {
-            return next(new AppError('Username and password are required', 400));
+        const { username , password } = req.body;
+        
+        if(!username || !password){
+            return next(new AppError("UserName and Password are requires", 400));
         }
 
-        //check credentials
-        if(username !== user.username || password !== user.password) {
-            return next(new AppError('Invalid username or password', 401));
+        const user = USER.find(u => u.username === username);
+
+        if(!user || user.password !== password){
+            return next(new AppError("Invalid Credentials", 401));
         }
 
-        //generate jwt token
         const token = jwt.sign(
-            { 
-            userId: user.id,
-            username: user.username 
+            {
+                userId: user.id,
+                username: user.username,
+                role: user.role
             },
-             process.env.JWT_SECRET || "mysecretkey", 
-             { 
-                expiresIn: '1h' 
-            });
+            process.env.JWT_SECRET || "mysecretkey",
+            {   
+                expiresIn: "1h"
+            }
+        );
 
-            //send response
-            return successResponse(res, 'Login successful', { token });
-
-    } catch (error) {
-        return next(new AppError(error.message ||'Login Failed', 500));
+        return successResponse(res, "Login Succesfull", {token});
+    } 
+    catch(error){
+        return next(new AppError(error.message || "Login Failed", 500));
     }
-
-};
+}

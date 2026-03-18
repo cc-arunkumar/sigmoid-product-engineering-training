@@ -8,8 +8,11 @@ const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const logger = require("./middleware/logger"); //for logger
 const errorHandler = require("./middleware/errorHandler");// for error handler
+const {apiLimiter} = require("./middleware/rateLimiter");
 
 app.use(logger);
+//apply rate limiting globally
+app.use(apiLimiter);
 app.use(productRoutes);
 app.use(authRoutes);
 app.use(errorHandler);

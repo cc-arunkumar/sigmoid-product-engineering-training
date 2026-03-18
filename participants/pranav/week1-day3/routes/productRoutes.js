@@ -10,9 +10,9 @@ const validatePatchProduct = require("../middleware/validatePatchProduct")
 router.get("/",productController.getAllProducts)
       .get("/:id",productController.getProductById)
        .post("/",validateProduct,productController.createProduct)
-       .put("/:id",validateProduct,productController.updateProducts)
+       .put("/:id",validateProduct,productController.updateProduct)
        .patch("/:id",validatePatchProduct, productController.patchProduct)
-       .delete("/:id",productController.deleteById)
+       .delete("/:id",productController.deleteProduct)
 
 
 module.exports= router

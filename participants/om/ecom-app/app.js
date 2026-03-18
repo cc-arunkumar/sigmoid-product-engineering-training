@@ -5,9 +5,9 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Welcome to backend!');
-});
+const productRoutes = require('./routes/productRoutes');
+
+app.use(productRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT} 🚀`);

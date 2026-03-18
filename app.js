@@ -4,8 +4,11 @@ const productRoutes = require("./routes/productRoutes");
 const authRoutes=require("./routes/authRoutes");
 const logger=require("./middleware/logger");
 const errorHandler=require("./middleware/errorHandler");
+const {apiLimiter}=require("./middleware/rateLimiter");
 app.use(express.json());
 app.use(logger);
+//Apply rate limiting globally
+app.use(apiLimiter);
 app.use("/api/product",productRoutes);
 app.use("./api/auth", authRoutes);
 app.use(errorHandler);

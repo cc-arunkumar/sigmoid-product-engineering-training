@@ -6,11 +6,21 @@ const appError = require("../utils/appError");
 
 
 //hardcoded user (for training purpose)
-const USER = {
-    id: 1,
-    username: "kalpana",
-    password: "kalapana123"
-};
+const USERS = [
+    {
+        id: 1,
+        username: "admin",
+        password: "admin123",
+        role : "admin"
+    },
+    {
+        id : 2,
+        username : "user",
+        password : "user123",
+        role : "user"
+    }
+]
+
 
 exports.login = (req, res, next) => {
     try {
@@ -20,27 +30,33 @@ exports.login = (req, res, next) => {
         if (!username || !password) {
             return next(new appError("username and password are required", 400));
         }
+
+        //find user
+        const user = USERS.find(u => u.username === username);
+
         //check credentials
-        if (username !== USER.username || password !== USER.password) {
+        if (!user || user.password !== password) {
             return next(new appError("Invalid Credentials", 401));
         }
 
 
-        //generate token
+        //generate token with role
+
         const token = jwt.sign({
-            userId: USER.id,
-            userName: USER.username
+            userId: user.id,
+            userName: user.username,
+            role : user.role
         },
-            process.env.JWT_SECRET || "mysecretkey",
+        process.env.JWT_SECRET || "mysecretkey",
             {
                 expiresIn: "1h"
             }
         );
 
         //send response
-        return successResponse(res, "Login Sucessfully" , {token});
+        return successResponse(res, "Login Sucessfully", { token });
     }
-    catch(error){
+    catch (error) {
         return next(new appError(error.message) || "Login Failed", 500);
     }
 };

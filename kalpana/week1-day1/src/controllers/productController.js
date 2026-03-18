@@ -59,7 +59,7 @@ exports.createProduct = (req, res, next) => {
 
         const newProduct = {
 
-            id: products.length + 1,
+            id: products.length + 100 + 1,
 
             name,
 

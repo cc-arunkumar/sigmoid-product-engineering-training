@@ -9,7 +9,11 @@ app.use(express.json());
 const logger = require("./middleware/logger");
 app.use(logger);
 
-app.use(productRoutes);
+const {apiLimiter} = require("./middleware/rateLimiter");
+//apply rate limiting globally
+
+
+app.use("/api/products",apiLimiter,productRoutes);
 app.use("/api/auth",authRoutes);
 
 const errorHandler = require("./middleware/errorHandler");

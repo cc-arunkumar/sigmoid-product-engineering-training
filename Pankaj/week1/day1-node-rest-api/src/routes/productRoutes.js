@@ -20,11 +20,7 @@ router.put("/api/products/:id", validateProduct, productController.updateProduct
 // DELETE product
 router.delete("/api/products/:id", productController.deleteProduct);
 
-// PATCH product ✅ (FIXED)
-router.patch(
-  "/api/products/:id",
-  validateProductPartial,
-  productController.patchProduct
-);
+// PATCH product
+router.patch("/api/products/:id", validateProductPartial, productController.patchProduct);
 
 module.exports = router;

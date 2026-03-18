@@ -1,35 +1,33 @@
-const validateProduct = (req, res, next) => {
-  const { name, price, category, stock } = req.body;
+const validate=(req, res , next)=>{
+    const { name , price , category , stocks}=req.body;
 
-  if (!name || name.trim() === "") {
-    return res.status(400).json({
-      success: false,
-      message: "Product name is required"
-    });
-  }
+    if(!name || name.trim==="" || typeof name!=="string"){
+        return res.status(400).json({
+            success:false,
+            message:"please enter valid name"
+        })
+    }
 
-  if (price === undefined || price <= 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Price must be greater than 0"
-    });
-  }
+    if(!price || price<=0 || typeof price!=="number"){
+         return res.status(400).json({
+            success:false,
+            message:"price cannot be negative"
+        })
+    }
+    if(!category || category.trim===""|| typeof category!=="string"){
+         return res.status(400).json({
+            success:false,
+            message:"category is required"
+        })
+    }
+    if(stocks===undefined||stocks<0 || typeof stocks!=="number"){
+         return res.status(400).json({
+            success:false,
+            message:"please enter valid stocks"
+        })
+    }
+    next();
 
-  if (!category || category.trim() === "") {
-    return res.status(400).json({
-      success: false,
-      message: "Category is required"
-    });
-  }
+}
 
-  if (stock === undefined || stock < 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Stock cannot be negative"
-    });
-  }
-
-  next();
-};
-
-module.exports = validateProduct;
+module.exports=validate;

@@ -1,35 +1,35 @@
-const validateProductPartial = (req, res, next) => {
-  const { name, price, category, stock } = req.body;
+const { errorResponse } = require("../utils/apiResponse");
 
-  if (name !== undefined && name.trim() === "") {
-    return res.status(400).json({
-      success: false,
-      message: "Product name cannot be empty"
-    });
-  }
+const patchProduct = (req, res, next) => {
+    const { name, price, category, stocks } = req.body;
 
-  if (price !== undefined && price <= 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Price must be greater than 0"
-    });
-  }
+    if (name !== undefined) {
+        if (!name || name.trim === "" || typeof name !== "string") {
+            return errorResponse(res, "please enter valid name", 400);
+        }
+    }
+    if (price !== undefined) {
+        if (!price || price <= 0 || typeof price !== "number") {
 
-  if (category !== undefined && category.trim() === "") {
-    return res.status(400).json({
-      success: false,
-      message: "Category cannot be empty"
-    });
-  }
+            return errorResponse(res, "price cannot be negativ", 400)
+        }
+    }
 
-  if (stock !== undefined && stock < 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Stock cannot be negative"
-    });
-  }
+    if (category !== undefined) {
+        if (!category || category.trim === "" || typeof category !== "string") {
 
-  next();
-};
+            return errorResponse(res, "category is required", 400)
 
-module.exports = validateProductPartial;
+        }
+    }
+
+    if (stocks !== undefined) {
+        if (stocks === undefined || stocks < 0 || typeof stocks !== "number") {
+            return errorResponse(res, "please enter valid stocks", 400)
+        }
+
+    }
+    next();
+}
+
+module.exports = patchProduct;

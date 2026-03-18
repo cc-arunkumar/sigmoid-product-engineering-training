@@ -111,6 +111,7 @@
 const products = require("../data/products");
 
 const { successResponse } = require("../utils/apiresponses");
+const AppError = require("../utils/appError");
 
 
 // GET all products
@@ -123,14 +124,7 @@ exports.getallproducts = (req, res, next) => {
 
     } catch (error) {
 
-        return next({
-
-            statusCode: 500,
-
-            message: error.message || "Failed to fetch products"
-
-        });
-
+        return next( new AppError(error.message || "failed to fetch products" , 500));
     }
 
 };
@@ -149,13 +143,7 @@ exports.getproductbyId = (req, res, next) => {
 
         if (!product) {
 
-            return next({
-
-                statusCode: 404,
-
-                message: "Product not found"
-
-            });
+           return next( new AppError(error.message || "failed to fetch products" , 500));
 
         }
 
@@ -213,13 +201,7 @@ exports.createproducts = (req, res, next) => {
 
     } catch (error) {
 
-        return next({
-
-            statusCode: 500,
-
-            message: error.message || "Failed to create product"
-
-        });
+       return next( new AppError(error.message || "failed to create products" , 500));
 
     }
 
@@ -272,13 +254,7 @@ exports.updateProduct = (req, res, next) => {
 
     } catch (error) {
 
-        return next({
-
-            statusCode: 500,
-
-            message: error.message || "Failed to update product"
-
-        });
+      return next( new AppError(error.message || "failed to update products" , 500));
 
     }
 
@@ -316,13 +292,7 @@ exports.updatePartialProduct = (req, res, next) => {
 
     } catch (error) {
 
-        return next({
-
-            statusCode: 500,
-
-            message: error.message || "Failed to patch product"
-
-        });
+       return next( new AppError(error.message || "failed to patch products" , 500));
 
     }
 
@@ -360,13 +330,7 @@ exports.DeletebyId = (req, res, next) => {
 
     } catch (error) {
 
-        return next({
-
-            statusCode: 500,
-
-            message: error.message || "Failed to delete product"
-
-        });
+       return next( new AppError(error.message || "failed to delete products" , 500));
 
     }
 

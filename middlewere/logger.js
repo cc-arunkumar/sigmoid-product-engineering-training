@@ -21,29 +21,29 @@ const validation = (req, res, next) => {
 
     console.log("validation called");
 
-    if (!name || name.trim() === "") {
+    if (typeof name !== "string" || name.trim() === "") {
         return res.status(400).json({
             success: false,
-            message: "Product name is required"
+            message: "Product name must be a non-empty string"
         });
     }
 
-    if (price === undefined || price <= 0) {
+    // PRICE
+    if (typeof price !== "number" || isNaN(price) || price <= 0) {
         return res.status(400).json({
             success: false,
-            message: "Price must be greater than 0"
+            message: "Price must be a number greater than 0"
         });
     }
 
-    if (!brand || brand.trim() === "") {
-        console.log("brand nahi paya hai")
+    // CATEGORY
+    if (typeof brand !== "string" || brand.trim() === "") {
         return res.status(400).json({
             success: false,
-            message: "Brand is required"
+            message: "Category must be a non-empty string"
         });
-        console.log("ye chalegha hi nahi")
     }
-    console.log("everything is good")
+
     next();
 }
 

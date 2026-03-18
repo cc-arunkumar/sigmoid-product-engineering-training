@@ -24,6 +24,4 @@ app.listen(3000, () => {
     console.info("server running on http://localhost:3000/api");
     console.info("products running on http://localhost:3000/api/products");
     console.info("auth running on http://localhost:3000/api/auth/login");
-    // console.info("users running on http://localhost:3000/users");
-    // console.info("orders running on http://localhost:3000/orders");
 })

@@ -8,10 +8,16 @@ const productRoutes=require("./routes/productRoutes.js");
 const authRoutes=require("./routes/authRoutes.js");
 const logger=require("./middleware/logger.js");
 const errorHandler = require("./middleware/errorHandler.js");
+const {apiLimiter} = require("./middleware/rateLimiter.js");
 app.use(logger);
+app.use(apiLimiter);
 app.use("/api",productRoutes);
 app.use("/api/auth",authRoutes);
 app.use(errorHandler);
 app.listen(3000,()=>{
     console.log("Server started on port 3000");
 });
+
+
+
+

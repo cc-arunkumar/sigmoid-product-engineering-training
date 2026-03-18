@@ -1,30 +1,30 @@
+const { errorResponse } = require("../utils/apiResponse");
+
 const validateProduct = (req, res, next) => {
-    const {name, price, category, stock} = req.body;
+    const { name, price, category, stock } = req.body;
 
-    if(!name || name.trim() === ""){
-        const error = new Error("Name is required");
-        error.statusCode = 404;
-        return next(error);
+    // 1. Validate NAME
+    if (typeof name !== "string" || name.trim() === "") {
+        return errorResponse(res, "Product name must be a non-empty string", 400);
     }
 
-    if(price === undefined || price < 0){
-        const error = new Error("Price should be greater than 0");
-        error.statusCode = 404;
-        return next(error);
+    // 2. Validate PRICE
+    if (typeof price !== "number" || isNaN(price) || price <= 0) {
+        return errorResponse(res, "Price must be a number greater than 0", 400);
     }
 
-    if(!category || category.trim() === ""){
-        const error = new Error("Category name is required");
-        error.statusCode = 404;
-        return next(error);
+    // 3. Validate CATEGORY
+    if (typeof category !== "string" || category.trim() === "") {
+        return errorResponse(res, "Category must be a non-empty string", 400);
     }
 
-    if(stock === undefined || stock < 0){
-        const error = new Error("Stock should be greater than 0");
-        error.statusCode = 404;
-        return next(error);
+    // 4. Validate STOCK
+    if (typeof stock !== "number" || isNaN(stock) || stock < 0) {
+        return errorResponse(res, "Stock must be a non-negative number", 400);
     }
+
+    // If all checks pass, move to the next function (the Controller)
     next();
-}
+};
 
 module.exports = validateProduct;

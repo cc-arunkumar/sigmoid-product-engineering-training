@@ -1,30 +1,44 @@
-const validateProductPartial = (req, res, next) => {
-    const {name, price, category, stock} = req.body;
+const { errorResponse } = require("../utils/apiResponse");
 
-    if(name !== undefined && name.trim() === ""){
-        const error = new Error("Name is required");
-        error.statusCode = 404;
-        return next(error);
+const validatePatchProduct = (req, res, next) => {
+    const { name, stock, price, category } = req.body;
+    const errors = [];
+
+    // 1. Optional Name Validation
+    if (name !== undefined) {
+        if (typeof name !== "string" || name.trim() === "") {
+            errors.push("Name must be a valid string");
+        }
     }
 
-    if(price !== undefined && price < 0){
-        const error = new Error("Price should be greater than 0");
-        error.statusCode = 404;
-        return next(error);
+    // 2. Optional Stock Validation
+    if (stock !== undefined) {
+        if (typeof stock !== "number" || stock < 0) {
+            errors.push("Stock must be a number >= 0");
+        }
     }
 
-    if(category !== undefined && category.trim() === ""){
-        const error = new Error("Category name is required");
-        error.statusCode = 404;
-        return next(error);
+    // 3. Optional Price Validation
+    if (price !== undefined) {
+        if (typeof price !== "number" || price <= 0) {
+            errors.push("Price must be a number > 0");
+        }
     }
 
-    if(stock !== undefined && stock < 0){
-        const error = new Error("Stock should be greater than 0");
-        error.statusCode = 404;
-        return next(error);
+    // 4. Optional Category Validation
+    if (category !== undefined) {
+        if (typeof category !== "string" || category.trim() === "") {
+            errors.push("Category must be a valid string");
+        }
     }
+
+    // If any errors were collected, return them all at once
+    if (errors.length > 0) {
+        return errorResponse(res, errors, 400);
+    }
+
+    // All checks passed, move to the controller
     next();
-}
+};
 
-module.exports = validateProductPartial;
+module.exports = validatePatchProduct;

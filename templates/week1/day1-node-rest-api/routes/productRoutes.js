@@ -23,6 +23,6 @@ router.delete("/api/product/:id",
 
 router.patch("/api/product/:id",
      validatePartialProduct,
-     productController.updatePartialProduct);
+     productController.patchProduct);
 
 module.exports = router;

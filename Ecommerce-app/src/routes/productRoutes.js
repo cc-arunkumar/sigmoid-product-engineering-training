@@ -6,17 +6,14 @@ const productController = require("../controllers/productControllers")
 const validateProduct = require("../middleware/validateProduct")
 const validatePartialProduct = require("../middleware/validateProductPartial") // Import the new middleware for PATCH requests
 const protectRoute = require("../middleware/authMiddleware")
+const authorize = require("../middleware/authorize")
 
 router.get("/products", productController.getAllProducts)
-
 router.get("/product/:id", productController.getProductById)
 
-router.post("/products", protectRoute, validateProduct, productController.createProduct)
-
-router.put("/products/:id", protectRoute, validateProduct, productController.updateProduct)
-
-router.delete("/product/:id", protectRoute, productController.deleteProduct)
-
-router.patch("/product/:id", protectRoute, validatePartialProduct, productController.updatePartialProduct);
+router.post("/products", protectRoute,authorize("user") , validateProduct, productController.createProduct)
+router.put("/products/:id", protectRoute, authorize("user"), validateProduct, productController.updateProduct)
+router.delete("/product/:id", protectRoute, authorize("admin"), productController.deleteProduct)
+router.patch("/product/:id", protectRoute, authorize("admin"), validatePartialProduct, productController.updatePartialProduct);
 
 module.exports = router;

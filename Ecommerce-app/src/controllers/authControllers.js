@@ -3,11 +3,20 @@ const {successResponse} = require("../utils/apiResponse");
 const AppError = require("../utils/AppError");
 
 //Hard coded user details for testing purpose
-const USER = {
-    id : 1,
-    username : "admin",
-    password : "admin123"
-};
+const USERS = [
+    {
+        id : 1,
+        username : "admin1",
+        password : "admin123",
+        role : "admin"
+    },
+    {
+        id : 2,
+        username : "user1",
+        password : "user123",
+        role : "user"
+    }
+];
 
 exports.login = (req,res,next) => {
     try {
@@ -17,17 +26,23 @@ exports.login = (req,res,next) => {
         if(!username || !password){
             return next(new AppError("Username and password are required !!",400));
         }
+        const USER = USERS.find(u => u.username === username);
 
         //2. validate the user credentials
-        if(username !== USER.username || password !== USER.password){
+        if(!USER || USER.password !== password){
             return next(new AppError("Invalid username or password !!",401));
         }
+        
+        // if(username !== USER.username || password !== USER.password){
+        //     return next(new AppError("Invalid username or password !!",401));
+        // }
 
         //3. generate a JWT token
         const token = jwr.sign(
             {
-                id : USER.id, 
-                username : USER.username
+                userId : USER.id, 
+                username : USER.username,
+                role : USER.role
             }, 
             process.env.JWT_SECRET || "secretkey",
             {
@@ -39,4 +54,4 @@ exports.login = (req,res,next) => {
     } catch (error) {
         return next(new AppError("Error occurred while generating token !!",500));
     }
-}
+};

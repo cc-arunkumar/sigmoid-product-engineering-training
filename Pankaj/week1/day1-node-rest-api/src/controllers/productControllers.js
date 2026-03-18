@@ -3,6 +3,7 @@ const products = require("../data/products");
 const { successResponse } = require("../utils/apiResponse");
 
 const AppError = require("../utils/AppError");
+const AppResponse = require("../utils/AppResponse");
 
 
 // GET all products
@@ -11,7 +12,7 @@ exports.getAllProducts = (req, res, next) => {
 
     try {
 
-        return successResponse(res, "All products fetched successfully", products);
+        return new AppResponse(res, "All products fetched successfully", products);
 
     } catch (error) {
 
@@ -40,7 +41,7 @@ exports.getProductById = (req, res, next) => {
         }
 
 
-        return successResponse(res, "Product fetched successfully", product);
+        return new AppResponse(res, "Product fetched successfully", product);
 
     } catch (error) {
 
@@ -80,7 +81,7 @@ exports.createProduct = (req, res, next) => {
         products.push(newProduct);
 
 
-        return successResponse(res, "Product created successfully", newProduct);
+        return new AppResponse(res, "Product created successfully", newProduct);
 
     } catch (error) {
 
@@ -127,7 +128,7 @@ exports.updateProduct = (req, res, next) => {
         };
 
 
-        return successResponse(res, "Product updated successfully", products[index]);
+        return new AppResponse(res, "Product updated successfully", products[index]);
 
     } catch (error) {
 
@@ -159,7 +160,7 @@ exports.patchProduct = (req, res, next) => {
         Object.assign(product, req.body);
 
 
-        return successResponse(res, "Product updated partially", product);
+        return new AppResponse(res, "Product updated partially", product);
 
     } catch (error) {
 
@@ -191,7 +192,7 @@ exports.deleteProduct = (req, res, next) => {
         const deletedProduct = products.splice(index, 1);
 
 
-        return successResponse(res, "Product deleted successfully", deletedProduct);
+        return new AppResponse(res, "Product deleted successfully", deletedProduct);
 
     } catch (error) {
 

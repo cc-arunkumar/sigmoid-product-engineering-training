@@ -4,50 +4,50 @@ const { errorResponse } = require("../utils/apiResponse");
 const errorHandler = (err, req, res, next) => {
 
 
-// 1. Log full error for debugging
+    // 1. Log full error for debugging
 
-console.error("ERROR:", {
+    console.error("ERROR:", {
 
-message: err?.message,
+        message: err?.message,
 
-statusCode: err?.statusCode,
+        statusCode: err?.statusCode,
 
-stack: err?.stack
+        stack: err?.stack
 
-});
-
-
-// 2. Extract safe values
-
-let statusCode = 500;
-
-let message = "Internal Server Error";
+    });
 
 
-// 3. Validate incoming error object
+    // 2. Extract safe values
 
-if (err && typeof err === "object") {
+    let statusCode = 500;
 
-
-if (typeof err.statusCode === "number") {
-
-statusCode = err.statusCode;
-
-}
+    let message = "Internal Server Error";
 
 
-if (typeof err.message === "string" && err.message.trim() !== "") {
+    // 3. Validate incoming error object
 
-message = err.message;
-
-}
-
-}
+    if (err && typeof err === "object") {
 
 
-// 4. Send standardized response
+        if (typeof err.statusCode === "number") {
 
-return errorResponse(res, message, statusCode);
+            statusCode = err.statusCode;
+
+        }
+
+
+        if (typeof err.message === "string" && err.message.trim() !== "") {
+
+            message = err.message;
+
+        }
+
+    }
+
+
+    // 4. Send standardized response
+
+    return errorResponse(res, message, statusCode);
 
 };
 

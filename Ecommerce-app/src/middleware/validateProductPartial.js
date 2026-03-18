@@ -1,44 +1,36 @@
-const validateProductPartial = (req, res, next) => {
-  const { name, price, category, stock } = req.body;
+const { errorResponse } = require("../utils/apiResponse");
 
-  // 1. Check Name (Must be string AND not empty)
+const validateProductPartial = (req, res, next) => {
+  const { name, stock, price, category } = req.body;
+
+  const errors = [];
+
   if (name !== undefined) {
     if (typeof name !== "string" || name.trim() === "") {
-      return res.status(400).json({
-        success: false,
-        message: "Product name must be a non-empty string"
-      });
+      errors.push("Name must be a valid string");
     }
   }
 
-  // 2. Check Price (Must be number AND > 0)
-  if (price !== undefined) {
-    if (typeof price !== "number" || price <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Price must be a number greater than 0"
-      });
-    }
-  }
-
-  // 3. Check Category (Must be string AND not empty)
-  if (category !== undefined) {
-    if (typeof category !== "string" || category.trim() === "") {
-      return res.status(400).json({
-        success: false,
-        message: "Category must be a non-empty string"
-      });
-    }
-  }
-
-  // 4. Check Stock (Must be number AND >= 0)
   if (stock !== undefined) {
     if (typeof stock !== "number" || stock < 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Stock must be a number and cannot be negative"
-      });
+      errors.push("Stock must be a number >= 0");
     }
+  }
+
+  if (price !== undefined) {
+    if (typeof price !== "number" || price <= 0) {
+      errors.push("Price must be a number > 0");
+    }
+  }
+
+  if (category !== undefined) {
+    if (typeof category !== "string" || category.trim() === "") {
+      errors.push("Category must be a valid string");
+    }
+  }
+
+  if (errors.length > 0) {
+    return errorResponse(res, errors, 400);
   }
 
   next();

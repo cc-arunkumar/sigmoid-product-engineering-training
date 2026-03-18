@@ -17,7 +17,10 @@ const protect = (req, res, next) => {
             token,
             process.env.JWT_SECRET || "mysecretkey"
         );
+        req.user=decoded;
+        next();
     }
+
     catch(error){
         if(error.name === "JsonWebTokenError"){
             return next(new AppError("Invalid Token", 401))

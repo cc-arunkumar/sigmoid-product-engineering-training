@@ -5,11 +5,12 @@ const productController = require("../controllers/productController");
 const validateProduct = require("../middleware/validateProduct");
 const validateProductPatch = require("../middleware/validateProductPatch");
 const protect=require("../middleware/authMiddleware");
-const authorize=require("../middleware/authorize")
+const authorize=require("../middleware/authorize");
+const cache=require("../middleware/cache");
 
 // GET
-router.get("/api/products", productController.getAllProducts);
-router.get("/api/products/:id", productController.getProductById);
+router.get("/api/products",cache(60000), productController.getAllProducts);
+router.get("/api/products/:id",cache(60000), productController.getProductById);
 
 // POST
 router.post("/api/products",protect,authorize("user"), validateProduct, productController.createProduct);

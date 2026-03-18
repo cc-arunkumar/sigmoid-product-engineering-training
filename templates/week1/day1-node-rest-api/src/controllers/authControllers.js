@@ -1,33 +1,45 @@
 const jwt = require("jsonwebtoken");
-const {successResponse} = require("../utils/apiResponse");
+const { successResponse } = require("../utils/apiResponse");
 const AppError = require("../utils/AppError");
 
 // Hardcoded user (for training purpose)
-const USER = {
-    id: 1,
-    username: "admin",
-    password: "1234"
-};
+const USERS = [
+    {
+        id: 1,
+        username: "admin",
+        password: "1234",
+        role: "admin"
+    },
+    {
+        id: 2,
+        username: "user",
+        password: "1234",
+        role: "user"
+    }
+];
+
 
 exports.login = (req, res, next) => {
-    try{
-        const {username, password} = req.body;
+    try {
+        const { username, password } = req.body;
 
-        // 1. Validate input
-        if(!username || !password){
+        if (!username || !password) {
             return next(new AppError("Username and password are required", 400));
         }
-        
-        // 2. Check credentials
-        if(username !== USER.username || password !== USER.password){
+
+        // Find user
+        const user = USERS.find(u => u.username === username);
+
+        if (!user || user.password !== password) {
             return next(new AppError("Invalid credentials", 401));
         }
 
-        // 3. Generate token
+        // Generate token with role
         const token = jwt.sign(
             {
-                userId: USER.id,
-                username: USER.username
+                userId: user.id,
+                username: user.username,
+                role: user.role
             },
             process.env.JWT_SECRET || "mysecretkey",
             {
@@ -35,10 +47,9 @@ exports.login = (req, res, next) => {
             }
         );
 
-        // 4. Send response
-        return successResponse(res, "Login successful", {token});
+        return successResponse(res, "Login successful", { token });
     }
-    catch(error){
+    catch (error) {
         return next(new AppError(error.message || "Login failed", 500));
     }
 }

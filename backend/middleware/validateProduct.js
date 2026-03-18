@@ -1,30 +1,51 @@
+const { errorResponse } = require("../utils/apiResponse");
+
+
 const validateProduct = (req, res, next) => {
-    const {name, price, category, stock} = req.body;
 
-    if(!name || name.trim() === ""){
-        const error = new Error("Name is required");
-        error.statusCode = 404;
-        return next(error);
-    }
 
-    if(price === undefined || price < 0){
-        const error = new Error("Price should be greater than 0");
-        error.statusCode = 404;
-        return next(error);
-    }
+const { name, price, category, stock } = req.body;
 
-    if(!category || category.trim() === ""){
-        const error = new Error("Category name is required");
-        error.statusCode = 404;
-        return next(error);
-    }
 
-    if(stock === undefined || stock < 0){
-        const error = new Error("Stock should be greater than 0");
-        error.statusCode = 404;
-        return next(error);
-    }
-    next();
+// NAME
+
+if (typeof name !== "string" || name.trim() === "") {
+
+return errorResponse(res, "Product name must be a non-empty string", 400);
+
 }
 
-module.exports = validateProduct;
+
+// PRICE
+
+if (typeof price !== "number" || isNaN(price) || price <= 0) {
+
+return errorResponse(res, "Price must be a number greater than 0", 400);
+
+}
+
+
+// CATEGORY
+
+if (typeof category !== "string" || category.trim() === "") {
+
+return errorResponse(res, "Category must be a non-empty string", 400);
+
+}
+
+
+// STOCK
+
+if (typeof stock !== "number" || isNaN(stock) || stock < 0) {
+
+return errorResponse(res, "Stock must be a non-negative number", 400);
+
+}
+
+
+next();
+
+};
+
+
+module.exports = validateProduct

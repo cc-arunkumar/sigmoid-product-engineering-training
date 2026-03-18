@@ -1,27 +1,22 @@
-const { errorResponse } = require("../utils/apiResponse");
+const AppError = require("../utils/appError");
 
 const validateProduct = (req, res, next) => {
-
     const { name, price, category, stock } = req.body;
 
-    // NAME
     if (typeof name !== "string" || name.trim() === "") {
-        return errorResponse(res, "Product name must be a non-empty string", 400);
+        return next(new AppError("Product name must be a non-empty string", 400));
     }
 
-    // PRICE
     if (typeof price !== "number" || isNaN(price) || price <= 0) {
-        return errorResponse(res, "Price must be a number greater than 0", 400);
+        return next(new AppError("Price must be a number greater than 0", 400));
     }
 
-    // CATEGORY
     if (typeof category !== "string" || category.trim() === "") {
-        return errorResponse(res, "Category must be a non-empty string", 400);
+        return next(new AppError("Category must be a non-empty string", 400));
     }
 
-    // STOCK
     if (typeof stock !== "number" || isNaN(stock) || stock < 0) {
-        return errorResponse(res, "Stock must be a non-negative number", 400);
+        return next(new AppError("Stock must be a non-negative number", 400));
     }
 
     next();

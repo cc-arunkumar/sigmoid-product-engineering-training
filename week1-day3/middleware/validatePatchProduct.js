@@ -1,4 +1,4 @@
-const { errorResponse } = require("../utils/apiResponse");
+const AppError = require("../utils/appError");
 
 const validatePatchProduct = (req, res, next) => {
     const { name, stock, price, category } = req.body;
@@ -29,7 +29,7 @@ const validatePatchProduct = (req, res, next) => {
     }
 
     if (errors.length > 0) {
-        return errorResponse(res, errors, 400);
+        return next(new AppError(errors.join(", "), 400));
     }
 
     next();

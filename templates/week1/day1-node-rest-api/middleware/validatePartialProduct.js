@@ -1,46 +1,67 @@
-const validatePartialProduct = (req, res, next) => {
+const { errorResponse } = require("../utils/apiResponse");
 
-    const { name, price, category, stock } = req.body;
 
-    // Reject empty body (optional but recommended)
-    if (Object.keys(req.body).length === 0) {
-        return res.status(400).json({
-            success: false,
-            message: "No fields provided for update"
-        });
-    }
+const validatePatchProduct = (req, res, next) => {
 
-    // Name validation (only if provided)
-    if (name !== undefined) {
-        if (typeof name !== "string" || name.trim() === "") {
-            return res.status(400).json({
-                success: false,
-                message: "Product name cannot be empty"
-            });
-        }
-    }
+const { name, stock, price, category } = req.body;
 
-    // Price validation (only if provided)
-    if (price !== undefined) {
-        if (typeof price !== "number" || price < 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Price must be >= 0"
-            });
-        }
-    }
+const errors = [];
 
-    // Stock validation (only if provided)
-    if (stock !== undefined) {
-        if (typeof stock !== "number" || stock < 0) {
-            return res.status(400).json({
-                success: false,
-                message: "Stock can't be negative"
-            });
-        }
-    }
 
-    next();
+if (name !== undefined) {
+
+if (typeof name !== "string" || name.trim() === "") {
+
+errors.push("Name must be a valid string");
+
+}
+
+}
+
+
+if (stock !== undefined) {
+
+if (typeof stock !== "number" || stock < 0) {
+
+errors.push("Stock must be a number >= 0");
+
+}
+
+}
+
+
+if (price !== undefined) {
+
+if (typeof price !== "number" || price <= 0) {
+
+errors.push("Price must be a number > 0");
+
+}
+
+}
+
+
+if (category !== undefined) {
+
+if (typeof category !== "string" || category.trim() === "") {
+
+errors.push("Category must be a valid string");
+
+}
+
+}
+
+
+if (errors.length > 0) {
+
+return errorResponse(res, errors, 400);
+
+}
+
+
+next();
+
 };
 
-module.exports = validatePartialProduct;
+
+module.exports = validatePatchProduct;

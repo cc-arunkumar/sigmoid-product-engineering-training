@@ -5,17 +5,17 @@ const router= express.Router();
 const productController=require("../Controllers/productController")
 const validateProduct = require("../Middleware/validateProduct");
 const validatePartialProduct = require("../Middleware/validatePartialProduct");
+const protect = require("../Middleware/authMiddleware");
 
 router.get("/products",productController.getAllProducts);
-
 router.get("/products/:id",productController.getProductById);
 
-router.post("/products",validateProduct,productController.createProduct);
+router.post("/products",protect, validateProduct,productController.createProduct);
 
-router.put("/products/:id",validateProduct,productController.updateProduct);
+router.put("/products/:id",protect,validateProduct,productController.updateProduct);
 
-router.delete("/products/:id",productController.deleteProduct);
+router.delete("/products/:id", protect, productController.deleteProduct);
 
-router.patch("/products/:id",validatePartialProduct, productController.updatePartialProduct);
+router.patch("/products/:id",protect,validatePartialProduct, productController.updatePartialProduct);
 
 module.exports=router;

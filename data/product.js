@@ -3,28 +3,28 @@ const products = [
             id:101,
             name:"laptop",
             price:50000,
-            cateogry:"electronics",
+            category:"electronics",
             stock:10
         },
         {
             id:102,
             name:"Mobile",
             price:100000,
-            cateogry:"electronics",
+            category:"electronics",
             stock:20
         },
         {
             id:103,
             name:"Headphones",
             price:160000,
-            cateogry:"electronics",
+            category:"electronics",
             stock:15
         },
         {
             id:104,
             name:"Keyboard",
             price:1500000,
-            cateogry:"electronics",
+            category:"electronics",
             stock:5
         }
     ];

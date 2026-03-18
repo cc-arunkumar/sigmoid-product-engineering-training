@@ -4,9 +4,9 @@ import { errorHandler } from "./middleware/errorHandler.js";
 const app = express()
 
 import productRoutes from "./routes/productRoutes.js"
+app.use(logger);
 app.use(express.json());
 app.use(productRoutes);
-app.use(logger);
 app.use(errorHandler);
 app.listen(3000, () => {
     console.log("SERVER ON 3000")

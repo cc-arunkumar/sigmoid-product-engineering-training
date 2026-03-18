@@ -4,7 +4,9 @@ const express = require("express") ;
 const router = express.Router() ; 
 
 const controller = require("../Controller/controller");
+
 const { validation } = require("../middlewere/logger");
+const protect = require("../middlewere/authmiddlewere")
 const validatePatchProduct = require("../middlewere/validateProductPartial");
 
 router.get("/api/products" , controller.getAllProducts);
@@ -13,6 +15,7 @@ router.get('/api/product/:id' ,  controller.getProductById);
 
 router.post(
     "/api/productpost",
+    protect , 
     validation , 
     controller.createProduct
 );

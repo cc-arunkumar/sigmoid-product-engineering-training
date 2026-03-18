@@ -96,13 +96,12 @@ exports.getProductById = (req, res, next) => {
 // CREATE product (POST)
 exports.createProduct = (req, res, next) => {
     try {
-        const { name, price, category, stock } = req.body;
+        const {name , price , brand } = req.body;
         const newProduct = {
             id: products.length + 1,
             name,
             price,
-            category,
-            stock
+            brand
         };
         products.push(newProduct);
         return successResponse(res, "Product created successfully", newProduct);

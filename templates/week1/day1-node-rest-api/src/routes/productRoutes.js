@@ -12,5 +12,5 @@ router.get("/product/:id",productController.getProductById);
 router.post("/products",validateProduct,productController.createProduct);
 router.put("/product/:id",validateProduct,productController.updateProduct);
 router.delete("/product/:id",productController.deleteProduct);
-router.patch("/product/:id",validatePartialProduct,productController.updatePartialProduct);
+router.patch("/product/:id",validatePartialProduct,productController.patchProduct);
 module.exports=router;

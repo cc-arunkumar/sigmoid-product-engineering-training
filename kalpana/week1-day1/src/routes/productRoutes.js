@@ -5,6 +5,8 @@ const productController = require("../controllers/productController");
 
 const validateProduct = require("../middleware/validateProduct");
 
+const validatePatchProduct = require("../middleware/validateProductPartial");
+
 router.get("/api/products", productController.getAllProducts);
 router.get("/api/product/:id", productController.getProductById);
 
@@ -20,7 +22,7 @@ router.put(
 );
 router.patch(
     "/api/product/:id",
-    validateProduct,
+    validatePatchProduct,
     productController.updatePartialProduct
 );
 

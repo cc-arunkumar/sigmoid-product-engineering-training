@@ -29,7 +29,7 @@ const validateProduct = (req, res, next) => {
         })
     };
 
-
+    
     next()
 }
 

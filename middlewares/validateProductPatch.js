@@ -1,35 +1,24 @@
+import { AppError } from "../utils/AppError.js";
 const validateProductPatch=(req,res,next)=>{
     const {name,price,category,stock}=req.body
-    if(name){
-        if(name.trim()===""){
-            return res.status(400).json({
-                success:false,
-                message:"Name and price are required"
-            })
+    if(name!==undefined){
+        if(typeof name !== "string" || name.trim() === ""){
+            return next(new AppError("Name must be a non-empty string", 400));
       }
     }
-    if(price){
-        if(price <= 0){
-            return res.status(400).json({
-                success:false,
-                message:"Price must be a positive number"
-            })
+    if(price !== undefined){
+        if(typeof price !== "number" || price <= 0){
+            return next(new AppError("Price must be a positive number", 400));
         }
     }
-    if(category){
-        if(category.trim()===""){
-            return res.status(400).json({
-                success:false,
-                message:"Category must be a non-empty string"
-            })
+    if(category !== undefined){
+        if(typeof category !== "string" || category.trim() === ""){
+            return next(new AppError("Category must be a non-empty string", 400));
         }
     }
-    if(stock){
-        if(stock < 0){
-            return res.status(400).json({
-                success:false,
-                message:"Stock must be a positive number"
-            })
+    if(stock !== undefined){
+        if(typeof stock !== "number" ||  stock < 0){
+            return next(new AppError("Stock cannot be negative", 400));
         }
     }
     next();

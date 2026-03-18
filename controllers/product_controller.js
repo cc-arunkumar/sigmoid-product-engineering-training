@@ -1,29 +1,25 @@
 import { products } from "../data/product_data.js";
-import { sucessResponse, errorResponse } from "../utils/apiResponse.js";
-function getAllProducts(req,res){
+import { AppResponse } from "../utils/AppResponse.js";
+import { AppError } from "../utils/AppError.js";
+
+function getAllProducts(req,res,next){
     try {
-        sucessResponse(res, products)
+        return new AppResponse({ data: products }).send(res);
     } catch (error) {
-        return next({
-            status:500,
-            message:"Failed to fetch products"
-        })
+        return next(new AppError("Failed to fetch products", 500));
     }
 }
-function getProductById(req, res){
+function getProductById(req, res, next){
     try {
         const productId=parseInt(req.params.id)
         const product=products.find(p=>p.id===productId)
-        if(!product) return errorResponse(res, "Product not found", 404)
-        else return sucessResponse(res, product)
+        if(!product) return next(new AppError("Product not found", 404));
+        return new AppResponse({ data: product }).send(res);
     } catch (error) {
-        return next({
-            status:500,
-            message:"Failed to fetch product"
-        })
+        return next(new AppError("Failed to fetch product", 500));
     }
 }
-function createProduct(req, res){
+function createProduct(req, res, next){
     try {
         const {name,price,category,stock}=req.body
         const newProduct={
@@ -34,64 +30,56 @@ function createProduct(req, res){
             stock:stock
         }
         products.push(newProduct)
-        sucessResponse(res, newProduct, "Product created successfully", 201)
+        return new AppResponse({
+            statusCode: 201,
+            data: newProduct,
+            message: "Product created successfully"
+        }).send(res);
     } catch (error) {
-        return next({
-            status:500,
-            message:"Failed to create product"
-        })
+        return next(new AppError("Failed to create product", 500));
     }
 }
-function updateProduct(req, res){
+function updateProduct(req, res, next){
     try {
         const productId=parseInt(req.params.id)
         const product=products.find(p=>p.id===productId)
-        if(!product) return errorResponse(res, "Product not found", 404)
+        if(!product) return next(new AppError("Product not found", 404));
         const {name,price,category,stock}=req.body
         product.name=name
         product.price=price
         product.category=category
         product.stock=stock
-        sucessResponse(res, product)
+        return new AppResponse({ data: product }).send(res);
     } catch (error) {
-        return next({
-            status:500,
-            message:"Failed to update product"
-        })
+        return next(new AppError("Failed to update product", 500));
     }
 }
-function deleteProduct(req, res){
+function deleteProduct(req, res, next){
     try {
         const productId=parseInt(req.params.id)
         const product_index=products.findIndex(p=>p.id===productId)
         if(product_index===-1){
-            return errorResponse(res, "Product not found", 404)
+            return next(new AppError("Product not found", 404));
         }
         products.splice(product_index,1)
-        return sucessResponse(res, null, "Product deleted successfully")
+        return new AppResponse({ data: null, message: "Product deleted successfully" }).send(res);
     } catch (error) {
-        return next({
-            status:500,
-            message:"Failed to delete product"
-        })
+        return next(new AppError("Failed to delete product", 500));
     }
 }
-function partialUpdate(req,res){
+function partialUpdate(req,res,next){
     try {
         const productId=parseInt(req.params.id)
         const product=products.find(p=>p.id===productId)
-        if(!product) return errorResponse(res, "Product not found", 404)
+        if(!product) return next(new AppError("Product not found", 404));
         const {name,price,category,stock}=req.body
         if(name) product.name=name
-        if(price) product.price=price
+        if(price !== undefined) product.price=price
         if(category) product.category=category
-        if(stock) product.stock=stock
-        return sucessResponse(res, product)
+        if(stock !== undefined) product.stock=stock
+        return new AppResponse({ data: product }).send(res);
     } catch (error) {
-        return next({
-            status:500,
-            message:"Failed to update product"
-        })
+        return next(new AppError("Failed to update product", 500));
     }
 }
 export {getAllProducts,getProductById,createProduct,updateProduct,deleteProduct,partialUpdate}

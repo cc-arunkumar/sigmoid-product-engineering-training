@@ -1,28 +1,18 @@
+import { AppError } from "../utils/AppError.js";
+
 const validateProduct = (req, res, next) => {
     const { name, price, category, stock } = req.body;
-    if(!name || name.trim() === ""){
-        return res.status(400).json({
-            success: false,
-            message: "Product name is required"
-        })
+    if(typeof name !== "string" || name.trim() === ""){
+        return next(new AppError("Product name is required", 400));
     };
-    if(price === undefined || price <= 0){
-        return res.status(400).json({
-            success: false,
-            message: "Price must be greater than 0"
-        })
+    if(typeof price !== "number" || price <= 0){
+        return next(new AppError("Price must be a positive number", 400));
     };
-    if(!category || category.trim() === ""){
-        return res.status(400).json({
-            success: false,
-            message: "Category is required"
-        })
+    if(typeof category !== "string" || category.trim() === ""){
+        return next(new AppError("Category is required", 400));
     };
-    if(stock === undefined || stock < 0){
-        return res.status(400).json({
-            success: false,
-            message: "Stock cannot be negative"
-        })
+    if(typeof stock !== "number" || stock < 0){
+        return next(new AppError("Stock cannot be negative", 400));
     };
     next()
 }

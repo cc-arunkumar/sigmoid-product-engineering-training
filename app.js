@@ -7,6 +7,9 @@ const authRoutes = require("./routes/authRoute");
 
 const logger = require("./middlewares/logger");
 const error = require("./middlewares/errorHandler")
+const {apiLimiter} = require("./middlewares/rateLimiter")
+
+app.use(apiLimiter);
 
 app.use(express.json());
 

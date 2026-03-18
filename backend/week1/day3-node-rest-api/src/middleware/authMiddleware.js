@@ -38,4 +38,5 @@ const protect = (req, res, next) => {
     return next(new AppError("Authentication failed", 401));
   }
 };
+
 module.exports = protect;

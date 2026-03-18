@@ -6,6 +6,7 @@ const productController = require("../controllers/productController");
 const validateProduct = require("../middleware/validateProduct");
 const validatePatchProduct = require("../middleware/validatePatchProduct");
 const protect = require("../middleware/authMiddleware");
+const authorize = require("../middleware/authorize");
 
 router.get("/", protect, productController.getAllProducts);
 router.get("/:id", protect, productController.getProductById);
@@ -17,6 +18,11 @@ router.patch(
   productController.patchProduct,
 );
 router.put("/:id", protect, validateProduct, productController.updateProduct);
-router.delete("/:id", protect, productController.deleteProduct);
+router.delete(
+  "/:id",
+  protect,
+  authorize("admin", "lead-guide"),
+  productController.deleteProduct,
+);
 
 module.exports = router;

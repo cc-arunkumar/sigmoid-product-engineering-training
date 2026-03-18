@@ -14,4 +14,6 @@ router.put('/api/product/:id', productController.updateProduct);
 
 router.patch('/api/product/:id', productController.updatePartialProduct);
 
+router.delete('/api/product/:id', productController.deleteProduct);
+
 module.exports = router;

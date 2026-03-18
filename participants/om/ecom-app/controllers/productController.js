@@ -65,3 +65,17 @@ exports.updatePartialProduct = (req, res) => {
 
     res.status(200).json(product);
 };
+
+exports.deleteProduct = (req, res) => {
+    const productId = parseInt(req.params.id, 10);
+    const product = products.find(p => p.id === productId);
+
+    if(!product){
+        return res.status(404).json({ message: "Product not found!" });
+    }
+
+    let newProducts = products.filter(p => p.id !== productId);
+    products = newProducts;
+
+    res.status(200).json({ message: "Product deleted successfully!" });
+};

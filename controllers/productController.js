@@ -17,10 +17,11 @@ exports.getProductById = (req, res, next) => {
         const productId = req.params.id * 1;
         const product = products.find((p) => p.id === productId);
 
-        //console.log(productId, product);
-
-        if (!product) {
-        return next({ statusCode: 404, message: "Product not found" });
+        if(product === undefined){
+            return next({ 
+                statusCode: 404, 
+                message: "Product not found" 
+            });
         }
 
         return successResponse(res, "Product fetched successfully", product);

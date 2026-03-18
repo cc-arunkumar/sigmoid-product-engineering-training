@@ -19,7 +19,7 @@ const validateProductPatch = (req, res, next) => {
         };
     }
 
-    if(!category){
+    if(category){
         if(category.trim() === ""){
             return res.status(400).json({
                 success: false,
@@ -28,7 +28,7 @@ const validateProductPatch = (req, res, next) => {
         };
     }
 
-    if(stock === undefined){
+    if(stock !== undefined){
         if(stock < 0){
             return res.status(400).json({
                 success: false,

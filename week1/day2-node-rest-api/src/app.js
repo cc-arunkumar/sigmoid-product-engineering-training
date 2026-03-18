@@ -4,12 +4,12 @@ const app = express()
 const productRoutes= require("./routes/productRouter");
 const userRoutes = require("./routes/userRouter");
 const orderRoutes = require("./routes/orderRouter");
-const loggers= require("./middleware/logger");
+const logger= require("./middleware/logger");
 const errorHandler= require("./middleware/errorHandler");
 const authRoutes= require("./routes/authRouter");
  // middleware so that our express understands the data send in the json format
  app.use(express.json());
-app.use(loggers);
+app.use(logger);
 app.use(productRoutes);
 app.use(userRoutes);
 app.use(orderRoutes);

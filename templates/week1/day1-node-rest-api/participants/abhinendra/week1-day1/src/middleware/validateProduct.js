@@ -1,7 +1,7 @@
 const validateProduct = ( req, res , next)=>{
     const {name, price, category , stock}= req.body;
 
-    if(!name || name.trim=== ""){
+    if(!name || name.trim()=== ""){
         return res.status(400).json({
             success: false,
             message: " Product Name is Required"
@@ -15,7 +15,7 @@ const validateProduct = ( req, res , next)=>{
         });
     }
 
-    if(!category || category.trim===""){
+    if(!category || category.trim()===""){
         return res.status(400).json({
             success: false,
             message: "Category is required"

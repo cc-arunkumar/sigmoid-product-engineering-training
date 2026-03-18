@@ -15,12 +15,14 @@ router.get("/products/:id", productController.getProductByID);
 router.post(
     "/products", 
     validateProduct,
-    productController.createProduct);
+    productController.createProduct
+);
 
 router.put(
     "/products/:id", 
     validateProduct,
-    productController.updateProduct);
+    productController.updateProduct
+);
 
 router.delete( "/products/:id", productController.deleteProduct);
 

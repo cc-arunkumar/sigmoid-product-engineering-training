@@ -1,7 +1,10 @@
 let products = require ("../data/products");
 
+const { successResponse, errorResponse } = require("../utils/apiResponse");
+
 exports.getAllProducts= (req, res)=>{
-    res.json(products);
+    // res.json(products);
+    return successResponse(res, "Products fetched successfully", products);
 };
 
 exports.getProductByID= (req,res)=>{
@@ -10,11 +13,13 @@ exports.getProductByID= (req,res)=>{
     const  product = products.find( p => p.id=== productID);
 
     if(!product){
-        return res.status(404).json({
-            message : "Product not Found"
-        });
+        // return res.status(404).json({
+        //     message : "Product not Found"
+        // });
+        return errorResponse(res, "Product not Found", 404);
     }
-        res.json(product);
+        // res.json(product);
+        return successResponse(res, "Product fetched successfully", product);
 };
 
 exports.createProduct= (req, res)=>{
@@ -30,13 +35,14 @@ exports.createProduct= (req, res)=>{
 
     products.push(newProduct);
 
-    res.status(201).json(products);
+    // res.status(201).json(products);
+    return successResponse(res, "Product created successfully", newProduct, 201);
 }
 
 exports.updateProduct= (req, res)=>{
     const productID = parseInt(req.params.id);
 
-    const product= products.find(p => p.id===productID);
+    const product= products.find(p => p.id === productID);
 
     if(!product){
         return res.status(404).json({
@@ -51,7 +57,8 @@ exports.updateProduct= (req, res)=>{
     product.category=category;
     product.stock=stock;
 
-    res.status(200).json(product);
+    // res.status(200).json(product);
+    return successResponse(res, "Product updated successfully", product);
 
 }
 
@@ -68,7 +75,8 @@ exports.deleteProduct = (req, res) => {
 
     products = updatedProducts;
 
-    res.status(200).json(products);
+    // res.status(200).json(products);
+    return successResponse(res, "Product deleted successfully", products);
 };
 
 
@@ -76,20 +84,21 @@ exports.updatePartialProduct = (req, res)=>{
 
     const productID = parseInt(req.params.id);
 
-    const product = products.find(p => p.id=== productID);
+    const product = products.find(p => p.id === productID);
 
     if(!product){
-        return req.status(400).json({
+        return res.status(400).json({
             message:"data not found"
         })
     }
 
     const {name,price,category,stock}= req.body;
 
-    if(name!= undefined) product.name=name;
-    if(price!= undefined) product.price=price;
-    if(category!= undefined) product.category=category;
-    if(stock!= undefined) product.stock=stock;
+    if(name!== undefined) product.name=name;
+    if(price!== undefined) product.price=price;
+    if(category!== undefined) product.category=category;
+    if(stock!== undefined) product.stock=stock;
 
-    res.status(200).json(product);
+    // res.status(200).json(product);
+    return successResponse(res, "Product updated partially", product);
 }

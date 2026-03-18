@@ -4,9 +4,10 @@ const logger =( req, res, next)=>{
 
     const url= req.url;
 
-    const time= new Date().toISOstring();
+    const time= new Date().toISOString();
 
     console.log(`${method} ${url} - ${time}`);
 
     next();
 }
+module.exports= logger;

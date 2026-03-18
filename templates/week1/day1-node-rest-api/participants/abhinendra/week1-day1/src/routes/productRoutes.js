@@ -47,11 +47,13 @@ const validateProductForPatch= require("../middleware/validateProductForPatch");
 
 const authorize= require("../middleware/authorize");
 
+const cache = require("../middleware/cache");
+
 // ✅ Make sure names MATCH EXACTLY
 
-router.get("/api/products", productController.getAllProducts);
+router.get("/api/products", cache(60000) , productController.getAllProducts);
 
-router.get("/api/products/:id", productController.getProductById);
+router.get("/api/products/:id", cache(60000) , productController.getProductById);
 
 router.post(
     "/api/products",

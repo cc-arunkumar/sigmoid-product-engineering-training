@@ -1,7 +1,7 @@
 let products = require("../data/products");
 
 const { successResponse } = require("../utils/apiResponse");
-const AppError = require("../utils/appError");
+const AppError = require("../utils/AppError");
 
 
 // GET all products

@@ -38,7 +38,6 @@ function handleDeleteOrderById (req, res, next) {
         return next(error);
     }
     orders.splice(index,1);
-
     return successResponse(res, "Deleted successfully", null);
 }
 
@@ -70,13 +69,13 @@ function handlePatchOrder (req, res, next) {
         return next(error);
     }
 
-    const { productId, quantity, totalPrice }   = req.body;
-    if(productId) order.productId = productId;
-    if(quantity) order.quantity = quantity;
-    if(totalPrice) order.totalPrice = totalPrice;
+    const { productId, quantity, totalPrice } = req.body;
+    if(productId !== undefined) order.productId = productId;
+    if(quantity !== undefined) order.quantity = quantity;
+    if(totalPrice !== undefined) order.totalPrice = totalPrice;
 
-    return successResponse(res, "Order updated successfully", order);
-}
+    return successResponse(res, "Order patched successfully", order);
+} 
 
 module.exports = {
     getAllOrders,
@@ -85,4 +84,4 @@ module.exports = {
     handleDeleteOrderById,
     handleUpdateOrder,
     handlePatchOrder
-}
+};

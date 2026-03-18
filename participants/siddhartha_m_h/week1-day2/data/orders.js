@@ -1,4 +1,4 @@
-const order = [
+const orders = [
     {
         id: 1,
         productId: 1,
@@ -21,4 +21,4 @@ const order = [
     }
 ];
 
-module.exports = order;
+module.exports = orders;

@@ -25,7 +25,7 @@ const login = (req, res, next) => {
         userId: user.id,
         username: user.username,
       },
-      process.env.JWT_SERCRET || "secretkey",
+      process.env.JWT_SERCRET || "mysecretkey",
       {
         expiresIn: "1h",
       },

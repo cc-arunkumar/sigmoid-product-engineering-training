@@ -6,21 +6,21 @@ const validateProduct = require("../middleware/validateProduct");
 const validateProductPartial = require("../middleware/validateProductPartial");
 
 // GET all products
-router.get("/api/products", productController.getAllProducts);
+router.get("/products", productController.getAllProducts);
 
 // GET product by ID
-router.get("/api/products/:id", productController.getProductById);
+router.get("/products/:id", productController.getProductById);
 
 // CREATE product
-router.post("/api/products", validateProduct, productController.createProduct);
+router.post("/products", validateProduct, productController.createProduct);
 
 // UPDATE product (PUT)
-router.put("/api/products/:id", validateProduct, productController.updateProduct);
+router.put("/products/:id", validateProduct, productController.updateProduct);
 
 // DELETE product
-router.delete("/api/products/:id", productController.deleteProduct);
+router.delete("/products/:id", productController.deleteProduct);
 
 // PATCH product
-router.patch("/api/products/:id", validateProductPartial, productController.patchProduct);
+router.patch("/products/:id", validateProductPartial, productController.patchProduct);
 
 module.exports = router;

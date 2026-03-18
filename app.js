@@ -3,9 +3,11 @@ const app = express();
 
 const productRoutes = require("./routes/productRoutes");
 const logger = require("./middleware/logger");
+const errorhandler = require("./middleware/errorHandler" );
 
 app.use(express.json());
 app.use(logger);
+app.use(errorhandler);
 app.use("/api", productRoutes);
 
 app.listen(4000, () => {

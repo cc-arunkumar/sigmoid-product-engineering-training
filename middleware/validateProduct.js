@@ -16,6 +16,8 @@ const validateProduct = (req, res , next) =>{
     })
    }
 
+   
+
    if(!category || category.trim()===""){
     return res.status(400).json({
       success : false,
@@ -38,5 +40,6 @@ const validateProduct = (req, res , next) =>{
 
    next();
 }
+
 
 module.exports = validateProduct;

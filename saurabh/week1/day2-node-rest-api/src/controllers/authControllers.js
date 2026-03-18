@@ -28,7 +28,7 @@ exports.login = (req, res, next) => {
       );
 
       // send response
-      return successResponse(res, "Login successful", { token });
+      return successResponse(res, "Login successful", { token, userId: user.id, username: user.username });
     }
 
     // invalid credentials

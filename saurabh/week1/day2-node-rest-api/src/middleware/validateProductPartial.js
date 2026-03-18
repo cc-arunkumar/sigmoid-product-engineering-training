@@ -1,4 +1,4 @@
-const errorResponse = require("../utils/errorResponse");
+const { errorResponse } = require("../utils/apiResponse");
 
 const validateProductPartial = (req, res, next) => {
     const { name, price, category, stock } = req.body;

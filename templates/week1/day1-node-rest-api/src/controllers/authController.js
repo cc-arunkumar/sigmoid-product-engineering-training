@@ -2,40 +2,48 @@ const jwt = require("jsonwebtoken");
 const { successResponse } = require("../utils/apiResponse");
 const AppError = require("../utils/AppError");
 
-// Hardcoded user (for training purpose)
-const USER = {
-  id: 1,
-  username: "prakhar",
-  password: "1234",
-};
+// Hardcoded users
+const USERS = [
+  {
+    id: 1,
+    username: "user",
+    password: "1234",
+    role: "user",
+  },
+  {
+    id: 2,
+    username: "admin",
+    password: "1234",
+    role: "admin",
+  },
+];
 
 exports.login = (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // 1. Validate input
     if (!username || !password) {
       return next(new AppError("Username and password are required", 400));
     }
 
-    // 2. Check credentials
-    if (username !== USER.username || password !== USER.password) {
+    const user = USERS.find(
+      (u) => u.username === username && u.password === password
+    );
+
+    if (!user) {
       return next(new AppError("Invalid credentials", 401));
     }
 
-    // 3. Generate token
     const token = jwt.sign(
       {
-        userId: USER.id,
-        username: USER.username,
+        userId: user.id,
+        username: user.username,
+        role: user.role, // ✅ IMPORTANT
       },
       process.env.JWT_SECRET || "mysecretkey",
-      {
-        expiresIn: "1h",
-      }
+      { expiresIn: "1h" }
     );
 
-    // 4. Send response
     return successResponse(res, "Login successful", { token });
 
   } catch (error) {

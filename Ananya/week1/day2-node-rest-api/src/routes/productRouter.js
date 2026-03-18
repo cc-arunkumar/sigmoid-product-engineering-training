@@ -6,10 +6,11 @@ const validateProduct = require("../middleware/validateProduct");
 const validatePartialProduct = require("../middleware/validatePartialProduct");
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
+const cache= require("../middleware/cache");
 
 // Public routes
-router.get("/api/products", productController.getAllProducts);
-router.get("/api/products/:id", productController.getProductById);
+router.get("/api/products",cache(60000), productController.getAllProducts);
+router.get("/api/products/:id",cache(60000), productController.getProductById);
 
 // Protected routes
 router.post(

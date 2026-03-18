@@ -2,11 +2,20 @@ const jwt = require("jsonwebtoken");
 const {successResponse} = require("../utils/apiresponce");
 const AppError = require("../utils/AppError")  ; 
 
-const USER = {
+const USER = [{
     id : 1 , 
     username: "admin" , 
-    password : 123 
-}; 
+    password : 123 ,
+    role : "admin"
+} , 
+{
+    id : 2 , 
+    username : "user" , 
+    password : "123",
+    role : "user"
+}
+]; 
+
 
 exports.login = (req , res , next)=>{
     try{
@@ -21,11 +30,17 @@ exports.login = (req , res , next)=>{
             return next(new AppError("Invalid credentials" , 401));
         }
 
+        const user = USER.find(u => u.username === username);
+
+        if(!user || user.password !== password) {
+             return next(new AppError("Invalid Credentials" , 401)) ; 
+        }
         // genrate tokens
         const token = jwt.sign(
             {
                 userId  : USER.id , 
-                username : USER.username 
+                username : USER.username  , 
+                role : user.role 
             } , 
             process.env.JWT_SECRET || "ha_ye_mera_secret_hai" , 
             {

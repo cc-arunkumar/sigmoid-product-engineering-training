@@ -1,37 +1,33 @@
-const { isMarkedAsUntransferable } = require("node:worker_threads");
+const { errorResponse } = require("../utils/apiResponse");
 
-const validateProductPartial=(req,res,next)=>{
-    const {name, price, category, stock} =req.body;
-
-    if(name!==undefined&&name.trim()===""){
-        return res.status(400).json({
-            success:false,
-            message:"Product name cannot be empty"
-        });
+const validatePatchProduct = (req, res, next) => {
+const { name, stock, price, category } = req.body;
+const errors = [];
+if (name !== undefined) {
+    if (typeof name !== "string" || name.trim() === "") {
+        errors.push("Name must be a valid string")
     }
-
-    if(price!==undefined&&price<=0){
-        return res.status(400).json({
-            success:false,
-            message:"Price must be greater than 0"
-        });
+}
+if (stock !== undefined) {
+    if (typeof stock !== "number" || stock < 0) {
+        errors.push("Stock must be a number >= 0");
     }
-
-    if(category!==undefined&&category.trim()===""){
-        return res.status(400).json({
-            success:false,
-            message:"Category cannot be empty"
-        });
+}
+if (price !== undefined) {
+    if (typeof price !== "number" || price <= 0) {
+        errors.push("Price must be a number > 0");
     }
-
-    if(stock!==undefined&&stock<0){
-        return res.status(400).json({
-            success:false,
-            message:"Stock cannot be negative"
-        });
+}
+if (category !== undefined) {
+    if (typeof category !== "string" || category.trim() === "") {
+        errors.push("Category must be a valid string");
     }
+}
+if (errors.length > 0) {
+    return errorResponse(res, errors, 400);
+}
 
-    next();
+next();
 };
 
-module.exports=validateProductPartial;
+module.exports = validatePatchProduct

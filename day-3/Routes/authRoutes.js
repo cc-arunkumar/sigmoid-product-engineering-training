@@ -4,6 +4,9 @@ const router = express();
 
 const {login} = require("../Controller/authController")
 
-router.post("/login" , login) ; 
+const {authlimter} = require("../middlewere/rateLimiter")
+
+
+router.post("/login"  ,  authlimter , login) ; 
 
 module.exports = router ; 

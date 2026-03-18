@@ -1,32 +1,39 @@
+const { errorResponse } = require("../utils/apiResponse");
+
 const validateProductPatch = (req, res, next) => {
-    const {name , price , category , stock} = req.body;
+  const { name, stock, price, category } = req.body;
+  const errors = [];
 
-    if(name){
-        if(name.trim() === ""){
-             return res.status(400).json({
-            success: false,
-            message: "Product name is Not Valid"
-        });
-        }
+  if (name !== undefined) {
+    if (typeof name !== "string" || name.trim() === "") {
+      errors.push("Name must be a valid string");
     }
-    if(price){
-        if(price <= 0){
-            return res.status(400).json({
-                success: false,
-                message: "Price can't be Negative or Zero"
-            })
-        }
+  }
+
+  if (stock !== undefined) {
+    if (typeof stock !== "number" || stock < 0) {
+      errors.push("Stock must be a number >= 0");
     }
+  }
 
-    next();
+  if (price !== undefined) {
+    if (typeof price !== "number" || price <= 0) {
+      errors.push("Price must be a number > 0");
+    }
+  }
 
-    
+  if (category !== undefined) {
+    if (typeof category !== "string" || category.trim() === "") {
+      errors.push("Category must be a valid string");
+    }
+  }
 
-    
+  if (errors.length > 0) {
+    return errorResponse(res, errors, 400);
+  }
+
+  next();
+};
 
 
-
-
-
-}
 module.exports = validateProductPatch;

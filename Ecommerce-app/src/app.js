@@ -7,10 +7,12 @@ const productRoutes = require("./routes/productRoutes");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
+const { apiLimiter } = require("./middleware/rateLimiter");
 
 app.use(express.json());
-
 app.use(logger);
+app.use(apiLimiter);
+
 
 app.use("/api", productRoutes);
 app.use("/api/auth", authRoutes);

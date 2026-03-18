@@ -6,7 +6,7 @@ const authorize = (...allowedRoles) => {
             return next(new AppError("Unauthorized Access", 401));
         }
 
-        if(!allowedRoles.include(req.user.role)){
+        if(!allowedRoles.includes(req.user.role)){
             return next(new AppError("Forbidden: insufficient permission", 403));
         }
 

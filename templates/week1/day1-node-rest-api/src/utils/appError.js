@@ -1,17 +1,17 @@
 class AppError extends Error {
 
 
-constructor(message, statusCode) {
+        constructor(message, statusCode) {
 
-super(message);
-
-
-this.statusCode = statusCode;
+        super(message);
 
 
-// Maintains proper stack trace (important for debugging)
+        this.statusCode = statusCode;
 
-Error.captureStackTrace(this, this.constructor);
+
+        // Maintains proper stack trace (important for debugging)
+
+        Error.captureStackTrace(this, this.constructor);
 
 }
 

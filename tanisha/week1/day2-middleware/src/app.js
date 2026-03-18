@@ -1,15 +1,19 @@
 const express = require("express");
 const app=express();
+const productRoutes =require("./routes/productRoutes.js");
+const authRoutes = require("./routes/authRoutes.js");
+const logger=require("./middleware/logger.js");
+const errorHandler = require("./middleware/errorHandler.js");
+
 app.get("/api",(req,res)=>{
     res.send("Welcome to backend");
 })
-const productRoutes =require("./routes/productRoutes.js");
-const authRoutes = require("./routes/authRoutes.js");
 
 app.use(express.json());
-const logger=require("./middleware/logger.js");
-const errorHandler = require("./middleware/errorHandler.js");
+
+const{apiLimiter}=require("./middleware/rateLimiter.js");
 app.use(logger);
+app.use(apiLimiter);
 app.use(productRoutes);
 app.use("/api", authRoutes);
 app.use(errorHandler);

@@ -1,40 +1,34 @@
-const jwt= require("jsonwebtoken");
-const {successResponse}= require("../utils/apiResponse");
-const AppError= require("../utils/AppError");
+exports.login = (req, res, next) => {
+    try {
+        const { username, password } = req.body;
 
-// creating user for practice purpose
-const User={
-    id:1,
-    username:"Ananya",
-    password: "Ananaya@123"
-
-};
-
-exports.login= (req,res,next)=>{
-    try{
-        const {username, password}= req.body;
-        // validate input
-        if(!username|| !password){
-            return next(new AppError("Username and password are required", 400))
+        // 1. Validate input
+        if (!username || !password) {
+            return next(new AppError("Username and password are required", 400));
         }
-        if(username!==User.username || password!== User.password){
-           
+
+        // 2. Find user
+        const user = User.find(u => u.username === username);
+
+        // 3. Validate credentials (FIXED)
+        if (!user || password !== user.password) {
             return next(new AppError("Invalid Credentials", 401));
         }
-        const token= jwt.sign({
-            userId: User.id,
-            username: User.username
 
-        },
-        process.env.JWT_SECRET|| "mysecretkey",
-        {
-        expiresIn:"1h"
-        });
-    return successResponse(res, "login successfull",{token});
+        // 4. Generate token
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                username: user.username,
+                role: user.role
+            },
+            process.env.JWT_SECRET || "mysecretkey",
+            { expiresIn: "1h" }
+        );
 
+        return successResponse(res, "login successful", { token });
+
+    } catch (error) {
+        return next(new AppError(error.message || "login failed", 500));
     }
-    
-    catch(error){
-      return next(new AppError(error.message || "login failed" ,500));
-    }
-}
+};

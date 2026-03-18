@@ -1,6 +1,7 @@
 import rateLimit from "express-rate-limit";
 import AppError from "../utils/appError.js";
 
+// api limit hits
 export const apiLimiter=rateLimit({
    
         windowMs : 15*60*1000,
@@ -13,6 +14,7 @@ export const apiLimiter=rateLimit({
         }
     });
 
+    // incorrect login hits
 export const authLimiter = rateLimit({
     windowMs:15*60*1000,
     max:3,

@@ -6,20 +6,20 @@ const router = express.Router() ;
 const controller = require("../Controller/controller");
 const { validation } = require("../middlewere/logger");
 
-router.get("/api/products" , controller.getallProducts);
-router.get('/api/product/:id' ,  controller.getproductbyId);
+router.get("/api/products" , controller.getAllProducts);
+router.get('/api/product/:id' ,  controller.getProductById);
 
 
 router.post(
     "/api/productpost",
     validation , 
-    controller.postproduct
+    controller.createProduct
 );
 
 
 
-router.put("/api/productput" , controller.putproduct);
-router.delete("/api/productdelete/:id" , controller.deleteproduct);
+router.put("/api/productput" , controller.updateProduct);
+router.delete("/api/productdelete/:id" , controller.deleteProduct);
 
 
 module.exports = router

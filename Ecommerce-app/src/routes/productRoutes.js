@@ -12,8 +12,8 @@ const cache = require("../middleware/cache")
 router.get("/products", cache(60000), productController.getAllProducts)
 router.get("/product/:id", cache(60000), productController.getProductById)
 
-router.post("/products", protectRoute,authorize("user") , validateProduct, productController.createProduct)
-router.put("/products/:id", protectRoute, authorize("user"), validateProduct, productController.updateProduct)
+router.post("/products", protectRoute,authorize("admin") , validateProduct, productController.createProduct)
+router.put("/products/:id", protectRoute, authorize("admin"), validateProduct, productController.updateProduct)
 router.delete("/product/:id", protectRoute, authorize("admin"), productController.deleteProduct)
 router.patch("/product/:id", protectRoute, authorize("admin"), validatePartialProduct, productController.updatePartialProduct);
 

@@ -16,7 +16,8 @@ passport.use(
                     id: profile.id,
                     username: profile.displayName,
                     email: profile.emails[0].value,
-                    role: "user" // default role
+                    role: "admin" // granted admin to allow posting products
+
                 };
 
                 return done(null, user);

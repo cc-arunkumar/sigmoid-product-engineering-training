@@ -9,6 +9,7 @@ const productRoutes = require("./routes/productRoutes");
 const errorHandler = require("./middleware/errorHandler");
 const { apiLimiter } = require("./middleware/rateLimiter");
 const authRoutes = require("./routes/authRoutes");
+const passport = require("./config/passport");
 
 app.use(express.json()); //this is middleware which helps use express json
 app.use(logger);
@@ -17,6 +18,7 @@ app.use(apiLimiter);
 app.use(productRoutes);
 // app.use(validate);
 app.use(authRoutes);
+app.use(passport.initialize());
 
 app.use(errorHandler);
 

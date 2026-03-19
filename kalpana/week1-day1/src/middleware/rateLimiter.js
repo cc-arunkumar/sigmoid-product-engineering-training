@@ -4,7 +4,7 @@ const AppError = require("../utils/appError");
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000, // limit each IP to 100 requests per window
+    max: 5, // limit each IP to 100 requests per window
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res, next) => {
@@ -15,7 +15,7 @@ const apiLimiter = rateLimit({
 // Strict limiter for auth (login protection)
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10, // only 3 login attempts
+    max: 3, // only 3 login attempts
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res, next) => {

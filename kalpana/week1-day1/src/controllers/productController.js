@@ -9,7 +9,7 @@ const appError = require("../utils/appError");
 exports.getAllProducts = (req, res, next) => {
 
     try {
-            let time= new Date();
+        let time= new Date();
         return successResponse(res, `All products fetched successfully at ${time}`, products);
 
     } catch (error) {

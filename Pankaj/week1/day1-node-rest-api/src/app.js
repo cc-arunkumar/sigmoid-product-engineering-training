@@ -1,30 +1,40 @@
 const express = require("express");
+require("dotenv").config();
 const app = express();
 
+// Routes
 const productRoutes = require("./routes/productRoutes");
-const userRoutes = require("./routes/userRoutes");     
-const orderRoutes = require("./routes/orderRoutes");   
-const AuthRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
 
+// Middleware
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
+const { apiLimiter } = require("./middleware/rateLimiter");
+const passport = require("./config/passport");
 
-const {apiLimiter} = require("./middleware/rateLimiter");
-
+// Body parser
 app.use(express.json());
 
-// middleware
+// Custom middlewares
 app.use(logger);
+app.use(apiLimiter);
 
-app.use(apiLimiter); // Apply rate limiter to all routes
+// Passport init
+app.use(passport.initialize());
 
-// routes
-app.use("/api", productRoutes);
-// app.use("/api/users", userRoutes);
-// app.use("/api/orders", orderRoutes);
-app.use("/api/auth", AuthRoutes);
 
-// error handler
+app.use("/api", productRoutes);     // <-- IMPORTANT FIX
+app.use("/api/auth", authRoutes);
+
+// Test route (optional but useful)
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
+// Error handler (should be last)
 app.use(errorHandler);
 
-module.exports = app;
+// Start server
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});

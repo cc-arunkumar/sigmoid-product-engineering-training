@@ -14,7 +14,7 @@ const cache=(duration)=>{
                 return res.status(200).json(cachedData.data);
             }
         }
-        const originalJson = res.json.blind(res);
+        const originalJson = res.json.bind(res);
         res.sendResponse = res.json;
         res.json = (data) => {
             cacheStore.set(key, { data: data, expiry: Date.now() + duration});

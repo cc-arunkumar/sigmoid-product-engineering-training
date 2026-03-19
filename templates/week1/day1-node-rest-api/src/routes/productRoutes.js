@@ -1,19 +1,30 @@
 const express = require("express");
-
-
-const router = express.Router(); //for multiple paths
+const router = express.Router();
 
 const productController = require("../controllers/productController");
 const validateProduct = require("../middleware/validateProduct");
-const validatePartialProduct = require("../middleware/validatePartialProduct");
-const protect = require("../middleware/middleauth");
-const authorize = require("../middleware/authorize");
-const cache = require("../middleware/cache");
+const validateProductPatch = require("../middleware/validatePartialProduct");
+const protect=require("../middleware/middleauth");
+const authorize=require("../middleware/authorize");
+const cache=require("../middleware/cache");
+const productMongoControllers = require("../controllers/productMongoController")
 
-router.get("/products",cache(60000),productController.getAllProducts);
-router.get("/product/:id",cache(60000),productController.getProductById);
-router.post("/products",protect,authorize("user"),validateProduct,productController.createProduct);
-router.put("/product/:id",protect,authorize("user"),validateProduct,productController.updateProduct);
-router.delete("/product/:id",protect,authorize("admin"),productController.deleteProduct);
-router.patch("/product/:id",protect,authorize("admin"),validatePartialProduct,productController.patchProduct);
-module.exports=router;
+// GET
+router.get("/api/products",cache(60000), productController.getAllProducts);
+router.get("/api/products/:id",cache(60000), productController.getProductById);
+
+// POST
+router.post("/",protect,authorize("user"), validateProduct, productController.createProduct);
+
+// PUT
+router.put("/api/products/:id",protect,authorize("user"), validateProduct, productController.updateProduct);
+
+// PATCH
+router.patch("/api/products/:id",protect,authorize("admin"), validateProductPatch, productController.patchProduct);
+
+// DELETE
+router.delete("/api/products/:id",protect,authorize("admin"), productController.deleteProduct);
+
+router.post("/mongo", validateProduct, productMongoControllers.createProductMongo);
+
+module.exports = router;

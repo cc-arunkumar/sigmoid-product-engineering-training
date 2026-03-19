@@ -1,6 +1,6 @@
 const { errorResponse } = require("../utils/apiResponse");
 
-const validateProduct = (req,res,next) =>{
+const validateProductPatch = (req,res,next) =>{
     const { name, price ,category ,stock} = req.body;
 
 // NAME
@@ -25,4 +25,4 @@ return errorResponse(res, "Stock must be a non-negative number", 400);
 
 next();
 };
-module.exports = validateProduct
+module.exports = validateProductPatch

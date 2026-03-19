@@ -13,11 +13,14 @@ const authRoutes= require("./routes/authRouter");
  // middleware so that our express understands the data send in the json format
  app.use(express.json());
 app.use(logger);
-app.use(productRoutes);
+
+app.use("/api/auth", authRoutes);
+
 app.use(apiLimiter);
+
+app.use(productRoutes);
 app.use(userRoutes);
 app.use(orderRoutes);
-app.use("/api/auth", authRoutes);
 
 
 

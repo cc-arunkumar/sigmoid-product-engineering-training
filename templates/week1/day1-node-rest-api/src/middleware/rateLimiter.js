@@ -6,7 +6,7 @@ export const apiLimiter=rateLimit({
    
         windowMs : 15*60*1000,
         max:5,
-        standardHeader:true,
+        standardHeaders:true,
         legacyHeaders:false,
 
         handler:(req,res,next)=>{
@@ -18,8 +18,8 @@ export const apiLimiter=rateLimit({
 export const authLimiter = rateLimit({
     windowMs:15*60*1000,
     max:3,
-    standardHeader:true,
-    legacy:false,
+    standardHeaders:true,
+    legacyHeaders:false,
 
     handler:(req,res,next)=>{
         return next(new AppError("Too many incorrect logins try later" , 429));

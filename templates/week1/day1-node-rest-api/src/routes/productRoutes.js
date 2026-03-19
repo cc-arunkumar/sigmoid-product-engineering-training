@@ -3,7 +3,7 @@ import { validateProduct } from "../middleware/validateProduct.js";
 import { validatePatch } from "../middleware/validatePatch.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { authorize } from "../middleware/authorize.js";
-import { cache } from "react";
+import { cache } from "../middleware/cache.js";
 import { getAllProducts,getProductById , createProduct , modifyProduct , deleteProduct , patchProduct} from "../controllers/productControllers.js";
 const router = express.Router();
 router.get("/api/products" ,cache(60000), getAllProducts);

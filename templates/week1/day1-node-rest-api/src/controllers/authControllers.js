@@ -55,3 +55,26 @@ export const login = (req,res,next) => {
         return next(new AppError(error.message || "Login failed" , 500));
     }
 };
+
+// Google OAuth success handler
+export const googleCallback = (req, res, next) => {
+ try {
+ const user = req.user;
+ if (!user) {
+ return next(new AppError("Google authentication failed", 401));
+ }
+ // Generate JWT
+ const token = jwt.sign(
+ {
+ userId: user.id,
+ username: user.username,
+ role: user.role
+ },
+ process.env.JWT_SECRET || "mysecretkey",
+ { expiresIn: "1h" }
+ );
+ return successResponse(res, "Google login successful", { token });
+ } catch (error) {
+ return next(new AppError(error.message || "OAuth login failed", 500));
+ }
+};

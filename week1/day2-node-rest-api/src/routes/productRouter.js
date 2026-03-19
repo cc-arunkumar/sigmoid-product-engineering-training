@@ -5,11 +5,14 @@ const validateProduct= require("../middleware/validateProduct");
 const validateProductPartial = require("../middleware/validateProductPartial");
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
+const cache = require("../middleware/cache");
 
-router.get("/api/products", protect, authorize("user", "admin"), productController.getAllProducts);
-router.get("/api/products/:id", protect, authorize("user", "admin"), productController.getProductById);
+//public routes
 
+router.get("/api/products", cache(60000), authorize("user", "admin"), productController.getAllProducts);
+router.get("/api/products/:id", cache(60000), authorize("user", "admin"), productController.getProductById);
 
+//protected routes for admin only
 router.post("/api/products", protect, authorize("admin"), validateProduct,productController.createProduct);
 router.put("/api/products/:id", protect, authorize("admin"), validateProduct,productController.updateP);
 router.delete("/api/products/:id", protect, authorize("admin"), productController.deleteProduct);

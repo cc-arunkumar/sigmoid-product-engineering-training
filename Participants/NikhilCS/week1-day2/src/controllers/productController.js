@@ -5,11 +5,20 @@ exports.getAllProducts = (req, res) => {
   //without success response
   // res.json(products);
   //with success response
+  //now wrapped success response in try catch block to account for internal server errors,server crashes and internet crashes due to which even if api should succeed it fails 
+  try{
   return successResponse(res, "Products fetched successfully", products);
+  }catch(error){
+    return next({
+            status:500,
+            message:"Failed to fetch products"
+        })
+  }
 };
 exports.getProductById = (req, res) => {
   //const productId=parseInt(req.params.id)
   //parseInt however has a drawbakc convert "100a" into 100 which is incorrect so use the Number method instead
+  try{
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -32,9 +41,17 @@ exports.getProductById = (req, res) => {
 //without success response
   // res.json(product);
   //with success response
+  else{
   return successResponse(res, "Product fetched successfully", product);
+  }}catch(error){
+ return next({
+            status:500,
+            message:"Failed to fetch product"
+        })
+}
 };
 exports.createProduct = (req, res) => {
+  try{
   const { name, price, category, stock } = req.body;
   const newProduct = {
     id: products.length + 1,
@@ -48,8 +65,15 @@ exports.createProduct = (req, res) => {
   // res.status(201).json(newProduct);
   //with success response
   return successResponse(res, "Product created successfully", newProduct, 201);
+}catch(error){
+return next({
+            status:500,
+            message:"Failed to create product"
+        })
+}
 }
 exports.updateProduct = (req, res) => {
+  try{
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -74,8 +98,15 @@ exports.updateProduct = (req, res) => {
   // return res.status(200).send("succesful update done ");
   //with success response
   return successResponse(res, "Product updated successfully", product);
+}catch(error){
+  return next({
+            status:500,
+            message:"Failed to update product"
+        })
+}
 }
 exports.updatePartialProduct = (req, res) => {
+  try{
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -104,8 +135,15 @@ exports.updatePartialProduct = (req, res) => {
   //return res.status(200).send("succesful partial update done ");
   //with success response
   return successResponse(res, "Product Partially  updated successfully", product);
+}catch(error){
+  return next({
+            status:500,
+            message:"Failed to partaly update product"
+        })
+}
 };
 exports.deleteProduct = (req, res) => {
+  try{
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -127,4 +165,10 @@ exports.deleteProduct = (req, res) => {
   //res.status(200).send("deleted succesfully");
   //with success response
   return successResponse(res, "Deleted successfully", null);
+}catch(error){
+  return next({
+            status:500,
+            message:"Failed to create product"
+        })
+}
 };

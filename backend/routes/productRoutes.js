@@ -7,7 +7,7 @@ const validateProduct = require("../middleware/validateProduct");
 const validateProductPartial = require("../middleware/validateProductPartial");
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
-const cache = require("..middleware/cache");
+const cache = require("../middleware/cache");
 
 //base: api/products
 //public routes

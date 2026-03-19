@@ -1,9 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv")
 dotenv.config();
+const connectDB = require("./config/mongo");
 
 const app = express();
-const PORT = 3000
+const PORT = process.env.PORT || 3000;
 
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes")
@@ -16,6 +17,7 @@ const passport = require("./config/passport");
 
 app.use(express.json()); // this is a middleware that converts JSON format data into javascript object (node can read the javascript object not JSON)
 app.use(logger);
+connectDB();
 
 // Apply rate limmiting globally
 app.use(apiLimiter);
@@ -26,6 +28,11 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
+app.get("/", (req, res) => {
+    res.send("Welcome to the Product API");
+});
+
+console.log("ENV PORT: ", process.env.PORT);
 
 app.listen(PORT, () => {
     console.log(`Server running on port http://localhost:${PORT}`)

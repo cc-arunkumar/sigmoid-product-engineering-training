@@ -1,4 +1,4 @@
-const cacheStore = new Map()
+const cacheStore = new Map();
 
 const cache = (duration) => {
 
@@ -9,7 +9,7 @@ const cache = (duration) => {
             return next();
         }
 
-        const key = equal.originalUrl;
+        const key = req.originalUrl;
 
         const cachedData = cacheStore.get(key);
 

@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const productController = require("../controllers/productController");
+const productMongoController = require("../controllers/productMongoController");
 
 const validateProduct = require("../middleware/validateProduct")
 const validatePartialProduct = require("../middleware/validatePartialProduct")
@@ -10,16 +11,16 @@ const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 const cache = require("../middleware/cache")
 
-router.get("/", cache(60000), productController.getAllProducts);
+router.get("/", cache(60000), productMongoController.getAllProducts);
 
-router.get("/:id", cache(60000), productController.getProductById);
+router.get("/:id", cache(60000), productMongoController.getProductById);
 
 router.post(
     "/",
     protect,
     authorize("user"),
     validateProduct,
-    productController.createProduct
+    productMongoController.createProduct
 );
 
 router.put(
@@ -27,22 +28,22 @@ router.put(
     protect,
     authorize("user"),
     validateProduct,
-    productController.updateProduct
+    productMongoController.updateProduct
 );
 
 router.patch(
     "/:id",
     protect,
-    authorize("admin"),
+    authorize("user"),
     validatePartialProduct, 
-    productController.updatePartialProduct
+    productMongoController.updatePartialProduct
 );
 
 router.delete(
     "/:id",
     protect, 
-    authorize("admin"),
-    productController.deleteProduct
+    authorize("user"),
+    productMongoController.deleteProduct
 );
 
 module.exports = router

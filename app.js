@@ -7,6 +7,9 @@ const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const { appLimiter } = require("./middleware/rateLimiter");
 const passport = require("./config/passport");
+const connectMongo = require("./config/mongo");
+
+connectMongo();
 
 app.use(express.json());
 app.use(logger);

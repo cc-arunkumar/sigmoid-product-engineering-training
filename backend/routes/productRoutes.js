@@ -8,6 +8,7 @@ const validateProductPartial = require("../middleware/validateProductPartial");
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
 const cache = require("../middleware/cache");
+const productMongoControllers = require("../controllers/productMongoController");
 
 //base: api/products
 //public routes
@@ -17,5 +18,5 @@ router.post("/products", protect, authorize("user"),validateProduct, productCont
 router.put("/products/:id", protect, validateProduct,authorize("user"), productControllers.updateProduct);
 router.delete("/products/:id", protect,authorize("admin"), productControllers.deleteProduct);
 router.patch("/products", protect,authorize("admin"), validateProductPartial, productControllers.patchProduct);
-
+router.post("/mongo/products",productMongoControllers.createProductMongo);
 module.exports = router;

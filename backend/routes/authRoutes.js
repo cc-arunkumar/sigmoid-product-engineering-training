@@ -14,7 +14,7 @@ const router = express.Router();
 
 const passport = require("../config/passport");
 const { login, googleCallback } = require("../controllers/authController");
-const { authLimiter } = require("../middleware/ratelimiter");
+const { authLimiter } = require("../middleware/rateLimiter");
 
 // Normal login
 router.post("/login", authLimiter, login);

@@ -12,6 +12,7 @@ const protect = require("../middleware/authMiddleware")
 const authorize = require("../middleware/authorize");
 
 const cache = require("../middleware/cache");
+const { createProductMongo } = require('../controllers/productMongoController');
 
 router.get("/", cache(60000), productController.getAllProducts);
 router.get("/:id", cache(60000), productController.getProductById);
@@ -21,7 +22,7 @@ router.post(
     protect,
     authorize("user"),
     validateProduct,
-    productController.createProduct
+    createProductMongo
 );
 router.put(
     "/:id",
@@ -34,12 +35,12 @@ router.patch(
     "/:id",
     protect,
     validatePatchProduct,
-    authorize("admin"),
+    authorize("user"),
     productController.updatePartialProduct
 );
 
 
-router.delete("/:id",protect, authorize("admin"), productController.deleteProductById);
+router.delete("/:id",protect, authorize("user"), productController.deleteProductById);
 
 
 module.exports = router;

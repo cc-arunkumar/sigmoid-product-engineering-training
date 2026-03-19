@@ -4,7 +4,7 @@ const AppError = require("../utils/appError");
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit each IP to 100 requests per window
+    max: 100, // limit each IP to 100 requests per window
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res, next) => {

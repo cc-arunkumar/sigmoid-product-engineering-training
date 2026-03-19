@@ -19,3 +19,4 @@ router.delete("/api/products/:id", protect, authorize("admin"), productControlle
 // router.patch('/api/products/:id', validateProductPartial ,productController.patchProduct);
 router.patch('/api/products/:id', protect, authorize("admin"), validateProductPartial ,productController.patchProduct);
 module.exports=router;
+

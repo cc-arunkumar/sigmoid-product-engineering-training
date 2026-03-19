@@ -99,9 +99,10 @@ const AppError = require("../utils/appError");
 // GET all products
 exports.getAllProducts = (req, res, next) => {
     try {
+        let time = new Date();
         return successResponse(
             res,
-            "All products fetched successfully",
+            `All products fetched successfully at ${time}`,
             products
         );
     } catch (error) {
@@ -119,9 +120,10 @@ exports.getProductById = (req, res, next) => {
             return next(new AppError("Product not found", 404));
         }
 
+        let time = new Date();
         return successResponse(
             res,
-            "Product fetched successfully",
+            `Products fetched successfully at ${time}`,
             product
         );
     } catch (error) {

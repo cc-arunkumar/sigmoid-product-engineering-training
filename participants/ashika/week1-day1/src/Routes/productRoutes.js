@@ -11,12 +11,12 @@ const protect=require("../middleware/authMiddleware");
 const authorize=require("../middleware/authorized");
 const cache=require("../middleware/cache");
 
-router.get("/api/products", cache(60000),productController.getallproducts);
-router.get("/api/product/:id", cache(60000),productController.getproductbyId);
+router.get("/products", cache(60000),productController.getallproducts);
+router.get("/product/:id", cache(60000),productController.getproductbyId);
 
-router.post("/api/products",protect,authorize("user"),validate, productController.createproducts);
-router.put("/api/product/:id",protect, validate, authorize("user"), productController.updateProduct);
-router.delete("/api/product/:id",protect, authorize("admin"), productController.DeletebyId);
-router.patch("/api/product/:id",protect, authorize("admin"),validateforpatch, productController.updatePartialProduct);
+router.post("/products",protect,authorize("admin"),validate, productController.createproducts);
+router.put("/product/:id",protect, validate, authorize("admin"), productController.updateProduct);
+router.delete("/product/:id",protect, authorize("admin"), productController.DeletebyId);
+router.patch("/product/:id",protect, authorize("admin"),validateforpatch, productController.updatePartialProduct);
 
 module.exports=router;

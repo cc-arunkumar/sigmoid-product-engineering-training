@@ -8,12 +8,7 @@ const clientID = process.env.GOOGLE_CLIENT_ID;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const callbackURL = process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/api/auth/google/callback";
 
-console.log("Using Google ClientID:", clientID ? clientID : "[MISSING]");
-console.log("Using Google CallbackURL:", callbackURL);
-
-if (!clientID || !clientSecret) {
-  console.error("Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET in .env — OAuth will fail");
-}
+console.log("Using Google ClientID:", clientID);
 
 passport.use(
   new GoogleStrategy(

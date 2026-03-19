@@ -5,9 +5,10 @@ const patchvalidator=require("../middleware/validateProductPartial")
 const router = express.Router(); //created a router here we can create multiple routes now ,from here we can have multiple paths or routers now
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
+const cache = require("../middleware/cache");
 const productController = require("../controllers/productController"); //imported the controller here from controller file  ,this is one path
-router.get("/api/products", productController.getAllProducts);
-router.get("/api/product/:id",productController.getProductById);
+router.get("/api/products", cache(60000),productController.getAllProducts);
+router.get("/api/product/:id",cache(60000),productController.getProductById);
 router.post("/api/products",protect,authorize('admin','user'),validator,productController.createProduct)
 router.put("/api/product/:id",protect,authorize('admin','user'),validator,productController.updateProduct);
 router.patch("/api/product/:id",protect,authorize('admin'),patchvalidator,productController.updatePartialProduct);

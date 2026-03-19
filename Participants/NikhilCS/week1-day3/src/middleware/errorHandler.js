@@ -1,5 +1,5 @@
 //const {errorResponse}=require("../utils/apiResponse")
-const {AppError}=require("../utils/AppError")
+const AppError=require("../utils/AppError")
 const errorHandler=(err,req,res,next)=>{
     // console.error(err.stack)
     // const statusCode=err.statusCode || 500

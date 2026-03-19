@@ -7,10 +7,11 @@ const validateProduct = require("../middleware/validateProduct.js");
 const validateProductPartial=require("../middleware/validateProductPartial.js");
 const protect=require("../middleware/authMiddleware.js"); //
 const authorize=require("../middleware/authorize.js");  //
+const cache=require("../middleware/cache.js");
 
 //Public routes
-router.get("/api/products",productController.getAllProducts);
-router.get("/api/products/:id",productController.getProductById);
+router.get("/api/products", cache(60000), productController.getAllProducts);
+router.get("/api/products/:id", cache(60000), productController.getProductById);
 
 //Admin only routes
 router.post("/api/products", protect, authorize("user"), validateProduct, productController.createProduct);
@@ -19,4 +20,3 @@ router.delete("/api/products/:id", protect, authorize("admin"), productControlle
 // router.patch('/api/products/:id', validateProductPartial ,productController.patchProduct);
 router.patch('/api/products/:id', protect, authorize("admin"), validateProductPartial ,productController.patchProduct);
 module.exports=router;
-

@@ -21,8 +21,6 @@ router.get("/products/:id", cache(60000), productController.getProductById);
 // CREATE product (protected)
 router.post(
   "/products",
-  protect,
-  authorize("user"),
   validateProduct,
   productController.createProduct
 );

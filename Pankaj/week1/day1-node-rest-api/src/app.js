@@ -1,6 +1,11 @@
 const express = require("express");
 require("dotenv").config();
+
 const app = express();
+
+// DB connection
+const connectDB = require("./config/mongo");
+connectDB();
 
 // Routes
 const productRoutes = require("./routes/productRoutes");
@@ -22,19 +27,21 @@ app.use(apiLimiter);
 // Passport init
 app.use(passport.initialize());
 
-
-app.use("/api", productRoutes);     // <-- IMPORTANT FIX
+// Routes
+app.use("/api", productRoutes);
 app.use("/api/auth", authRoutes);
 
-// Test route (optional but useful)
+// Test route
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API Running ...");
 });
 
-// Error handler (should be last)
+// Error handler (LAST)
 app.use(errorHandler);
 
 // Start server
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

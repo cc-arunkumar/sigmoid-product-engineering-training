@@ -1,203 +1,106 @@
-const products = require("../data/products");
-
-const { successResponse } = require("../utils/apiResponse");
-
+const Product = require("../models/product.mongo"); 
 const AppError = require("../utils/AppError");
 const AppResponse = require("../utils/AppResponse");
-
+const { successResponse } = require("../utils/apiResponse");
 
 // GET all products
+const getAllProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
 
-exports.getAllProducts = (req, res, next) => {
-
-    try {
-
-        return new AppResponse(res, "All products fetched successfully", products);
-
-    } catch (error) {
-
-        return next(new AppError(error.message || "Failed to fetch products", 500));
-
-    }
-
+    return new AppResponse(res, "All products fetched successfully", products);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
 };
 
+//  GET product by ID
+const getProductById = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id);
 
-// GET product by ID
-
-exports.getProductById = (req, res, next) => {
-
-    try {
-
-        const productId = parseInt(req.params.id);
-
-        const product = products.find(p => p.id === productId);
-
-
-        if (!product) {
-
-            return next(new AppError("Product not found", 404));
-
-        }
-
-
-        return new AppResponse(res, "Product fetched successfully", product);
-
-    } catch (error) {
-
-        return next(new AppError(error.message || "Failed to fetch product", 500));
-
+    if (!product) {
+      return next(new AppError("Product not found", 404));
     }
 
+    return new AppResponse(res, "Product fetched successfully", product);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
 };
 
+//  CREATE product
+const createProduct = async (req, res, next) => {
+  try {
+    const product = await Product.create(req.body);
 
-// CREATE product
+    console.log("Saved to DB:", product);
 
-exports.createProduct = (req, res, next) => {
-
-
-
-    try {
-
-        const { name, price, category, stock } = req.body;
-
-
-        const newProduct = {
-
-            id: products.length + 1,
-
-            name,
-
-            price,
-
-            category,
-
-            stock
-
-        };
-
-
-        products.push(newProduct);
-
-
-        return new AppResponse(res, "Product created successfully", newProduct);
-
-    } catch (error) {
-
-        return next(new AppError(error.message || "Failed to create product", 500));
-
-    }
-
+    return successResponse(res, "Product created successfully", product);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
 };
 
+//  UPDATE product (PUT)
+const updateProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
 
-// UPDATE product (PUT - full update)
-
-exports.updateProduct = (req, res, next) => {
-
-    try {
-
-        const productId = parseInt(req.params.id);
-
-        const index = products.findIndex(p => p.id === productId);
-
-
-        if (index === -1) {
-
-            return next(new AppError("Product not found", 404));
-
-        }
-
-
-        const { name, price, category, stock } = req.body;
-
-
-        products[index] = {
-
-            id: productId,
-
-            name,
-
-            price,
-
-            category,
-
-            stock
-
-        };
-
-
-        return new AppResponse(res, "Product updated successfully", products[index]);
-
-    } catch (error) {
-
-        return next(new AppError(error.message || "Failed to update product", 500));
-
+    if (!product) {
+      return next(new AppError("Product not found", 404));
     }
 
+    return new AppResponse(res, "Product updated successfully", product);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
 };
 
+//  PATCH product
+const patchProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
 
-// PATCH product (partial update)
-
-exports.patchProduct = (req, res, next) => {
-
-    try {
-
-        const productId = parseInt(req.params.id);
-
-        const product = products.find(p => p.id === productId);
-
-
-        if (!product) {
-
-            return next(new AppError("Product not found", 404));
-
-        }
-
-
-        Object.assign(product, req.body);
-
-
-        return new AppResponse(res, "Product updated partially", product);
-
-    } catch (error) {
-
-        return next(new AppError(error.message || "Failed to patch product", 500));
-
+    if (!product) {
+      return next(new AppError("Product not found", 404));
     }
 
+    return new AppResponse(res, "Product updated partially", product);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
 };
 
+//  DELETE product
+const deleteProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
 
-// DELETE product
-
-exports.deleteProduct = (req, res, next) => {
-
-    try {
-
-        const productId = parseInt(req.params.id);
-
-        const index = products.findIndex(p => p.id === productId);
-
-
-        if (index === -1) {
-
-            return next(new AppError("Product not found", 404));
-
-        }
-
-
-        const deletedProduct = products.splice(index, 1);
-
-
-        return new AppResponse(res, "Product deleted successfully", deletedProduct);
-
-    } catch (error) {
-
-        return next(new AppError(error.message || "Failed to delete product", 500));
-
+    if (!product) {
+      return next(new AppError("Product not found", 404));
     }
 
+    return new AppResponse(res, "Product deleted successfully", product);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
+
+// EXPORT ALL
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  patchProduct,
+  deleteProduct,
 };

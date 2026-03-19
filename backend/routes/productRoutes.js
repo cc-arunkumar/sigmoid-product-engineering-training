@@ -18,5 +18,10 @@ router.post("/products", protect, authorize("user"),validateProduct, productCont
 router.put("/products/:id", protect, validateProduct,authorize("user"), productControllers.updateProduct);
 router.delete("/products/:id", protect,authorize("admin"), productControllers.deleteProduct);
 router.patch("/products", protect,authorize("admin"), validateProductPartial, productControllers.patchProduct);
-router.post("/mongo/products",productMongoControllers.createProductMongo);
+router.post("/mongo/products",productMongoControllers.createProduct);
+router.get("/mongo/products", cache(60000),productControllers.getAllProducts);
+router.get("/mongo/products/:id", cache(60000),productControllers.getProductById);
+router.put("/mongo/products/:id", protect, validateProduct,authorize("user"), productControllers.updateProduct);
+router.delete("/mongo/products/:id", protect,authorize("admin"), productControllers.deleteProduct);
+router.patch("/mongo/products", protect,authorize("admin"), validateProductPartial, productControllers.patchProduct);
 module.exports = router;

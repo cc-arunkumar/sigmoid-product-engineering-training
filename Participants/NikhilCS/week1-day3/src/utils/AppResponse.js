@@ -19,4 +19,4 @@ class AppResponse {
   }
 }
 
-export { AppResponse };
+module.exports=AppResponse

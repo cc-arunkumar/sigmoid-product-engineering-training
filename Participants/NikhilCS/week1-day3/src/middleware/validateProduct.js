@@ -1,4 +1,4 @@
-import { AppError } from "../utils/AppError";
+const AppError=require("../utils/AppError")
 const validateProduct = (req, res, next) => {
   const {name,price,category,stock} = req.body;
   if (!name||name.trim()==="") {

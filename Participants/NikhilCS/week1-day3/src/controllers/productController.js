@@ -1,8 +1,8 @@
 const products = require("../data/products");
 //now using the classess appError and AppResponse instead of Apiresponse 
 //const {successResponse,errorResponse} = require("../utils/apiResponse")
-const {AppResponse}=require("../utils/AppResponse")
-const {AppError}=require("../utils/AppError")
+const AppResponse=require("../utils/AppResponse")
+const AppError=require("../utils/AppError")
 //defautl==lt exports
 exports.getAllProducts = (req, res,next) => {
   //without success response
@@ -89,7 +89,7 @@ exports.createProduct = (req, res,next) => {
 return next(new AppError("Failed to create product", 500));
 }
 }
-exports.updateProduct = (req, res) => {
+exports.updateProduct = (req, res,next) => {
   try{
   const productId = Number(req.params.id);
   console.log(productId);
@@ -125,7 +125,7 @@ exports.updateProduct = (req, res) => {
   return next(new AppError("Failed to update product", 500));
 }
 }
-exports.updatePartialProduct = (req, res) => {
+exports.updatePartialProduct = (req, res,next) => {
   try{
   const productId = Number(req.params.id);
   console.log(productId);
@@ -165,7 +165,7 @@ exports.updatePartialProduct = (req, res) => {
   return next(new AppError("Failed to delete product", 500));
 }
 };
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct = (req, res,next) => {
   try{
   const productId = Number(req.params.id);
   console.log(productId);

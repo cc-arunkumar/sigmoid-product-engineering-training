@@ -6,10 +6,12 @@ const AppError = require("../utils/appError");
 // GET all products
 exports.getAllProducts = (req, res, next) => {
   try {
+    let time=new Date();
     return successResponse(
       res,
-      "All products fetched successfully",
-      products
+      `All products fetched successfully at ${time}`,
+      products,
+      
     );
   } catch (error) {
     return next(new AppError(error.message || "Failed to fetch products", 500));

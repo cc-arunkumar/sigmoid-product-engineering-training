@@ -11,11 +11,11 @@ const cache = (duration) => {
 
         const cachedData = cacheStore.get(key);
 
-        if(cachedData && cachedData.expiry() > Date.now()){
+        if(cachedData && cachedData.expiry > Date.now()){
             return res.status(200).json(cachedData.data);
         }
 
-        const originalJson = req.json.bind(res);
+        const originalJson = res.json.bind(res);
 
         res.json = (data) => {
             cacheStore.set(key, {

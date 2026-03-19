@@ -1,7 +1,9 @@
 exports.successResponse = (res, message, data) => {
   res.status(200).json({
-    message: message,
-    data: data,
+    status: "success",
+    data: {
+      data,
+    },
   });
 };
 

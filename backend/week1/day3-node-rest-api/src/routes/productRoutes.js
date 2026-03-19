@@ -11,7 +11,7 @@ const cache = require("../middleware/cache");
 
 router.get("/", cache(6000), productController.getAllProducts);
 router.get("/:id", cache(6000), productController.getProductById);
-router.post("/", protect, validateProduct, productController.createProduct);
+router.post("/", validateProduct, productController.createProduct);
 router.patch(
   "/:id",
   protect,

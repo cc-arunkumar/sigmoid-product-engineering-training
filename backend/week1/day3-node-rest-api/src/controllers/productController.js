@@ -1,10 +1,13 @@
 const { products } = require("../data/products");
 const { successResponse } = require("../utils/apiResponse");
 const AppError = require("../utils/appError");
+const Product = require("../models/productModel");
 
 // GET all products
-exports.getAllProducts = (req, res, next) => {
+exports.getAllProducts = async (req, res, next) => {
   try {
+    const products = await Product.find();
+
     return successResponse(res, "All products fetched successfully", products);
   } catch (error) {
     return next(new AppError(error.message || "Failed to fetch products", 500));
@@ -12,10 +15,9 @@ exports.getAllProducts = (req, res, next) => {
 };
 
 // GET product by ID
-exports.getProductById = (req, res, next) => {
+exports.getProductById = async (req, res, next) => {
   try {
-    const productId = req.params.id * 1;
-    const product = products.find((p) => p.id === productId);
+    const product = await Product.findById(req.params.id);
 
     if (!product) {
       return next(new AppError("Product not found", 404));
@@ -23,24 +25,14 @@ exports.getProductById = (req, res, next) => {
 
     return successResponse(res, "Product fetched successfully", product);
   } catch (error) {
-    return next(new AppError(error.message || "Failed to fetch product", 500));
+    return next(new AppError("Invalid ID or failed to fetch product", 500));
   }
 };
 
 // CREATE product (POST)
-exports.createProduct = (req, res, next) => {
+exports.createProduct = async (req, res, next) => {
   try {
-    const { name, price, category, stock } = req.body;
-
-    const newProduct = {
-      id: products.length + 1,
-      name,
-      price,
-      category,
-      stock,
-    };
-
-    products.push(newProduct);
+    const newProduct = await Product.create(req.body);
 
     return successResponse(res, "Product created successfully", newProduct);
   } catch (error) {
@@ -49,66 +41,58 @@ exports.createProduct = (req, res, next) => {
 };
 
 // UPDATE product (PUT)
-exports.updateProduct = (req, res, next) => {
+exports.updateProduct = async (req, res, next) => {
   try {
-    const productId = req.params.id * 1;
-    const index = products.findIndex((p) => p.id === productId);
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true, // return updated doc
+        runValidators: true, // apply schema validation
+      },
+    );
 
-    if (index === -1) {
+    if (!updatedProduct) {
       return next(new AppError("Product not found", 404));
     }
 
-    const { name, price, category, stock } = req.body;
-
-    products[index] = {
-      id: productId,
-      name,
-      price,
-      category,
-      stock,
-    };
-
-    return successResponse(
-      res,
-      "Product updated successfully",
-      products[index],
-    );
+    return successResponse(res, "Product updated successfully", updatedProduct);
   } catch (error) {
     return next(new AppError(error.message || "Failed to update product", 500));
   }
 };
 
 // PATCH
-exports.patchProduct = (req, res, next) => {
+exports.patchProduct = async (req, res, next) => {
   try {
-    const productId = req.params.id * 1;
-    const product = products.find((p) => p.id === productId);
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
-    if (!product) {
+    if (!updatedProduct) {
       return next(new AppError("Product not found", 404));
     }
 
-    Object.assign(product, req.body);
-
-    return successResponse(res, "Product updated partially", product);
+    return successResponse(res, "Product updated partially", updatedProduct);
   } catch (error) {
     return next(new AppError(error.message || "Failed to patch product", 500));
   }
 };
-
 // DELETE
-exports.deleteProduct = (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
   try {
-    const productId = req.params.id * 1;
-    const index = products.findIndex((p) => p.id === productId);
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
-    if (index === -1) {
+    if (!deletedProduct) {
       return next(new AppError("Product not found", 404));
     }
 
-    const deleted = products.splice(index, 1);
-
-    return successResponse(res, "Product deleted successfully", deleted);
+    return successResponse(res, "Product deleted successfully", deletedProduct);
   } catch (error) {
     return next(new AppError(error.message || "Failed to delete product", 500));
   }

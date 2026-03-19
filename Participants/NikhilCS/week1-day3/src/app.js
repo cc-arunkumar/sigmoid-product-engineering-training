@@ -41,6 +41,10 @@
 //   console.log("server started....");
 // });
 // import express from "express"
+// Add to app.js TOP (temporary)
+require('dotenv').config();
+console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
+console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 const express = require("express");
 const app = express();
 const errorhandler=require("./middleware/errorHandler")
@@ -50,9 +54,11 @@ const logger=require("./middleware/logger")
 const productRoutes = require("./routes/productRoutes");
 const authRoutes=require("./routes/authRoutes")
 const {apiLimiter} = require("./middleware/rateLimiter");
+const passport = require("./config/passport")
 app.use(express.json())
 app.use(logger)
 app.use(apiLimiter);
+app.use(passport.initialize());
 app.use(authRoutes)
 app.use(productRoutes); //here to app.use we can add url as first parameter like /api/v1 then we dont need to change anythig anywehre but then our prodcts will lie oin url
 //localhost:3000/api/v1/products because the app.use url is basically adde to product router url it is basically acting as base url to use at start

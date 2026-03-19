@@ -1,9 +1,13 @@
 const products = require("../data/products");
-//defautl exports
+const {successResponse,errorResponse} = require("../utils/apiResponse")
+//defautl==lt exports
 exports.getAllProducts = (req, res) => {
-  res.json(products);
+  //without success response
+  // res.json(products);
+  //with success response
+  return successResponse(res, "Products fetched successfully", products);
 };
-exports.getProductById = (req, res) => {
+exports.getProductById = (req, res,next) => {
   //const productId=parseInt(req.params.id)
   //parseInt however has a drawbakc convert "100a" into 100 which is incorrect so use the Number method instead
   const productId = Number(req.params.id);
@@ -12,15 +16,23 @@ exports.getProductById = (req, res) => {
     return product.id === productId;
   }); //if we search or find here for a non exisent ided object that is an object without the required id ,so non existent product then emptty object ,product has non data response then we go for the status code of 404 being sent
   if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
-    });
+    //without error response
+
+    // return res.status(404).json({
+    //   message: "Product not found",
+    // });
+
+    //with error response
+    return errorResponse(res, "Product not found", 404)
+  }
     //we could do
     //return res.status(404).send({
     //         message:"Product not found"
     // })
-  }
-  res.json(product);
+//without success response
+  // res.json(product);
+  //with success response
+  return successResponse(res, "Product fetched successfully", product);
 };
 exports.createProduct = (req, res) => {
   const { name, price, category, stock } = req.body;
@@ -32,9 +44,12 @@ exports.createProduct = (req, res) => {
     stock: stock,
   };
   products.push(newProduct);
-  res.status(201).json(newProduct);
-};
-exports.updateProduct = (req, res) => {
+  //without success response
+  // res.status(201).json(newProduct);
+  //with success response
+  return successResponse(res, "Product created successfully", newProduct, 201);
+}
+exports.updateProduct = (req, res, next) => {
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -43,18 +58,24 @@ exports.updateProduct = (req, res) => {
   //one important thing about the ffind operation in js on array processing is it returns a refeence or a pointer of srots to the same memory location so when weedit this object returned in memory this object is edited at same sport we are not egtting a copy of the object so it is not like we have to pop the object then repush it is by reference
   //
   if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
-    });
+    //without error response
+    // return res.status(404).json({
+    //   message: "Product not found",
+    // });
+    //with error response
+    return errorResponse(res, "Product not found", 404)
   }
   const { name, price, category, stock } = req.body;
   product.name = name;
   product.price = price;
   product.category = category;
   product.stock = stock;
-  return res.status(200).send("succesful update done ");
-};
-exports.updatePartialProduct = (req, res) => {
+//without success response
+  // return res.status(200).send("succesful update done ");
+  //with success response
+  return successResponse(res, "Product updated successfully", product);
+}
+exports.updatePartialProduct = (req, res,next) => {
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -63,9 +84,14 @@ exports.updatePartialProduct = (req, res) => {
   //one important thing about the ffind operation in js on array processing is it returns a refeence or a pointer of srots to the same memory location so when weedit this object returned in memory this object is edited at same sport we are not egtting a copy of the object so it is not like we have to pop the object then repush it is by reference
   //
   if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
-    });
+    //without error response 
+
+    // return res.status(404).json({
+    //   message: "Product not found",
+    // });
+
+    //with error response 
+    return errorResponse(res, "Product not found", 404)
   }
   let reqobj = req.body;
   let attributestoupdate = Object.keys(reqobj);
@@ -74,22 +100,31 @@ exports.updatePartialProduct = (req, res) => {
     product[key] =reqobj[key];
   }
   console.log(product)
-  return res.status(200).send("succesful partial update done ");
+  //without success response
+  //return res.status(200).send("succesful partial update done ");
+  //with success response
+  return successResponse(res, "Product Partially  updated successfully", product);
 };
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct = (req, res,next) => {
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
     return product.id === productId;
   });
   if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
-    });
+    //without error response
+    // return res.status(404).json({
+    //   message: "Product not found",
+    // });
+    //with error response
+    return errorResponse(res,"Product not found",404)
   }
   // const remproducts=products.filter((product)=>product.id!=productId)
   // products=remproducts
   const index = products.indexOf(product);
   products.splice(index, 1);
-  res.status(200).send("deleted succesfully");
+  //without success response
+  //res.status(200).send("deleted succesfully");
+  //with success response
+  return successResponse(res, "Deleted successfully", null);
 };

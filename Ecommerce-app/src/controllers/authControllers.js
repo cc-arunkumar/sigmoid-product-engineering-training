@@ -55,3 +55,32 @@ exports.login = (req,res,next) => {
         return next(new AppError("Error occurred while generating token !!",500));
     }
 };
+
+
+// Google OAuth2 success handler
+
+exports.googleCallback = (req, res, next) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            return next(new AppError("Google authentication failed", 401));
+        }
+
+        // Generate JWT from Google profile data
+        const token = jwr.sign(
+            {
+                userId: user.id,
+                username: user.username,
+                role: user.role
+            },
+            process.env.JWT_SECRET || "mysecretkey",
+            { expiresIn: "1h" }
+        );
+
+        return successResponse(res, "Google login successful", { token });
+
+    } catch (error) {
+        return next(new AppError(error.message || "OAuth login failed", 500));
+    }
+};

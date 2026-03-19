@@ -1,6 +1,6 @@
 const cacheStore=new Map();
 
-export const cache=(duration)=>{
+const cache=(duration)=>{
     return (req, res, next) => {
         if(req.method !== "GET"){
             return next();
@@ -24,3 +24,4 @@ export const cache=(duration)=>{
         next();
     }
 }  
+export default cache;

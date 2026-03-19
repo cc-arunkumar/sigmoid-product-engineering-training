@@ -40,5 +40,22 @@ function login(req, res, next){
         return next(new AppError("An error occurred during login", 500));
     }
 }
-export { login }
+function googleCallback(req, res,next) {
+    try {
+        const user = req.user;
+        if(!user) return next(new AppError("Google authentication failed", 401));
+        const token = jwt.sign(
+            { userId: user.id, username: user.username, role: user.role },
+            process.env.JWT_SECRET || "mysecretkey",
+            { expiresIn: "1h" }
+        );
+        return new AppResponse({
+            data: { token },
+            message: "Google login successful"
+        }).send(res);
+    } catch (error) {
+        return next(new AppError("An error occurred during Google login", 500));
+    }
+}       
+export { login, googleCallback }
 

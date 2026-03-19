@@ -6,7 +6,8 @@ const AppError = require("../utils/AppError");
 exports.getAllProducts = (req, res, next) => {
   try {
     return successResponse(res, "All products fetched successfully", products);
-  } catch (error) {
+  } 
+  catch (error) {
     return next(new AppError(error.message || "Failed to fetch products", 500));
   }
 };
@@ -22,7 +23,8 @@ exports.getProductById = (req, res, next) => {
     }
 
     return successResponse(res, "Product fetched successfully", product);
-  } catch (error) {
+  } 
+  catch (error) {
     return next(new AppError(error.message || "Failed to fetch product", 500));
   }
 };
@@ -36,7 +38,8 @@ exports.createProduct = (req, res, next) => {
     products.push(newProduct);
 
     return successResponse(res, "Product created successfully", newProduct);
-  } catch (error) {
+  } 
+  catch (error) {
     return next(new AppError(error.message || "Failed to create product", 500));
   }
 };
@@ -55,7 +58,8 @@ exports.updateProduct = (req, res, next) => {
     products[index] = { id: productId, name, price, category, stock };
 
     return successResponse(res, "Product updated successfully", products[index]);
-  } catch (error) {
+  } 
+  catch (error) {
     return next(new AppError(error.message || "Failed to update product", 500));
   }
 };
@@ -73,7 +77,8 @@ exports.patchProduct = (req, res, next) => {
     Object.assign(product, req.body);
 
     return successResponse(res, "Product updated partially", product);
-  } catch (error) {
+  } 
+  catch (error) {
     return next(new AppError(error.message || "Failed to patch product", 500));
   }
 };
@@ -91,7 +96,8 @@ exports.deleteProduct = (req, res, next) => {
     const deletedProduct = products.splice(index, 1);
 
     return successResponse(res, "Product deleted successfully", deletedProduct);
-  } catch (error) {
+  } 
+  catch (error) {
     return next(new AppError(error.message || "Failed to delete product", 500));
   }
 };

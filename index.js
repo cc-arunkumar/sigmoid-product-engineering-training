@@ -11,7 +11,9 @@ const logger = require("./middleware/logger")
 const errorHandler = require("./middleware/errorHandler")
 const { apiLimiter } = require("./middleware/rateLimiter")
 const passport = require("./config/passport");
+const connectDB = require("./config/mongo");
 
+connectDB();
 
 app.use(express.json());
 app.use(logger);
@@ -20,11 +22,18 @@ app.use(apiLimiter);
 app.use(passport.initialize());
 
 
-app.use("/api/products", productRoutes);
+app.use("/api", productRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use(errorHandler)
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-});
+app.get('/', (req, res) => { 
+  res.send("API Running"); 
+}); 
+
+console.log("ENV PORT:", process.env.PORT); 
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => { 
+  console.log(`Server running on port ${PORT}`); 
+}); 

@@ -5,17 +5,18 @@ const validateProduct= require("../middleware/validateProduct");
 const validateProductPartial = require("../middleware/validateProductPartial");
 const protect = require("../middleware/authMiddleware");
 const authorize = require("../middleware/authorize");
-
+const cache = require("../middleware/cache");
 
 // Public routes
-router.get("/api/products", productController.getAllProducts);
+router.get("/", cache(60000), productController.getAllProducts);
+router.get("/:id", cache(60000), productController.getProductById);
+
 
 // Protected routes
-router.get("/api/products/:id", protect, productController.getProductById);
-router.post("/api/products", protect, authorize("admin"), validateProduct, productController.createProduct);
-router.put("/api/products/:id", protect, authorize("admin"), validateProduct, productController.updateP);
-router.delete("/api/products/:id", protect, authorize("admin"), productController.deleteProduct);
-router.patch("/api/products/:id", protect, authorize("admin"), validateProductPartial, productController.patchProduct);
+router.post("/", protect, authorize("admin"), validateProduct, productController.createProduct);
+router.put("/:id", protect, authorize("admin"), validateProduct, productController.updateP);
+router.delete("/:id", protect, authorize("admin"), productController.deleteProduct);
+router.patch("/:id", protect, authorize("admin"), validateProductPartial, productController.patchProduct);
 
 
 

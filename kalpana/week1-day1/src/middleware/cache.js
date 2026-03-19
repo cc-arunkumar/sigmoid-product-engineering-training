@@ -17,10 +17,11 @@ const cache = (duration) => {
 
         // 2. Capturing Response Before Sending
         const originalJson = res.json.bind(res);
-
+        
         res.json = (data) => {
+            let clonedData= JSON.parse(JSON.stringify(data))
             cacheStore.set(key, {
-                data,
+                data:clonedData,
                 expiry: Date.now() + duration
             });
             return originalJson(data);

@@ -1,4 +1,5 @@
-const express= require("express") // express is module with which we will create our apis
+require("dotenv").config();
+const express= require("express")
 const app = express()
 
 const productRoutes= require("./routes/productRouter");
@@ -8,27 +9,20 @@ const logger= require("./middleware/logger");
 const errorHandler= require("./middleware/errorHandler");
 const {apiLimiter} = require("./middleware/rateLimiter");
 const authRoutes= require("./routes/authRouter");
-
+const passport = require("./config/passport");
 
  // middleware so that our express understands the data send in the json format
- app.use(express.json());
+app.use(express.json());
 app.use(logger);
-
+app.use(passport.initialize());
 app.use("/api/auth", authRoutes);
-
 app.use(apiLimiter);
-
 app.use(productRoutes);
 app.use(userRoutes);
 app.use(orderRoutes);
-
-
-
-
 app.use(errorHandler);
 
 // console.log("About to start server");
-
 app.get("/api", (req,res)=>{
     res.send("welcome to backend");
 })

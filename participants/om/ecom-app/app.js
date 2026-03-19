@@ -1,7 +1,13 @@
 const express = require("express");
+
+const dotenv = require("dotenv");
+dotenv.config({ path: "./.env" });
 const port = 8000;
 
 const app = express();
+
+const connectMongo = require("./config/mongo");
+connectMongo();
 
 const logger = require("./middleware/logger");
 const productRoutes = require("./routes/productRoutes");
@@ -17,7 +23,7 @@ app.use(apiLimiter);
 
 app.use(productRoutes);
 // app.use(validate);
-app.use(authRoutes);
+app.use( "/api/auth" ,authRoutes);
 app.use(passport.initialize());
 
 app.use(errorHandler);

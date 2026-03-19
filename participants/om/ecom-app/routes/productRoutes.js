@@ -13,12 +13,12 @@ router.get('/api/products', cache(60000), productController.getAllProducts);
 
 router.get('/api/product/:id', cache(60000), productController.getProductById);
 
-router.post('/api/product', protect, authorize("user"),validateProduct, productController.createProduct);
+router.post('/api/product', protect, authorize("user"), validateProduct, productController.createProduct);
 
 router.put('/api/product/:id', protect, authorize("user"), validateProduct, productController.updateProduct);
 
-router.patch('/api/product/:id', protect, authorize("admin"), validateProductPartial, productController.patchProduct);
+router.patch('/api/product/:id', protect, authorize("user"), validateProductPartial, productController.partialUpdateProduct);
 
-router.delete('/api/product/:id', protect, authorize("admin"), productController.deleteProduct);
+router.delete('/api/product/:id', protect, authorize("user"), productController.deleteProduct);
 
 module.exports = router;

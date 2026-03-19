@@ -1,191 +1,107 @@
-// let products = require('../data/products');
+const Product = require("../models/product.mongo");
+const AppError = require("../utils/appError");
+const { successResponse } = require("../utils/apiResponse");
 
-// exports.getAllProducts = (req, res) => {
-//     res.json(products);
-// };
+// GET all products
+exports.getAllProducts = async (req, res, next) => {
+    try {
+        const products = await Product.find();
+        let time = new Date();
 
-// exports.getProductById = (req, res) => {
-//     const productId = (req.params.id)*1;
-//     const product = products.find(p => p.id === productId);
+        return successResponse(
+            res,
+            `All products fetched successfully at ${time}`,
+            products
+        );
+    } catch (error) {
+        return next(new AppError(error.message || "Failed to fetch products", 500));
+    }
+};
 
-//     if(!product){
-//         return res.status(404).json({ message: "Product not found!" });
-//     }
+// GET product by ID
+exports.getProductById = async (req, res, next) => {
+    try {
+        const product = await Product.findById(req.params.id);
 
-//     res.json(product);
-// };
+        if (!product) {
+            return next(new AppError("Product not found", 404));
+        }
 
-// exports.createProduct = (req, res) => {
-//     const { name, price, category, stock } = req.body;
+        return successResponse(res, "Product fetched successfully", product);
+    } catch (error) {
+        return next(new AppError(error.message || "Failed to fetch product", 500));
+    }
+};
 
-//     const newProduct = {
-//         id: products.length + 101,
-//         name: name,
-//         price: price,
-//         category: category,
-//         stock: stock
-//     };
+// CREATE product
+exports.createProduct = async (req, res, next) => {
+    try {
+        const { name, price, category, stock } = req.body;
 
-//     products.push(newProduct);
-//     res.status(201).json(newProduct);
-// };
+        const newProduct = await Product.create({
+            name,
+            price,
+            category,
+            stock
+        });
 
-// exports.updateProduct = (req, res) => {
-//     const productId = (req.params.id)*1;
-//     const product = products.find(p => p.id === productId);
+        return successResponse(res, "Product created successfully", newProduct);
+    } catch (error) {
+        return next(new AppError(error.message || "Failed to create product", 500));
+    }
+};
 
-//     if(!product){
-//         return res.status(404).json({ message: "Product not found!" });
-//     }
+// UPDATE product (PUT)
+exports.updateProduct = async (req, res, next) => {
+    try {
+        const { name, price, category, stock } = req.body;
 
-//     const { name, price, category, stock } = req.body;
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            { name, price, category, stock },
+            { new: true, runValidators: true }
+        );
 
-//     product.name = name;
-//     product.price = price;
-//     product.category = category;
-//     product.stock = stock;
+        if (!updatedProduct) {
+            return next(new AppError("Product not found", 404));
+        }
 
-//     res.status(200).json(product);
-// };
+        return successResponse(res, "Product updated successfully", updatedProduct);
+    } catch (error) {
+        return next(new AppError(error.message || "Failed to update product", 500));
+    }
+};
 
-// exports.updatePartialProduct = (req, res) => {
-//     const productId = (req.params.id)*1;
-//     const product = products.find(p => p.id === productId);
+// PATCH (partial update)
+exports.partialUpdateProduct = async (req, res, next) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
 
-//     if(!product){
-//         return res.status(404).json({ message: "Product not found!" });
-//     }
+        if (!updatedProduct) {
+            return next(new AppError("Product not found", 404));
+        }
 
-//     const { name, price, category, stock } = req.body;
+        return successResponse(res, "Product updated partially", updatedProduct);
+    } catch (error) {
+        return next(new AppError(error.message || "Failed to patch product", 500));
+    }
+};
 
-//     if (name !== undefined) product.name = name;
-//     if (price !== undefined) product.price = price;
-//     if (category !== undefined) product.category = category;
-//     if (stock !== undefined) product.stock = stock;
+// DELETE product
+exports.deleteProduct = async (req, res, next) => {
+    try {
+        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
-//     res.status(200).json(product);
-// };
+        if (!deletedProduct) {
+            return next(new AppError("Product not found", 404));
+        }
 
-// exports.deleteProduct = (req, res) => {
-//     const productId = parseInt(req.params.id, 10);
-//     const product = products.find(p => p.id === productId);
-
-//     if(!product){
-//         return res.status(404).json({ message: "Product not found!" });
-//     }
-
-//     let newProducts = products.filter(p => p.id !== productId);
-//     products = newProducts;
-
-//     res.status(200).json({ message: "Product deleted successfully!" });
-// };
-
-const products = require("../data/products"); 
-const { successResponse } = require("../utils/apiResponse"); 
-const AppError = require("../utils/appError"); 
-
-// GET all products 
-exports.getAllProducts = (req, res, next) => { 
-    try { 
-        return successResponse(res, "All products fetched successfully", products); 
-    } catch (error) { 
-        return next(new AppError(error.message || "Failed to fetch products", 500)); 
-    } 
-}; 
-
-// GET product by ID 
-exports.getProductById = (req, res, next) => { 
-    try { 
-        const productId = parseInt(req.params.id); 
-        const product = products.find(p => p.id === productId); 
-
-        if (!product) { 
-            return next(new AppError("Product not found", 404)); 
-        } 
-
-        return successResponse(res, "Product fetched successfully", product); 
-    } catch (error) { 
-        return next(new AppError(error.message || "Failed to fetch product", 500)); 
-    } 
-}; 
-
-// CREATE product 
-exports.createProduct = (req, res, next) => { 
-    try { 
-        const { name, price, category, stock } = req.body; 
-        const newProduct = { 
-            id: products.length + 101, 
-            name, 
-            price, 
-            category, 
-            stock 
-        }; 
-
-        products.push(newProduct); 
-
-        return successResponse(res, "Product created successfully", newProduct); 
-    } catch (error) { 
-        return next(new AppError(error.message || "Failed to create product", 500)); 
-    } 
-}; 
-
-// UPDATE product (PUT - full update) 
-exports.updateProduct = (req, res, next) => { 
-    try { 
-        const productId = parseInt(req.params.id); 
-        const index = products.findIndex(p => p.id === productId); 
-
-        if (index === -1) { 
-            return next(new AppError("Product not found", 404)); 
-        } 
-
-        const { name, price, category, stock } = req.body; 
-        products[index] = { 
-            id: productId, 
-            name, 
-            price, 
-            category, 
-            stock 
-        };
-
-        return successResponse(res, "Product updated successfully", products[index]); 
-    } catch (error) { 
-        return next(new AppError(error.message || "Failed to update product", 500)); 
-    } 
-}; 
-
-// PATCH product (partial update) 
-exports.patchProduct = (req, res, next) => { 
-    try { 
-        const productId = parseInt(req.params.id); 
-        const product = products.find(p => p.id === productId); 
-        if (!product) { 
-            return next(new AppError("Product not found", 404)); 
-        } 
-
-        Object.assign(product, req.body); 
-
-        return successResponse(res, "Product updated partially", product); 
-
-    } catch (error) { 
-        return next(new AppError(error.message || "Failed to patch product", 500)); 
-    } 
-}; 
-
-// DELETE product 
-exports.deleteProduct = (req, res, next) => { 
-    try { 
-        const productId = parseInt(req.params.id); 
-        const index = products.findIndex(p => p.id === productId); 
-
-        if (index === -1) { 
-            return next(new AppError("Product not found", 404)); 
-        } 
-
-        const deletedProduct = products.splice(index, 1); 
-
-        return successResponse(res, "Product deleted successfully", deletedProduct); 
-    } catch (error) { 
-        return next(new AppError(error.message || "Failed to delete product", 500)); 
-    } 
-}; 
+        return successResponse(res, "Product deleted successfully", deletedProduct);
+    } catch (error) {
+        return next(new AppError(error.message || "Failed to delete product", 500));
+    }
+};

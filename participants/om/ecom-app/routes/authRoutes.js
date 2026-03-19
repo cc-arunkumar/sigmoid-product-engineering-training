@@ -25,5 +25,4 @@ router.get(
   googleCallback
 );
 
-
 module.exports = router;

@@ -4,6 +4,13 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { apiLimiter } from "./middleware/rateLimiter.js";
 import dotenv from "dotenv";
 dotenv.config();
+import createDatabase from "./config/createDB.js";
+import { connectSQL } from "./config/sqlConnection.js";
+import { sequelize } from "./config/sqlConnection.js";
+
+await sequelize.sync();
+createDatabase();
+connectSQL();
 import connectDB from "./config/mongo.js";
 const app = express()
 connectDB();

@@ -23,6 +23,8 @@ import {
   patchProduct as patchProductMongo
 } from "../controllers/productMongoController.js";
 
+import createSqlUser from "../controllers/sqlController.js";
+
 const router = express.Router();
 
 
@@ -65,4 +67,6 @@ router.delete("/api/mongo/products/:id",deleteProductMongo
 router.patch("/api/mongo/products/:id",patchProductMongo
 );
 
+//SQL ROUTE
+router.post("/api/sql/users" , createSqlUser);
 export default router;

@@ -1,4 +1,6 @@
-require("dotenv").config({ path: "../.env" }); // Load environment variables from root .env file
+require("dotenv").config({ path: "../.env" }); 
+const connectDB = require("./config/mongo");
+connectDB();// Load environment variables from root .env file
 
 const express = require("express"); // express is module with which we will create our apis
 const app = express();
@@ -10,6 +12,7 @@ const loggers = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const authRoute = require("./routes/authRouter");
 const { apiLimiter } = require("./middleware/rateLimiter");
+
 
 // Middleware for JSON parsing
 app.use(express.json());
@@ -38,7 +41,7 @@ app.use(loggers);
 app.use(apiLimiter);
 
 app.use(productRoutes);
-app.use("/api/auth", authRoute);
+app.use("/api", authRoute);
 
 app.get("/api", (req, res) => {
   res.send("welcome to backend"); // sending the response

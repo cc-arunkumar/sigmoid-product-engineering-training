@@ -107,7 +107,7 @@ exports.getProductById = (req, res, next) => {
         const productId = parseInt(req.params.id);
         const product = products.find(p => p.id === productId);
         if (!product) {
-            return next(new AppError("Product not found", 567));
+            return next(new AppError("Product not found", 404));
         }   
         return successResponse(res, "Product fetched successfully", product);
     } catch (error) {

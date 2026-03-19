@@ -2,6 +2,29 @@ const jwt = require("jsonwebtoken");
 const { successResponse } = require("../utils/apiResponse");
 const AppError = require("../utils/appError");
 
+exports.googleCallback = (req,res,next) => {
+    try{
+        const user = req.user;
+
+        if(!user){
+            return next(new AppError("Google authentication failed",401));
+        }
+        const token = jwt.sign({
+            userId:user.id,
+            username:user.username,
+            role:user.role
+        },
+        process.env.JWT_SECRET || "mysecretkey",
+        { expiresIn:"1h" }
+        );
+
+        return successResponse(res,"Google login successful",{token});
+    }catch(error){
+        return next(new AppError(error.message || "OAuth login failed",500));
+    }
+}
+
+
 const USER = [
     {
         id:1, 

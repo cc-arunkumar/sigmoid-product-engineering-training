@@ -1,20 +1,10 @@
-// testConnection.js
-require("dotenv").config();
-const { MongoClient } = require("mongodb");
+const processProductFile = require("./src/utils/productStream");
 
-const uri = process.env.MONGO_URI;
-const client = new MongoClient(uri);
-
-async function testConnection() {
+(async () => {
     try {
-        await client.connect();
-        console.log("✅ Connected to MongoDB");
-        const dbs = await client.db().admin().listDatabases();
-        console.log("Databases:", dbs.databases.map(db => db.name));
-        await client.close();
+        const count = await processProductFile("./product.txt");
+        console.log("Total products processed:", count);
     } catch (err) {
-        console.error("❌ Connection failed:", err);
+        console.error(err.message);
     }
-}
-
-testConnection();
+})();

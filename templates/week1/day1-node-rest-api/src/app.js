@@ -1,14 +1,15 @@
-const express = require("express")
-
 require('dotenv').config();
-const app = express()
-
+const express = require("express")
+const connectDB = require("./config/mongo")
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const { apiLimiter } = require("./middleware/rateLimiter");
 const passport = require("./config/passport");
+
+connectDB();
+const app = express();
 
 app.use(express.json());
 app.use(logger);

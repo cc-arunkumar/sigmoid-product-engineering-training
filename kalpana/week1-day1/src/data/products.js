@@ -13,7 +13,7 @@ const products = [
         category: "electronics",
         stock: 15
     },
-        {
+    {
         id: 103,
         name: "headphone",
         price: 10000.00,

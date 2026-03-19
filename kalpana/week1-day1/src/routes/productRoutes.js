@@ -11,8 +11,10 @@ const protect = require("../middleware/authMiddleware")
 
 const authorize = require("../middleware/authorize");
 
-router.get("/", productController.getAllProducts);
-router.get("/:id", productController.getProductById);
+const cache = require("../middleware/cache");
+
+router.get("/", cache(60000), productController.getAllProducts);
+router.get("/:id", cache(60000), productController.getProductById);
 
 router.post(
     "/",

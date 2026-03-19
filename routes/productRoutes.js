@@ -7,6 +7,7 @@ const validateProductPatch = require("../middleware/validateProductPatch");
 const protect=require("../middleware/authMiddleware");
 const authorize=require("../middleware/authorize");
 const cache=require("../middleware/cache");
+const productMongoControllers = require("../controllers/productMongoController")
 
 // GET
 router.get("/api/products",cache(60000), productController.getAllProducts);
@@ -23,5 +24,7 @@ router.patch("/api/products/:id",protect,authorize("admin"), validateProductPatc
 
 // DELETE
 router.delete("/api/products/:id",protect,authorize("admin"), productController.deleteProduct);
+
+router.post("/mongo", validateProduct, productMongoControllers.createProductMongo);
 
 module.exports = router;

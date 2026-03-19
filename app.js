@@ -1,30 +1,39 @@
-require("dotenv").config();
-const express=require("express");
-const app=express();
+require("dotenv").config()
+const express = require("express");
 
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; connect-src 'self' https://accounts.google.com"
-  );
-  next();
-});
+const app = express();
 
-const productRoutes = require("./routes/productRoutes");
-const authRoutes=require("./routes/authRoutes");
-const logger=require("./middleware/logger");
-const errorHandler=require("./middleware/errorHandler");
-const {apiLimiter}=require("./middleware/rateLimiter");
+
+const productRoutes = require("./routes/productRoutes")
+const authRoutes = require("./routes/authRoutes")
+
+const logger = require("./middleware/logger")
+const errorHandler = require("./middleware/errorHandler")
+const { apiLimiter } = require("./middleware/rateLimiter")
 const passport = require("./config/passport");
+const connectDB = require("./config/mongo");
+
+connectDB();
 
 app.use(express.json());
 app.use(logger);
-//Apply rate limiting globally
 app.use(apiLimiter);
+
 app.use(passport.initialize());
-app.use("/api/product",productRoutes);
+
+
+app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
-app.use(errorHandler);
-app.listen(3000,()=>{
-    console.log("Server running on port 3000")
+
+app.use(errorHandler)
+
+app.get('/', (req, res) => { 
+  res.send("API Running"); 
+}); 
+
+console.log("ENV PORT:", process.env.PORT); 
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => { 
+  console.log(`Server running on port ${PORT}`); 
 });

@@ -7,7 +7,7 @@ exports.getAllProducts = (req, res) => {
   //with success response
   return successResponse(res, "Products fetched successfully", products);
 };
-exports.getProductById = (req, res,next) => {
+exports.getProductById = (req, res) => {
   //const productId=parseInt(req.params.id)
   //parseInt however has a drawbakc convert "100a" into 100 which is incorrect so use the Number method instead
   const productId = Number(req.params.id);
@@ -49,7 +49,7 @@ exports.createProduct = (req, res) => {
   //with success response
   return successResponse(res, "Product created successfully", newProduct, 201);
 }
-exports.updateProduct = (req, res, next) => {
+exports.updateProduct = (req, res) => {
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -75,7 +75,7 @@ exports.updateProduct = (req, res, next) => {
   //with success response
   return successResponse(res, "Product updated successfully", product);
 }
-exports.updatePartialProduct = (req, res,next) => {
+exports.updatePartialProduct = (req, res) => {
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {
@@ -105,7 +105,7 @@ exports.updatePartialProduct = (req, res,next) => {
   //with success response
   return successResponse(res, "Product Partially  updated successfully", product);
 };
-exports.deleteProduct = (req, res,next) => {
+exports.deleteProduct = (req, res) => {
   const productId = Number(req.params.id);
   console.log(productId);
   const product = products.find((product) => {

@@ -20,3 +20,8 @@ const authLimiter=rateLimit({
         return next(new AppError("Too many login attempts, try again later",429));
     }
 });
+
+module.exports={
+    apiLimiter,
+    authLimiter
+};

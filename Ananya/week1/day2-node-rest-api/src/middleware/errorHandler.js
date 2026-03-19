@@ -33,7 +33,7 @@ let statusCode = 500;
 let message = "Internal Server Error";
 
 
-// 3. Validate incoming error object
+// 3. Validate incoming error objecter
 
 if (err && typeof err === "object") {
 

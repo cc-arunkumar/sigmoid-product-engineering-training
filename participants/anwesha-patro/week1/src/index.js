@@ -1,32 +1,34 @@
-const express = require("express")
-
-const app = express()
-
+const express = require("express");
+const app = express();
+require("dotenv").config();
+const connectDB = require("./config/mongo");
 const productRoutes = require("./routes/productRoutes");
-
-const productLogger = require("./middleware/logger");
-
-const errorHandler = require("./middleware/errorHandler");
-
 const authRoutes = require("./routes/authroutes");
-
+const productLogger = require("./middleware/logger");
+const errorHandler = require("./middleware/errorHandler");
 const { apiLimiter } = require("./middleware/rateLimiter");
+const passport = require("./config/passport");
 
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
+// Connect to MongoDB and then start server
+connectDB().then(() => {
+    console.log("MongoDB connected");
 
-app.use(productLogger);
+    app.use(express.json());
+    app.use(productLogger);
+    app.use(passport.initialize());
 
+    app.get("/", (req, res) => res.send("API Running"));
 
-app.use("/api/products", apiLimiter, productRoutes);
+    app.use("/api/products", apiLimiter, productRoutes);
+    app.use("/api/auth", authRoutes);
 
-app.use("/api/auth", authRoutes)
+    app.use(errorHandler);
 
-app.use(errorHandler);
-
-
-
-
-app.listen(4000, () => {
-    console.log("running on port 4000")
-})
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}).catch(err => {
+    console.error("Failed to connect to MongoDB:", err);
+});

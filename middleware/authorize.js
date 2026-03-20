@@ -2,6 +2,7 @@ const AppError = require("../utils/AppError");
 
 const authorize = (...allowedRoles) => {
   return (req, res, next) => {
+    console.log(req.user);
     if (!req.user) {
       return next(new AppError("Unauthorized access", 401));
     }

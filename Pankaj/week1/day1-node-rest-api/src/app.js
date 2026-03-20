@@ -3,9 +3,12 @@ require("dotenv").config();
 
 const app = express();
 
-// DB connection
+// DB connections
 const connectDB = require("./config/mongo");
+const connectSQL = require("./config/sql");
+
 connectDB();
+connectSQL();
 
 // Routes
 const productRoutes = require("./routes/productRoutes");

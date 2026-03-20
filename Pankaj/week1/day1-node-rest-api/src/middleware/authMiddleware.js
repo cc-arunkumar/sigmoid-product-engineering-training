@@ -45,25 +45,25 @@ const protect = (req, res, next) => {
   }
 };
 
-//  Authorize (Role-based)
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    try {
-      //  No user attached
-      if (!req.user) {
-        return next(new AppError("Not authenticated", 401));
-      }
+// //  Authorize (Role-based)
+// const authorize = (...roles) => {
+//   return (req, res, next) => {
+//     try {
+//       //  No user attached
+//       if (!req.user) {
+//         return next(new AppError("Not authenticated", 401));
+//       }
 
-      //  Check role
-      if (!roles.includes(req.user.role)) {
-        return next(new AppError("Access denied", 403));
-      }
+//       //  Check role
+//       if (!roles.includes(req.user.role)) {
+//         return next(new AppError("Access denied", 403));
+//       }
 
-      next();
-    } catch (error) {
-      return next(new AppError(error.message, 500));
-    }
-  };
-};
+//       next();
+//     } catch (error) {
+//       return next(new AppError(error.message, 500));
+//     }
+//   };
+// };
 
-module.exports = {protect,authorize};
+module.exports = {protect};

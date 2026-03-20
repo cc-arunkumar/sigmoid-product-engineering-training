@@ -27,18 +27,17 @@ exports.login = (req, res, next) => {
         }
 
         // ✅ Find user correctly
-        const foundUser = users.find(u => u.username === username);
+        const user = users.find(u => u.username === username);
 
-        if (!foundUser || foundUser.password !== password) {
+        if (!user || user.password !== password) {
             return next(new AppError("Invalid credentials", 401));
         }
 
         // ✅ Generate JWT
         const token = jwt.sign(
             {
-                id: foundUser.id,
-                username: foundUser.username,
-                role: foundUser.role
+                id: user.id,
+                role: user.role
             },
             process.env.JWT_SECRET || "mysecretkey",
             { expiresIn: "1h" }
@@ -52,26 +51,26 @@ exports.login = (req, res, next) => {
 };
 
 
-// Google OAuth success handler
-exports.googleCallback = (req, res, next) => {
-    try {
-        const user = req.user;
-        if (!user) {
-            return next(new AppError("Google authentication failed", 401));
-        }
-        // Generate JWT
-        const token = jwt.sign(
-            {
-                userId: user.id,
-                username: user.username,
-                role: user.role
-            },
-            process.env.JWT_SECRET || "mysecretkey",
-            { expiresIn: "1h" }
-        );
+// // Google OAuth success handler
+// exports.googleCallback = (req, res, next) => {
+//     try {
+//         const user = req.user;
+//         if (!user) {
+//             return next(new AppError("Google authentication failed", 401));
+//         }
+//         // Generate JWT
+//         const token = jwt.sign(
+//             {
+//                 userId: user.id,
+//                 username: user.username,
+//                 role: user.role
+//             },
+//             process.env.JWT_SECRET || "mysecretkey",
+//             { expiresIn: "1h" }
+//         );
 
-        return successResponse(res, "Google login successful", { token });
- } catch (error) {
-        return next(new AppError(error.message || "OAuth login failed", 500));
- }
-};
+//         return successResponse(res, "Google login successful", { token });
+//  } catch (error) {
+//         return next(new AppError(error.message || "OAuth login failed", 500));
+//  }
+// };

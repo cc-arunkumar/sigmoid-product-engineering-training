@@ -1,33 +1,24 @@
+const {errorResponse} = require("../utils/apiResponse");
 const validateProduct = (req, res, next)=> {
     const {name, price, category, stock} = req.body;
 
-    if(!name || name.trim()==="" || name.length == 0){
-        return res.status(400).json({
-            success: false,
-            message: "Name is required and should not be empty"});
+    if(typeof name !== "string" || name.trim()==="" || name.length == 0){
+        return errorResponse(res, "Name is required and should not be empty", 400);
     }
 
-    if(price === undefined || price <= 0){
-        return res.status(400).json({
-            success: false,
-            message: "Price is required and should be a positive number"
-        });
+    if(typeof price !== "number" || price <= 0){
+        return errorResponse(res, "Price is required and should be a positive number", 400);
     }
-    if(!category || category.trim() === "" || category.length == 0){
-        return res.status(400).json({
-            success: false,
-            message: "Category is required and should not be empty"
-        });
+    if(typeof category !== "string" || category.trim() === "" || category.length == 0){
+        return errorResponse(res, "Category is required and should not be empty", 400);
     }
-    if(stock === undefined || stock < 0){
-        return res.status(400).json({
-            success: false,
-            message: "Stock is required and should be a non-negative number"
-        });
+    if(typeof stock !== "number" ||isNaN(stock) ||  stock < 0){
+        return errorResponse(res, "Stock is required and should be a non-negative number", 400);
     }
+
     next();
 
     
-}
+};
 
 module.exports = validateProduct;

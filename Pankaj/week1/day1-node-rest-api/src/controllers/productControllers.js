@@ -1,106 +1,79 @@
-const Product = require("../models/product.mongo"); 
 const AppError = require("../utils/AppError");
-const AppResponse = require("../utils/AppResponse");
 const { successResponse } = require("../utils/apiResponse");
+const productService = require("../services/productService");
 
-// GET all products
-const getAllProducts = async (req, res, next) => {
+// GET ALL PRODUCTS
+exports.getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.find();
-
-    return new AppResponse(res, "All products fetched successfully", products);
-  } catch (error) {
-    return next(new AppError(error.message, 500));
+    const data = await productService.getAllProducts();
+    return successResponse(res, "All products fetched", data);
+  } catch (err) {
+    return next(new AppError(err.message, 500));
   }
 };
 
-//  GET product by ID
-const getProductById = async (req, res, next) => {
+// GET PRODUCT BY ID
+exports.getProductById = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const { id } = req.params;
+    const data = await productService.getProductById(id);
 
-    if (!product) {
-      return next(new AppError("Product not found", 404));
-    }
+    if (!data) return next(new AppError("Product not found", 404));
 
-    return new AppResponse(res, "Product fetched successfully", product);
-  } catch (error) {
-    return next(new AppError(error.message, 500));
+    return successResponse(res, "Product fetched", data);
+  } catch (err) {
+    return next(new AppError(err.message, 500));
   }
 };
 
-//  CREATE product
-const createProduct = async (req, res, next) => {
+// CREATE PRODUCT
+exports.createProduct = async (req, res, next) => {
   try {
-    const product = await Product.create(req.body);
-
-    console.log("Saved to DB:", product);
-
-    return successResponse(res, "Product created successfully", product);
-  } catch (error) {
-    return next(new AppError(error.message, 500));
+    const data = await productService.createProduct(req.body);
+    return successResponse(res, "Product created", data);
+  } catch (err) {
+    return next(new AppError(err.message, 500));
   }
 };
 
-//  UPDATE product (PUT)
-const updateProduct = async (req, res, next) => {
+// UPDATE PRODUCT
+exports.updateProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const { id } = req.params;
+    const data = await productService.updateProduct(id, req.body);
 
-    if (!product) {
-      return next(new AppError("Product not found", 404));
-    }
+    if (!data) return next(new AppError("Product not found", 404));
 
-    return new AppResponse(res, "Product updated successfully", product);
-  } catch (error) {
-    return next(new AppError(error.message, 500));
+    return successResponse(res, "Product updated", data);
+  } catch (err) {
+    return next(new AppError(err.message, 500));
   }
 };
 
-//  PATCH product
-const patchProduct = async (req, res, next) => {
+// PATCH PRODUCT
+exports.patchProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const { id } = req.params;
+    const data = await productService.patchProduct(id, req.body);
 
-    if (!product) {
-      return next(new AppError("Product not found", 404));
-    }
+    if (!data) return next(new AppError("Product not found", 404));
 
-    return new AppResponse(res, "Product updated partially", product);
-  } catch (error) {
-    return next(new AppError(error.message, 500));
+    return successResponse(res, "Product patched", data);
+  } catch (err) {
+    return next(new AppError(err.message, 500));
   }
 };
 
-//  DELETE product
-const deleteProduct = async (req, res, next) => {
+// DELETE PRODUCT
+exports.deleteProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const { id } = req.params;
+    const data = await productService.deleteProduct(id);
 
-    if (!product) {
-      return next(new AppError("Product not found", 404));
-    }
+    if (!data) return next(new AppError("Product not found", 404));
 
-    return new AppResponse(res, "Product deleted successfully", product);
-  } catch (error) {
-    return next(new AppError(error.message, 500));
+    return successResponse(res, "Product deleted", data);
+  } catch (err) {
+    return next(new AppError(err.message, 500));
   }
-};
-
-// EXPORT ALL
-module.exports = {
-  getAllProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  patchProduct,
-  deleteProduct,
 };

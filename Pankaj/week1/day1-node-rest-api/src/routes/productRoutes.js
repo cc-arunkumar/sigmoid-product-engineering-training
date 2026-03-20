@@ -1,55 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const productController = require("../controllers/productControllers");
-const validateProduct = require("../middleware/validateProduct");
-const validateProductPartial = require("../middleware/validateProductPartial");
+const productControllers = require("../controllers/productControllers"); // ✅ IMPORTANT
+const authorize = require("../middleware/authorize");
 
+// PUBLIC
+router.get("/products", productControllers.getAllProducts);
+router.get("/products/:id", productControllers.getProductById);
 
-
-//  Correct import
-const { protect, authorize } = require("../middleware/authMiddleware");
-
-const cache = require("../middleware/cache");
-
-// GET all products (public)
-router.get("/products", cache(60000), productController.getAllProducts);
-
-// GET product by ID (public)
-router.get("/products/:id", cache(60000), productController.getProductById);
-
-// CREATE product (protected)
-router.post(
-  "/products",
-  validateProduct,
-  productController.createProduct
-);
-
-// UPDATE product
-router.put(
-  "/products/:id",
-  protect,
-  authorize("user"),
-  validateProduct,
-  productController.updateProduct
-);
-
-// DELETE product
-router.delete(
-  "/products/:id",
-  protect,
-  authorize("user"),
-  productController.deleteProduct
-);
-
-// PATCH product
-router.patch(
-  "/products/:id",
-  protect,
-  authorize("user"),
-  validateProductPartial,
-  productController.patchProduct
-);
+// ADMIN
+router.post("/products", productControllers.createProduct);
+router.put("/products/:id", productControllers.updateProduct);
+router.patch("/products/:id", productControllers.patchProduct);
+router.delete("/products/:id", productControllers.deleteProduct);
 
 module.exports = router;
-

@@ -12,9 +12,19 @@ const errorHandler = require("./middleware/errorHandler")
 const { apiLimiter } = require("./middleware/rateLimiter")
 const passport = require("./config/passport");
 const connectDB = require("./config/mongo");
+const {connectSQL}=require("./config/sqlConnection")
+const {sequelize}=require("./config/sqlConnection")
+
 
 connectDB();
-
+connectSQL();
+sequelize.sync({alter: true})
+  .then(() => {
+    console.log("Database & tables created!");
+  })
+  .catch(err => {
+    console.error("Error syncing database", err);
+  });
 app.use(express.json());
 app.use(logger);
 app.use(apiLimiter);

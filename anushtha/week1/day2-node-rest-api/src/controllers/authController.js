@@ -1,75 +1,107 @@
-const jwt = require("jsonwebtoken");
-const { successResponse } = require("../utils/apiResponse");
-const AppError = require("../utils/appError");
+// controllers/authController.js 
 
-const USER = [
-    {
-        id: 1,
-        username: "admin",
-        password: "1234",
-        role: "admin"
-    },
-    {
-        id: 2,
-        username: "user",
-        password: "1234",
-        role: "user"
-    }
-];
+  
 
-exports.login = (req, res, next) => {
-    try {
-        const { username, password } = req.body;
+const jwt = require("jsonwebtoken"); 
 
-        if (!username || !password) {
-            return next(new AppError("Username and password are required", 400));
-        }
+const { successResponse } = require("../utils/apiResponse"); 
 
-        const user = USER.find(u => u.username === username);
+const AppError = require("../utils/AppError"); 
 
-        if (!user || user.password !== password) {
-            return next(new AppError("Invalid credentials", 401));
-        }
+  
 
-        const token = jwt.sign(
-            {
-                userId: user.id,
-                username: user.username,
-                role: user.role
-            },
-            process.env.JWT_SECRET || "mysecretkey",
-            {
-                expiresIn: "1h"
-            }
-        );
+// Mock users 
 
-        return successResponse(res, "Login successful", { token });
+const USERS = [ 
 
-    } catch (error) {
-        return next(new AppError(error.message || "Login failed", 400));
-    }
-};
-exports.googleCallback = (req, res, next) => {
-  try {
-    const user = req.user;
+    { 
 
-    if (!user) {
-      return next(new AppError("Google authentication failed", 401));
-    }
+        id: 1, 
 
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        username: user.username,
-        role: user.role
-      },
-      process.env.JWT_SECRET || "mysecretkey",
-      { expiresIn: "1h" }
-    );
+        username: "admin", 
 
-    return successResponse(res, "Google login successful", { token });
+        password: "1234", 
 
-  } catch (error) {
-    return next(new AppError(error.message || "OAuth login failed", 500));
-  }
-};
+        role: "admin" 
+
+    }, 
+
+    { 
+
+        id: 2, 
+
+        username: "user", 
+
+        password: "1234", 
+
+        role: "user" 
+
+    } 
+
+]; 
+
+  
+
+exports.login = (req, res, next) => { 
+
+    try { 
+
+        const { username, password } = req.body; 
+
+  
+
+        // Validation 
+
+        if (!username || !password) { 
+
+            return next(new AppError("Username and password required", 400)); 
+
+        } 
+
+  
+
+        // Find user 
+
+        const user = USERS.find(u => u.username === username); 
+
+  
+
+        if (!user || user.password !== password) { 
+
+            return next(new AppError("Invalid credentials", 401)); 
+
+        } 
+
+  
+
+        // Generate token 
+
+        const token = jwt.sign( 
+
+            { 
+
+                id: user.id, 
+
+                role: user.role 
+
+            }, 
+
+            process.env.JWT_SECRET, 
+
+            { expiresIn: "1h" } 
+
+        ); 
+
+  
+
+        return successResponse(res, "Login successful", { token }); 
+
+  
+
+    } catch (error) { 
+
+        return next(new AppError("Login failed", 500)); 
+
+    } 
+
+}; 

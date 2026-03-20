@@ -1,39 +1,89 @@
-const express = require("express")
-const app = express() //express is initialised and it is kept under a variable app
+  
+
+const express = require("express"); 
+
 require("dotenv").config(); 
-const connectDB = require("./config/mongo.js");
-connectDB(); 
 
- 
+  
 
-app.get('/', (req, res) => { 
+// DB 
+
+const connectMongo = require("./config/mongo"); 
+
+const { connectSQL } = require("./config/sql"); 
+
+  
+
+// Routes 
+
+const productRoutes = require("./routes/productRoutes"); 
+
+const authRoutes = require("./routes/authRoutes"); 
+
+  
+
+// Middleware 
+
+const errorHandler = require("./middleware/authMiddleware"); 
+
+const logger = require("./middleware/logger"); 
+
+  
+
+const app = express(); 
+
+  
+
+// Connect MongoDB 
+
+connectMongo(); 
+
+  
+
+// After Mongo connection 
+
+connectSQL(); 
+
+  
+
+// Middlewares 
+
+app.use(express.json()); 
+
+app.use(logger); 
+
+  
+
+// Routes 
+
+app.get("/", (req, res) => { 
 
     res.send("API Running"); 
 
 }); 
 
-console.log("ENV PORT:", process.env.PORT); 
+  
 
-app.get("/api",(req,res)=>{
-    res.send("Welcome to backend");
-})
-app.use(express.json());
-const productRoutes=require("./routes/productRoutes.js");
-const authRoutes=require("./routes/authRoutes.js");
-const logger=require("./middleware/logger.js");
-const errorHandler = require("./middleware/errorHandler.js");
-const {apiLimiter} = require("./middleware/rateLimiter.js");
-const passport = require("./config/passport");
-app.use(logger);
-app.use(apiLimiter);
-app.use(passport.initialize());
-app.use("/api",productRoutes);
-app.use("/api/auth",authRoutes);
-app.use(errorHandler);
-app.listen(3000,()=>{
-    console.log("Server started on port 3000");
-});
+app.use("/api/products", productRoutes); 
 
+app.use("/api/auth", authRoutes); 
 
+  
 
+// Error handler (must be last) 
 
+app.use(errorHandler); 
+
+  
+
+// Start server 
+
+const PORT = process.env.PORT || 3000; 
+
+  
+
+app.listen(PORT, () => { 
+
+    console.log(`Server running on port ${PORT}`); 
+
+}); 

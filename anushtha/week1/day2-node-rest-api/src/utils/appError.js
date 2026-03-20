@@ -1,16 +1,25 @@
-class AppError extends Error {
+class AppError extends Error { 
 
-    constructor(message, statusCode) {
+  
 
-        super(message);
+    constructor(message, statusCode) { 
 
-        this.statusCode = statusCode;
+        super(message); 
+
+  
+
+        this.statusCode = statusCode; 
+
+  
 
         // Maintains proper stack trace (important for debugging) 
 
-        Error.captureStackTrace(this, this.constructor);
+        Error.captureStackTrace(this, this.constructor); 
 
-    }
+    } 
 
-}
+} 
+
+  
+
 module.exports = AppError; 

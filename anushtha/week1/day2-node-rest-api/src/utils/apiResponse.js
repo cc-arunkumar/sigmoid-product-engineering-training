@@ -1,13 +1,37 @@
-exports.successResponse=(res,message,data,statusCode=200)=>{
-    return res.status(statusCode).json({
-        success:true,
-        message:message,
-        data:data
-    });
-}
-exports.errorResponse=(res,message,statusCode=500)=>{
-    return res.status(statusCode).json({
-        success:false,
-        message:message
-    });
-}
+const successResponse = (res, message, data = null, statusCode = 200) => { 
+
+    return res.status(statusCode).json({ 
+
+        success: true, 
+
+        message, 
+
+        data 
+
+    }); 
+
+}; 
+
+  
+
+const errorResponse = (res, message = "Internal Server Error", statusCode = 500) => { 
+
+    return res.status(statusCode).json({ 
+
+        success: false, 
+
+        message 
+
+    }); 
+
+}; 
+
+  
+
+module.exports = { 
+
+    successResponse, 
+
+    errorResponse 
+
+}; 

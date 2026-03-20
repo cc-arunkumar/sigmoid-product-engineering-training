@@ -1,10 +1,10 @@
-const Product = require("../models/product.mongo"); 
+const productService = require("../services/productService"); 
 
 const { successResponse } = require("../utils/apiResponse"); 
 
 const AppError = require("../utils/AppError"); 
 
- 
+  
 
 // GET all products 
 
@@ -12,9 +12,7 @@ exports.getAllProducts = async (req, res, next) => {
 
     try { 
 
-        const products = await Product.find(); 
-
- 
+        const products = await productService.getAllProducts(); 
 
         return successResponse(res, "All products fetched successfully", products); 
 
@@ -26,7 +24,7 @@ exports.getAllProducts = async (req, res, next) => {
 
 }; 
 
- 
+  
 
 // GET product by ID 
 
@@ -34,9 +32,13 @@ exports.getProductById = async (req, res, next) => {
 
     try { 
 
-        const product = await Product.findById(req.params.id); 
+        const { id } = req.params; 
 
- 
+  
+
+        const product = await productService.getProductById(id); 
+
+  
 
         if (!product) { 
 
@@ -44,7 +46,7 @@ exports.getProductById = async (req, res, next) => {
 
         } 
 
- 
+  
 
         return successResponse(res, "Product fetched successfully", product); 
 
@@ -56,7 +58,7 @@ exports.getProductById = async (req, res, next) => {
 
 }; 
 
- 
+  
 
 // CREATE product 
 
@@ -64,25 +66,9 @@ exports.createProduct = async (req, res, next) => {
 
     try { 
 
-        const { name, price, category, stock } = req.body; 
+        const product = await productService.createProduct(req.body); 
 
- 
-
-        const product = await Product.create({ 
-
-            name, 
-
-            price, 
-
-            category, 
-
-            stock 
-
-        }); 
-
- 
-
-        return successResponse(res, "Product created successfully", product); 
+        return successResponse(res, "Product created successfully", product, 201); 
 
     } catch (error) { 
 
@@ -92,29 +78,21 @@ exports.createProduct = async (req, res, next) => {
 
 }; 
 
- 
+  
 
-// UPDATE product (PUT - full update) 
+// UPDATE product 
 
 exports.updateProduct = async (req, res, next) => { 
 
     try { 
 
-        const { name, price, category, stock } = req.body; 
+        const { id } = req.params; 
 
- 
+  
 
-        const product = await Product.findByIdAndUpdate( 
+        const product = await productService.updateProduct(id, req.body); 
 
-            req.params.id, 
-
-            { name, price, category, stock }, 
-
-            { new: true, runValidators: true } 
-
-        ); 
-
- 
+  
 
         if (!product) { 
 
@@ -122,7 +100,7 @@ exports.updateProduct = async (req, res, next) => {
 
         } 
 
- 
+  
 
         return successResponse(res, "Product updated successfully", product); 
 
@@ -134,25 +112,21 @@ exports.updateProduct = async (req, res, next) => {
 
 }; 
 
- 
+  
 
-// PATCH product (partial update) 
+// PATCH product 
 
-exports.updatePartialProduct = async (req, res, next) => { 
+exports.patchProduct = async (req, res, next) => { 
 
     try { 
 
-        const product = await Product.findByIdAndUpdate( 
+        const { id } = req.params; 
 
-            req.params.id, 
+  
 
-            req.body, 
+        const product = await productService.patchProduct(id, req.body); 
 
-            { new: true, runValidators: true } 
-
-        ); 
-
- 
+  
 
         if (!product) { 
 
@@ -160,7 +134,7 @@ exports.updatePartialProduct = async (req, res, next) => {
 
         } 
 
- 
+  
 
         return successResponse(res, "Product updated partially", product); 
 
@@ -172,7 +146,7 @@ exports.updatePartialProduct = async (req, res, next) => {
 
 }; 
 
- 
+  
 
 // DELETE product 
 
@@ -180,9 +154,13 @@ exports.deleteProduct = async (req, res, next) => {
 
     try { 
 
-        const product = await Product.findByIdAndDelete(req.params.id); 
+        const { id } = req.params; 
 
- 
+  
+
+        const product = await productService.deleteProduct(id); 
+
+  
 
         if (!product) { 
 
@@ -190,7 +168,7 @@ exports.deleteProduct = async (req, res, next) => {
 
         } 
 
- 
+  
 
         return successResponse(res, "Product deleted successfully", product); 
 

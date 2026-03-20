@@ -38,9 +38,11 @@ const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const { apiLimiter } = require("./middleware/rateLimiter"); // fixed case
 const passport = require("./config/passport");
+const { connectSQL } = require("./config/sqlConnection");
 
 // Connect DB
 connectMongo();
+connectSQL();
 
 app.use(express.json());
 app.use(logger);

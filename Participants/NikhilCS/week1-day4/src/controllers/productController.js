@@ -212,3 +212,14 @@ exports.deleteProduct = async (req, res,next) => {
   return next(new AppError("Failed to delete product", 500));
 }
 };
+const SQLUser = require('../models/sqlUserModel');
+
+exports.createSQLUser = async (req, res) => {
+  const user = await SQLUser.create(req.body);
+  res.status(201).json(user);
+};
+
+exports.getSQLUsers = async (req, res) => {
+  const users = await SQLUser.findAll();
+  res.json(users);
+};

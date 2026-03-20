@@ -62,6 +62,7 @@ app.use(logger)
 app.use(apiLimiter);
 app.use(passport.initialize());
 app.use(authRoutes)
+app.use("/api/auth",authRoutes) //this is for Oauth to work  
 app.use(productRoutes); //here to app.use we can add url as first parameter like /api/v1 then we dont need to change anythig anywehre but then our prodcts will lie oin url
 //localhost:3000/api/v1/products because the app.use url is basically adde to product router url it is basically acting as base url to use at start
 app.use(errorhandler)

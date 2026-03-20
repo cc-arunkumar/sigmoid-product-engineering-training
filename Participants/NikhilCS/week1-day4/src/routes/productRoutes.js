@@ -13,4 +13,5 @@ router.post("/api/products",protect,authorize('admin','user'),validator,productC
 router.put("/api/product/:id",protect,authorize('admin','user'),validator,productController.updateProduct);
 router.patch("/api/product/:id",protect,authorize('admin'),patchvalidator,productController.updatePartialProduct);
 router.delete("/api/product/:id",protect,authorize('admin'),productController.deleteProduct);
+router.get("/api/sql/sqlusers",productController.getSQLUsers)
 module.exports=router

@@ -1,38 +1,48 @@
 import express from "express";
-import { logger } from "./middleware/logger.js";
-import { errorHandler } from "./middleware/errorHandler.js";
-import { apiLimiter } from "./middleware/rateLimiter.js";
 import dotenv from "dotenv";
+
+// Load env
 dotenv.config();
-import createDatabase from "./config/createDB.js";
-import { connectSQL } from "./config/sqlConnection.js";
+
+// DB
+import connectMongo from "../src/config/mongo.js";
+import { connectSQL } from "../src/config/sqlConnection.js";
+
+// Routes
+import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+
+// Middleware
+import errorHandler from "./middleware/errorHandler.js";
+import logger from "./middleware/logger.js";
+
+const app = express();
+
+// Connect Databases
+connectMongo();
+connectSQL();
 import { sequelize } from "./config/sqlConnection.js";
 
 await sequelize.sync();
-createDatabase();
-connectSQL();
-import connectDB from "./config/mongo.js";
-const app = express()
-connectDB();
-app.get('/', (req, res) => {
-res.send("API Running");
-});
-console.log("ENV PORT:", process.env.PORT);
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`);
 
-});
-import productRoutes from "./routes/productRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
-import passport from "./config/passport.js";
-app.use(logger);
+// Middlewares
 app.use(express.json());
-app.use(apiLimiter);
-app.use(passport.initialize()); 
+app.use(logger);
+
+// Routes
+app.get("/", (req, res) => {
+  res.send("API Running");
+});
+
 app.use(productRoutes);
-app.use(authRoutes);
+app.use("/api/auth", authRoutes);
+
+// Error handler (must be last)
 app.use(errorHandler);
-// app.listen(3000, () => {
-//     console.log("SERVER ON 3000")
-// })
+
+// Start server
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

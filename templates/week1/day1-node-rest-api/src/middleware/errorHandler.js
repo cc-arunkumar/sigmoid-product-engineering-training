@@ -1,6 +1,6 @@
 import { errorResponse } from "../utils/apiResponse.js";
 
-export const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
     //1. log full error for debugging
     console.error("ERROR:", {
         message: err?.message,
@@ -23,3 +23,5 @@ export const errorHandler = (err, req, res, next) => {
     //4.  send standardized response
     return errorResponse(res, message, statusCode);
 };
+
+export default errorHandler;

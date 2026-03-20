@@ -24,49 +24,57 @@ import {
 } from "../controllers/productMongoController.js";
 
 import createSqlUser from "../controllers/sqlController.js";
+import { getAllProductsdb,getProductByIddb,createProductdb,updateProductdb,patchProductdb,deleteProductdb} from "../controllers/dbProductControllers.js";
 
 const router = express.Router();
 
 
-router.get("/api/products", cache(60000), getAllProducts);
+// router.get("/api/products", cache(60000), getAllProducts);
 
-router.get("/api/product/:id", cache(60000), getProductById);
+// router.get("/api/product/:id", cache(60000), getProductById);
 
-router.post(
-  "/api/products",protect,authorize("user"),validateProduct,createProduct
-);
+// router.post(
+//   "/api/products",protect,authorize("user"),validateProduct,createProduct
+// );
 
-router.put(
-  "/api/product/:id",protect,authorize("user"),validateProduct,modifyProduct
-);
+// router.put(
+//   "/api/product/:id",protect,authorize("user"),validateProduct,modifyProduct
+// );
 
-router.delete(
-  "/api/product/:id",protect,authorize("admin"),deleteProduct
-);
+// router.delete(
+//   "/api/product/:id",protect,authorize("admin"),deleteProduct
+// );
 
-router.patch(
-  "/api/product/:id",protect,authorize("admin"),validatePatch,patchProduct
-);
+// router.patch(
+//   "/api/product/:id",protect,authorize("admin"),validatePatch,patchProduct
+// );
 
 
 //MONGODB routes
 
-router.get("/api/mongo/products",  getAllProductsMongo);
+// router.get("/api/mongo/products",  getAllProductsMongo);
 
-router.get("/api/mongo/products/:id", getProductByIdMongo);
+// router.get("/api/mongo/products/:id", getProductByIdMongo);
 
-router.post("/api/mongo/products",createProductMongo
-);
+// router.post("/api/mongo/products",createProductMongo
+// );
 
-router.put("/api/mongo/products/:id",updateProductMongo
-);
+// router.put("/api/mongo/products/:id",updateProductMongo
+// );
 
-router.delete("/api/mongo/products/:id",deleteProductMongo
-);
+// router.delete("/api/mongo/products/:id",deleteProductMongo
+// );
 
-router.patch("/api/mongo/products/:id",patchProductMongo
-);
+// router.patch("/api/mongo/products/:id",patchProductMongo
+// );
 
-//SQL ROUTE
-router.post("/api/sql/users" , createSqlUser);
+//SQL & MONGODB ROUTE
+router.get("/api/db/products" , getAllProductsdb);
+router.get("/api/db/product/:id",getProductByIddb);
+router.post("/api/db/products",createProductdb);
+router.put("/api/db/product/:id",updateProductdb);
+router.patch("/api/db/product/:id",patchProductdb);
+router.delete("/api/db/product/:id" ,deleteProductdb);
+
+
 export default router;

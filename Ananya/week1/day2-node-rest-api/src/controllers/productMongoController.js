@@ -7,7 +7,7 @@ exports.createProduct = async (req, res, next) => {
 try {
     
 
-const newProduct = await product.create({ req.body });
+const newProduct = await product.create(req.body )
 
 return successResponse(res, "Product created successfully", newProduct);
 

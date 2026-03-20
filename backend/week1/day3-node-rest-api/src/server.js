@@ -2,10 +2,11 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "../.env" });
 
 const dbConnect = require("./config/db");
-const { connectSQL } = require("./config/sql");
+const { connectSQL, sequelize } = require("./config/sql");
 
 dbConnect();
 connectSQL();
+sequelize.sync();
 
 const app = require("./app");
 

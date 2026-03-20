@@ -8,9 +8,12 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    category: String,
+    category:{
+        type : String,
+    }, 
     stock: {
-        type: Number
+        type: Number,
+        default : 0
     }
 }, { timestamps: true });
 module.exports = mongoose.model("Product", productSchema);

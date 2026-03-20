@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const { successResponse } = require("../utils/apiResponse");
-
 const appError = require("../utils/appError");
-
 
 //hardcoded user (for training purpose)
 const USERS = [
@@ -11,13 +9,13 @@ const USERS = [
         id: 1,
         username: "admin",
         password: "admin123",
-        role : "admin"
+        role: "admin"
     },
     {
-        id : 2,
-        username : "user",
-        password : "user123",
-        role : "user"
+        id: 2,
+        username: "user",
+        password: "user123",
+        role: "user"
     }
 ]
 
@@ -42,15 +40,20 @@ exports.login = (req, res, next) => {
 
         //generate token with role
 
-        const token = jwt.sign({
-            userId: user.id,
-            userName: user.username,
-            role : user.role
-        },
-        process.env.JWT_SECRET || "mysecretkey",
+        const token = jwt.sign(
+
             {
-                expiresIn: "1h"
-            }
+
+                id: user.id,
+
+                role: user.role
+
+            },
+
+            process.env.JWT_SECRET,
+
+            { expiresIn: "1h" }
+
         );
 
         //send response

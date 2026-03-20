@@ -7,10 +7,24 @@ const connectMongo = async () => {
             socketTimeoutMS: 5000,
         });
         console.log("MongoDB connected successfully !!");
-        return true;
+
+
+        // Connection events
+        mongoose.connection.on("connected", () => {
+            console.log("Mongoose connected to DB");
+        });
+        mongoose.connection.on("disconnected", () => {
+            console.log("Mongoose disconnected from DB");
+        });
+        mongoose.connection.on("error", (err) => {
+            console.error("Mongoose connection error:", err.message);
+        });
+
+        // return true;
     } catch (error) {
         console.error("MongoDB Connection Failed:", error.message);
         process.exit(1);
     }
 };
+
 module.exports = connectMongo;

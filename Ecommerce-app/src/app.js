@@ -1,7 +1,8 @@
 require("dotenv").config();
 const connectDB = require("./config/mongo");
+const { connectSQL } = require("./config/sql");
 connectDB();
-
+connectSQL();
 const express = require("express");
 
 

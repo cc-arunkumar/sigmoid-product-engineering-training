@@ -21,6 +21,9 @@ exports.login = (req, res, next) => {
   try {
     const { username, password } = req.body;
 
+    console.log("got req.body",req.body);
+    
+
     if (!username || !password) {
       return next(new AppError("Username and password are required", 400));
     }
@@ -28,6 +31,9 @@ exports.login = (req, res, next) => {
     const user = USER.find(
       (u) => u.username === username && u.password === password
     );
+
+    console.log("user.find",user);
+    
 
     if (!user) {
       return next(new AppError("Invalid credentials", 401));
@@ -40,7 +46,7 @@ exports.login = (req, res, next) => {
         role: user.role   
       },
       process.env.JWT_SECRET || "mysecretkey",
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     );
 
     return successResponse(res, "Login successful", { token });

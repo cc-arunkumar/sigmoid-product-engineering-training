@@ -1,5 +1,9 @@
 const validateProduct = (req, res, next) => {
     const {name, price, category, stock} = req.body;
+   
+    
+
+    
     if(!name || name.trim() === ""){
         return res.status(400).json(
             {

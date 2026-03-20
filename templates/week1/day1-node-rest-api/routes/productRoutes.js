@@ -15,7 +15,7 @@ router.get("/api/product/:id",  cache(60000),productController.getProductById);
 
 router.post("/api/product",
     protect,
-    authorize("user"),
+    authorize("admin"), 
     validateProduct,
     productController.createProduct);
 

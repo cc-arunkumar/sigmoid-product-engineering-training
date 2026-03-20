@@ -12,10 +12,12 @@ const authRoutes = require("./routes/authRoutes");
 const { apiLimiter } = require("./middleware/rateLimiter");
 const passport = require("./config/passport");  
 const connectMongo = require("./config/mongo");
+const { connectSQL } = require("./config/sql");
 
 connectMongo();
+connectSQL();
 
-app.use(express.json());
+app.use(express.json()); //req hit the app
 app.use(logger);
 app.use(apiLimiter);
 app.use(passport.initialize());

@@ -43,7 +43,7 @@ errors.push("Price must be a number > 0");
 
 if (category !== undefined) {
 
-if (typeof category !== "string" || category.trim() === "") {
+if (typeof category !== "string" || category.trim() === " ") {
 
 errors.push("Category must be a valid string");
 

@@ -24,6 +24,8 @@ const protect = (req, res, next) => {
       token,
       process.env.JWT_SECRET || "mysecretkey"
     );
+    console.log(decoded);
+    
 
     // 4. Attach user info to request
     req.user = decoded;

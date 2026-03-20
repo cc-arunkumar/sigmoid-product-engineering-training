@@ -24,6 +24,7 @@ const cache = (duration) => {
     const originalJson = res.json.bind(res);
 
     res.json = (data) => {
+        const clonedData = JSON.parse(JSON.stringify(data));
       cacheStore.set(key, {
         data,
         expiry: Date.now() + duration

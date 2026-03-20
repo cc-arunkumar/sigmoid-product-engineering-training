@@ -1,10 +1,14 @@
 const express = require("express");
+
 const productRoutes = require("./routes/productRoutes");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const authRouter = require("./routes/authRoutes");
 const { apiLimiter } = require("./middleware/rateLimiter");
+const { connectSQL, sequelize } = require("./config/sql");
 
+connectSQL();
+sequelize.sync()
 
  
 

@@ -18,7 +18,7 @@ router.get("/:id", cache(60000), productController.getProductById);
 
 
 
-router.post("/", validateProduct, productController.createProduct);
+router.post("/", protect, authorize("user"), validateProduct, productController.createProduct);
 
 router.put("/:id", protect, authorize("user"), validateProduct, productController.updateProduct);
 

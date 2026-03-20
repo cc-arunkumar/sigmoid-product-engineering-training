@@ -1,39 +1,45 @@
-require("dotenv").config()
 const express = require("express");
+require("dotenv").config();
 
+// DB
+const connectMongo = require("./config/mongo");
+const { connectSQL } = require("./config/sqlConnection");
+
+// Routes
+const productRoutes = require("./routes/productRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+// Middleware
+const errorHandler = require("./middleware/authMiddleware");
+const logger = require("./middleware/logger");
+const {sequelize}=require("./config/sqlConnection")
 const app = express();
 
+// Connect MongoDB
+connectMongo();
 
-const productRoutes = require("./routes/productRoutes")
-const authRoutes = require("./routes/authRoutes")
+// After Mongo connection
+connectSQL();
+sequelize.sync()
 
-const logger = require("./middleware/logger")
-const errorHandler = require("./middleware/errorHandler")
-const { apiLimiter } = require("./middleware/rateLimiter")
-const passport = require("./config/passport");
-const connectDB = require("./config/mongo");
-
-connectDB();
-
+// Middlewares
 app.use(express.json());
 app.use(logger);
-app.use(apiLimiter);
 
-app.use(passport.initialize());
-
+// Routes
+app.get("/", (req, res) => {
+  res.send("API Running");
+});
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 
-app.use(errorHandler)
+// Error handler (must be last)
+app.use(errorHandler);
 
-app.get('/', (req, res) => { 
-  res.send("API Running"); 
-}); 
+// Start server
+const PORT = process.env.PORT || 3000;
 
-console.log("ENV PORT:", process.env.PORT); 
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => { 
-  console.log(`Server running on port ${PORT}`); 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

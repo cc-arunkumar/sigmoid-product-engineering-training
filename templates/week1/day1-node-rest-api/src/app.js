@@ -1,12 +1,14 @@
 const express = require("express");
 const connectMongo=require("./config/mongo")
+const { connectSQL } = require("./config/sql");
 require("dotenv").config();
 
 const app = express();
 connectMongo();
-
+connectSQL();
 const productRoutes = require("./routes/productRoutes");
 const productMongoRoutes= require("./routes/productMongoRoutes");
+const productSQLRoutes = require("./routes/productSqlRoutes");  
 const authRoutes=require("./routes/authRoutes")
 const logger=require("./middleware/logger")
 const errorHandler=require("./middleware/errorHandler")
@@ -16,6 +18,7 @@ app.use(apiLimiter);
 app.use(authRoutes)
 app.use(productRoutes);
 app.use(productMongoRoutes);
+app.use(productSQLRoutes); 
 app.use(logger)
 app.use(errorHandler);
 app.listen(process.env.PORT, () => {

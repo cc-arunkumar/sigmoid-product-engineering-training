@@ -3,6 +3,7 @@
 
 
 exports.successResponse =(res , message , data , statusCode = 200 )=>{
+    console.log("calling for the created product")
     return res.status(statusCode).json({
         success:true, 
         message : message , 

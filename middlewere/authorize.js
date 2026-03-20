@@ -1,3 +1,5 @@
+const AppError = require("../utils/AppError");
+
 const authorize = (...allowedRoles) => {
     return (req, res, next) => {
         // 1. Ensure user exists (set by protect middleware)

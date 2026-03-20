@@ -22,7 +22,7 @@ const protect = (req, res, next) => {
             token,
             process.env.JWT_SECRET || "MYSECRETKEY"
         )
-   console.log(decoded)
+ 
         req.user = decoded;
         next();
 

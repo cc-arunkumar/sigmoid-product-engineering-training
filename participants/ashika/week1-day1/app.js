@@ -4,7 +4,7 @@ const app= express();
 require("dotenv").config();
 // console.log(process.env.GOOGLE_CLIENT_ID);
 
-// const { connectDB } = require("./db");
+
 const connectdb=require("./src/config/mongo");
 connectdb();
 
@@ -17,6 +17,13 @@ const authroutes=require("./src/Routes/authRoutes");
 const { apiLimiter } = require("./src/middleware/rateLimiter");
 
 const passport = require("./src/config/passport");
+
+const { sequelize } = require("./src/config/sqlconnection");
+
+const connectSQL = require("./src/config/sqlconnection").connectSQL;  
+
+connectSQL(); // Connect to SQL database
+
 
 
 app.use(express.json()); //enable middleware to express read json

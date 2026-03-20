@@ -111,7 +111,7 @@
 
 // const products = require("../data/products");
 const   Products = require("../models/product.mongo");
-
+const productService=require("../services/productservice");
 const { successResponse } = require("../utils/apiresponses");
 const AppError = require("../utils/appError");
 
@@ -121,7 +121,7 @@ const AppError = require("../utils/appError");
 exports.getallproducts = async (req, res, next) => {
   let time=new Date();
     try {
-        const products = await Products.find();
+        const products = await productService.getAllProducts();
         return successResponse(res, `Product displays. ${time}`, products, 200);
 
     } catch (error) {
@@ -140,7 +140,7 @@ exports.getproductbyId = async(req, res, next) => {
 
         const productId = (req.params.id) * 1;
 
-        const product = await Products.findById(req.params.id);
+        const product = await productService.getProductById(productId);
 
 
         if (!product) {
@@ -174,12 +174,12 @@ exports.createproducts =async (req, res, next) => {
     try {
 
 
-        const newProduct = await Products.create(req.body);
+        const newProduct = await productService.createProduct(req.body);
 
         return successResponse(
         res,
         "Product created successfully",
-    newProduct,
+    newProduct, 
          201
     );
 
@@ -246,19 +246,14 @@ exports.createproducts =async (req, res, next) => {
 // PUT /products/:id
 exports.updateProduct = async (req, res, next) => {
   try {
-    const updatedProduct = await Products.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true } // returns the updated doc
-    );
-
+    const productId = req.params.id;
+    const updatedProduct = await productService.updateProduct(productId, req.body);
     if (!updatedProduct) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return next(new AppError("Product not found", 404));
     }
-
-    res.status(200).json({ success: true, data: updatedProduct });
+    return successResponse(res, "Product updated successfully", updatedProduct, 200);
   } catch (err) {
-    next(err);
+   next( new AppError(err.message || "Failed to update product", 500));
   }
 };
 
@@ -303,12 +298,7 @@ exports.updatePartialProduct = async (req, res, next) => {
     const productId = req.params.id;
 
     // Find and update the product partially
-    const updatedProduct = await Products.findByIdAndUpdate(
-      productId,
-      { $set: req.body },          // only update fields present in req.body
-      { new: true, runValidators: true } // return the updated document & run schema validations
-    );
-
+    const updatedProduct = await productService.patchProduct(productId, req.body);
     if (!updatedProduct) {
       return next(new AppError("Product not found", 404));
     }
@@ -326,9 +316,9 @@ exports.DeletebyId = async(req, res, next) => {
 
     try {
 
-       const deletedProduct = await Products.findByIdAndDelete(req.params.id);
+       const deletedProduct = await productService.deleteProduct(req.params.id);
     if (!deletedProduct) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+      return next(new AppError("Product not found", 404));
     }
 
 

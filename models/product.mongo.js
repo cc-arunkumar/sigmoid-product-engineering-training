@@ -12,7 +12,11 @@ const productSchema = new mongoose.Schema({
     category: String,
     stock: {
         type: Number
+    } 
+},
+    { 
+        timestamps: true 
     }
-})
+)
 
 module.exports = mongoose.model("Product", productSchema);

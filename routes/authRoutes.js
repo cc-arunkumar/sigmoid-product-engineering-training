@@ -23,4 +23,5 @@ router.get(
     passport.authenticate("google", { session: false }),
     googleCallback
 );
+
 module.exports = router;

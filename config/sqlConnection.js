@@ -1,0 +1,52 @@
+import {Sequelize} from "sequelize"; 
+
+
+  
+
+// Create Sequelize instance 
+
+export const sequelize = new Sequelize( 
+
+    process.env.SQL_NAME, 
+
+    process.env.SQL_USER, 
+
+    process.env.SQL_PASSWORD, 
+
+    { 
+
+        host: process.env.SQL_HOST, 
+
+        port: process.env.SQL_PORT, 
+
+        dialect: "mysql", 
+
+        logging: false 
+
+    } 
+
+); 
+
+  
+
+// Test connection 
+
+export const connectSQL = async () => { 
+
+    try { 
+
+        await sequelize.authenticate(); 
+
+        console.log("MySQL connected successfully"); 
+
+    } catch (error) { 
+
+        console.error("MySQL connection failed:", error.message); 
+
+        process.exit(1); 
+
+    } 
+
+}; 
+
+  

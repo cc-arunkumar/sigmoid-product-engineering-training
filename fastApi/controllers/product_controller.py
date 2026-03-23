@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter
+from services.product_services import get_all_products
 
 router = APIRouter(
     prefix = "/api/product",

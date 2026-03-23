@@ -1,3 +1,4 @@
+from app.models.product_model import Product
 products=[
     {
         "id":1,
@@ -31,3 +32,11 @@ def create_product(product_data):
     new_product["id"]=len(products)+1
     products.append(new_product)
     return new_product
+
+def update_product(product_id: int, updated_product: Product):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            products[index] = updated_product.dict()
+            products[index]["id"] = product_id
+            return products[index]
+    return None

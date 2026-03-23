@@ -2,6 +2,7 @@ from fastapi import APIRouter,HTTPException
 from app.services.product_service import get_all_products
 from app.services.product_service import get_all_products, get_product_by_id
 from app.services.product_service import create_product
+from app.services.product_service import update_product
 from app.models.product_model import Product
 router=APIRouter(
     prefix="/api/product",
@@ -24,4 +25,9 @@ def get_product_id(product_id:int):
 def add_product(product: Product):
     return create_product(product)
 
-
+@router.put("/{product_id}")
+def update_product_id(product_id: int, updated_product: Product):
+    updated_product_data = update_product(product_id, updated_product)
+    if not updated_product_data:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"product": updated_product_data}

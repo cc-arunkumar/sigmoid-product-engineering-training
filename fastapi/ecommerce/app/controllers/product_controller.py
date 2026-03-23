@@ -1,5 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException
-from app.services.product_service import get_all_products, get_product_by_id, create_product, update_product, partial_update_product
+from app.services.product_service import get_all_products, get_product_by_id, create_product, update_product, delete_product
 from app.models.product_model import Product
 router = APIRouter(
     prefix="/api/products",
@@ -28,6 +28,12 @@ def update_product_info(product_id: int, product: Product):
         raise HTTPException(status_code=404, detail="Product not found")
     return updated_product
 
+@router.delete("/{product_id}")
+def delete_product_info(product_id: int):
+    deleted_product = delete_product(product_id)
+    if not deleted_product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"message": "Product deleted successfully"}
 @router.get("/health")
 def health_check():
     return {"status": "Product API is running"}

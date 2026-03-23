@@ -45,3 +45,9 @@ def update_product(product_id: int, product_data):
             return updated_product
     return None
 
+# Delete product
+def delete_product(product_id: int):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            return products.pop(index)
+    return None

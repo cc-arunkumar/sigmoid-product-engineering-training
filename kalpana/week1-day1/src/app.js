@@ -124,7 +124,7 @@ const connectDB = require("./config/mongo");
 const { connectSQL, sequelize } = require("./config/sql");
 
 const productRoutes = require("./routes/productRoutes");
-const authRoutes = require("./routes/authroutes");
+const authRoutes = require("./routes/authRoutes");
 const productLogger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const { apiLimiter } = require("./middleware/rateLimiter");

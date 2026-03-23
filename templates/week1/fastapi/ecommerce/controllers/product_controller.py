@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from services.product_service import get_all_products,get_productById
+from services.product_service import get_all_products,get_productById,create_product
+from models.product_model import Product
 router = APIRouter(
     prefix="/api/products",
     tags=["Products"]
@@ -18,3 +19,8 @@ def get_product_by_id(product_id: int):
         raise HTTPException(status_code=404, detail="Product not found")
 
     return product
+
+#creating new product
+@router.post("/")
+def add_product(product:Product):
+    return create_product(product)

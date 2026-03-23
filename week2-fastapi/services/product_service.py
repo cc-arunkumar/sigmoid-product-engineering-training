@@ -19,3 +19,24 @@ def create_product(product_data):
     new_product["id"]=len(products)+1
     products.append(new_product)
     return products
+def update_product(product_id: int, product_data):
+    product = get_product_by_id(product_id)
+    if not product:
+        return None
+    product.update(product_data.dict())
+    return product
+def patch_product(product_id: int, update_data: dict):
+    product = get_product_by_id(product_id)
+    if not product:
+        return None
+    # Update only provided fields
+    for key, value in update_data.items():
+        if key in product:
+            product[key] = value
+    return product
+def delete_product(product_id: int):
+    product = get_product_by_id(product_id)
+    if not product:
+        return None
+    products.remove(product)
+    return product

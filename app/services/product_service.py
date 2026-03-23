@@ -52,4 +52,10 @@ def delete_product(product_id: int):
     return False   
 
 
-
+def patch_product(product_id: int, product_data: dict):
+    for index, prod in enumerate(products):
+        if prod["id"] == product_id:
+            updated_product = {**prod, **product_data}
+            products[index] = updated_product
+            return updated_product
+    return None

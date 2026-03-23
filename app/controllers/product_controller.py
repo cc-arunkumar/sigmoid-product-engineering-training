@@ -48,5 +48,12 @@ def delete_product_endpoint(product_id: int):
 
     return None
 
+@router.patch("/{product_id}", response_model=Product)
+def patch_product_endpoint(product_id: int, product_data: dict):
+    updated_product = patch_product(product_id, product_data)
 
+    if not updated_product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    return updated_product
 

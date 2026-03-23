@@ -14,6 +14,14 @@ products = [
         "stock": 15
     }
 ]
-
+# GET ALL products
 def get_all_products():
     return products
+
+# GET products by ID
+
+def get_product_by_id(product_id: int):
+    for product in products:
+        if product["id"] == product_id:
+            return product
+        return None

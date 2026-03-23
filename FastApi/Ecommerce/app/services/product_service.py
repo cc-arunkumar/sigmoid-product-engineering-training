@@ -46,3 +46,9 @@ def delete_product(product_id: int):
         if product["id"] == product_id:
             return products.pop(index)
     return None
+def update_partial_product(product_id: int, updated_fields: dict):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            products[index].update(updated_fields)
+            return products[index]
+    return None

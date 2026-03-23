@@ -23,3 +23,11 @@ def get_product_by_id(product_id : int):
         if products[i]["id"] == product_id:
             return products[i]
     return None
+
+def create_product(product):
+    new_prod = product.dict()
+
+    new_prod["id"] = len(products)+1
+
+    products.append(new_prod)
+    return new_prod

@@ -43,6 +43,17 @@ def update_product(product_id:int, updated_data):
             return product
     return None
 
+# Partial Update
+def patch_product(product_id: int, update_data: dict):
+    product = get_product_by_id(product_id)
+    if not product:
+        return None
+    # Update only provided fields
+    for key, value in update_data.items():
+        if key in product:
+            product[key] = value
+    return product
+
 # Delete
 def delete_product(product_id:int):
     for product in products:

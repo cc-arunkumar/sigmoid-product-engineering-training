@@ -1,17 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from app.services.product_model import Product
-from app.services.product_service import delete_product, get_all_products, get_product_by_id, create_product, update_product, delete_product
+from app.models.product_model import Product
+from app.services.product_service import delete_product, get_all_products, get_product_by_id, create_product, update_product, delete_product, patch_product
 
 
 router=APIRouter(
     prefix="/api/product",
     tags=["Products"]
 )
-
-@router.get("/health")
-def health_check():
-    return{"Message":"Product API is healthy !"}
-
 
 @router.get("/")
 def get_products():
@@ -34,9 +29,21 @@ def add_product(product:Product):
 def update_product_(product_id:int, updated_product:Product):
     return update_product(product_id, updated_product)
 
+
+def patch_product_endpoint(product_id: int, update_data: dict):
+    updated = patch_product(product_id, update_data)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return updated
+
 @router.delete("/{product_id}")
 def remove_product_(product_id:int):
     if delete_product(product_id):
         return{"Message":"Product deleted successfully"}
     else:
         raise HTTPException(status_code=404, detail="Product not found")
+    
+
+@router.get("/health")
+def health_check():
+    return{"Message":"Product API is healthy !"}

@@ -4,7 +4,7 @@
   "description": "Starter Node.js REST API template for Sigmoid Product Engineering training",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "nodemon app.js",
     "dev": "node src/server.js"
   },
   "dependencies": {

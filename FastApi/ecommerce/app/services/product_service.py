@@ -28,3 +28,10 @@ def get_product_by_id(product_id: int):
             return product
     
     return None
+
+# POST to create product
+def create_product(product_details):
+    product = product_details.dict()
+    product["id"] = len(products) + 1
+    products.append(product)
+    return product

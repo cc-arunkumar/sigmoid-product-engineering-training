@@ -40,3 +40,10 @@ def update_product(product_id: int, product_data):
             products[index] = updated_product
             return updated_product
     return None
+#delete product
+def delete_product(product_id: int):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            del products[index]
+            return True
+    return False

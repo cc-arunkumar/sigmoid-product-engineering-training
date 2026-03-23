@@ -7,5 +7,11 @@ products = [
     {"id": 6, "name": "Levi's Jeans", "price": 3000, "stock": 18, "category": "Fashion"},
 ]
 
+# GET all products
 def get_all_products():
     return products
+
+def  get_product_by_id(product_id : int):
+    for product in products:
+        if(product["id"] == product_id):
+            return product

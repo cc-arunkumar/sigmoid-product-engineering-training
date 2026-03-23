@@ -52,21 +52,18 @@ def put_products(product_id: int, product_data):
 
 
 
-# #PATCH PRODUCT
-# def patch_product(product_id:int,product_data):
-#     proddata=product_data.dict()
-#     for product in products:
-#         if product["id"]==product_id:
-#             if proddata["name"]!=None:
-#                 product["name"]=proddata["name"]
-#             if proddata["price"]!=None:
-#                 product["price"]=proddata["price"]
-#             if proddata["category"]!=None:
-#                 product["category"]=proddata["category"]
-#             if proddata["stock"]!=None:
-#                 product["stock"]=proddata["stock"]
-#             return product
-#     return None
+#PATCH PRODUCT
+def patch_product(product_id: int, product_data):
+    proddata = product_data.dict()
+
+    for product in products:
+        if product["id"] == product_id:
+            for key, value in proddata.items():
+                if value is not None:
+                    product[key] = value
+            return product
+
+    return None
 
 
 

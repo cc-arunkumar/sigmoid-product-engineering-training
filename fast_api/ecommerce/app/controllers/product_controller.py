@@ -29,7 +29,7 @@ def create(product_data:Product):
 
 #PUT PRODUCTS
 @router.put("/{product_id}")
-def put(product_id:int,product_data:Product):
+def put(product_id:int,product_data:ProductPatch):
     product=put_products(product_id,product_data)
     if not product:
         raise HTTPException(status_code=404,detail="Product not found")

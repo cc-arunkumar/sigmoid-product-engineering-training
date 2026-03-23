@@ -27,9 +27,12 @@ def get_all_products():
 #CREATING A NEW PRODUCT
 def create_product(product_data):
     new_product=product_data.dict()
-    # THIS WILL CONVERT INCOMING REQUEST BODY DATA INTO A DICTIONARY 
     new_product["id"]=len(products)+1
-    products.append(new_product)
+    field_order = ["id", "name", "price", "category", "stock"]
+    ordered_product = {k: new_product[k] for k in field_order if k in new_product}
+
+    # THIS WILL CONVERT INCOMING REQUEST BODY DATA INTO A DICTIONARY 
+    products.append(ordered_product)
     return new_product
 # UPDATE A PRODUCT
 def update_product(product_data,product_id:int):

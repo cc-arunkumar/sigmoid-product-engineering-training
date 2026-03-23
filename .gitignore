@@ -167,3 +167,8 @@ Thumbs.db
 # ------------------------------
 *.pid
 *.seed
+
+venv/
+__pycache__/
+*.pyc
+.env

@@ -18,7 +18,7 @@ const { apiLimiter } = require("./src/middleware/rateLimiter");
 
 const passport = require("./src/config/passport");
 
-const { sequelize } = require("./src/config/sqlconnection");
+// const { sequelize } = require("./src/config/sqlconnection");
 
 const connectSQL = require("./src/config/sqlconnection").connectSQL;  
 

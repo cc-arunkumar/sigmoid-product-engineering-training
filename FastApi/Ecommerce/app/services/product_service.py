@@ -52,3 +52,10 @@ def replace_product(product_id: int, new_data):
             products[index] = replaced
             return products[index]
     return None
+
+def delete_product(product_id: int):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            products.pop(index)
+            return True
+    return False

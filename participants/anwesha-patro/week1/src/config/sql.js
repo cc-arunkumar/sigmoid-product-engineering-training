@@ -36,7 +36,7 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: "mysql",
-        logging: console.log, // ✅ shows SQL queries in console
+        logging: console.log,
     }
 );
 

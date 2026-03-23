@@ -1,0 +1,10 @@
+from fastapi import FastAPI
+from app.controllers.product_controller import router as product_router
+
+app = FastAPI()
+
+app.include_router(product_router)  # router already has prefix
+
+@app.get("/")
+def home():
+    return {"message": "FastAPI Server is running on here"}

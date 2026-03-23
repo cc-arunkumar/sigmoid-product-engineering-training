@@ -42,8 +42,8 @@ def remove_product(product_id: int):
     raise HTTPException(status_code=404, detail="Product not found")
 
 @router.patch("/{product_id}")
-def partial_update_product(product_id: int, product_data: dict):
-    updated_product = patch_product(product_id, product_data)
+def partial_update_product(product_id: int, patch_data: Product):
+    updated_product = patch_product(product_id, patch_data)
     if updated_product:
         return {"product": updated_product}
     raise HTTPException(status_code=404, detail="Product not found")

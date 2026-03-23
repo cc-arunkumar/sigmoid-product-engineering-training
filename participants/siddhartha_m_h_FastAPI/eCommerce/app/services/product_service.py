@@ -50,16 +50,11 @@ def delete_product(product_id: int):
             return True
     return False
 
-def patch_product(product_id: int, product_data: dict):
-    for index, product in enumerate(products):
+def patch_product(product_id: int, product_data):
+    for product in products:
         if product["id"] == product_id:
-            updated_product = products[index]
-            # Update only keys that exist in product_data
-            for key in product_data:
-                if key in updated_product:
-                    updated_product[key] = product_data[key]
-                else:
-                    raise HTTPException(status_code=400, detail=f"Invalid field: {key}")
-            products[index] = updated_product
-            return updated_product
+            patched_data = product_data.dict(exclude_unset=True)
+            for key, value in patched_data.items():
+                product[key] = value
+            return product
     return None

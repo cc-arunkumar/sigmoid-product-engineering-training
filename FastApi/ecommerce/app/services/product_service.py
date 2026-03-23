@@ -35,3 +35,19 @@ def create_product(product_details):
     product["id"] = len(products) + 1
     products.append(product)
     return product
+
+# PUT to update product
+def update_product(product_details, product_id):
+    new_product = product_details.dict()
+    new_product["id"] = product_id
+    updated = False
+    for i in range(0, len(products)):
+        if products[i]["id"] == product_id:
+            products[i] = new_product
+            updated = True
+            break
+    
+    if updated:
+        return {"Updated Successfully"}
+    else:
+        return {"Product not found"}

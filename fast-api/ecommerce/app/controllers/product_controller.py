@@ -4,6 +4,7 @@ from app.services.product_service import get_all_products
 from app.services.product_service import get_product_by_id
  
 from app.services.product_service import create_product
+from app.services.product_service import update_product
 from app.models.product_model import Product   
 router = APIRouter(
     prefix="/api/products",
@@ -30,3 +31,9 @@ def get_product(product_id: int):
 def add_product(product: Product):
     new_product = create_product(product)
     return new_product
+@router.put("/{product_id}")
+def update_product_endpoint(product_id: int, product: Product):
+    updated_product = update_product(product_id, product)
+    if not updated_product:
+        return HTTPException(status_code=404, detail="Product not found")
+    return updated_product  

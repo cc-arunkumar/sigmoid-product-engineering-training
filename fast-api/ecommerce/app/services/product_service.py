@@ -29,4 +29,14 @@ def create_product(product_data):
     new_product = product_data.dict()
     new_product["id"] = len(products) + 1
     products.append(new_product)
-    return new_product  
+    return new_product
+  
+#put product
+def update_product(product_id: int, product_data):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            updated_product = product_data.dict()
+            updated_product["id"] = product_id
+            products[index] = updated_product
+            return updated_product
+    return None

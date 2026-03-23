@@ -44,3 +44,11 @@ def update_product(product_data, product_id: int):
             product.update(product_data)
             return product
     return "Product not found"
+
+# DELETE Product
+def delete_product(product_id: int):
+    for product in products:
+        if product_id == product["id"]:
+            products.remove(product)
+            return product
+    return "Product not found"

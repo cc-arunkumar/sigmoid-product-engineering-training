@@ -47,7 +47,7 @@ def update_product(product_id : int, updated_product):
             return products[index]
     return None        
 
-
+#PATCH PRODUCT
 def update_partially(product_id : int, patched_product):
     for product in products:
         if product["id"] == product_id :
@@ -64,10 +64,10 @@ def update_partially(product_id : int, patched_product):
 
     return product
 
-
-
-    
-
-
-
-    
+#DELETE PRODUCT
+def delete_product(product_id: int):
+    for i in range(len(products)):
+        if products[i]["id"] == product_id:
+            del products[i]
+            return products
+    return None

@@ -73,12 +73,12 @@ def put_products(product_id:int,product_data):
 
 
     
-# #DELETE PRODUCTS
-# def delete_product(product_id:int):
-#     for product in products:
-#         if product["id"]==product_id:
-#             del(products[product_id-1])
-#             return products
-#     return None
+#DELETE PRODUCTS
+def delete_product(product_id:int):
+    for product in products:
+        if product["id"]==product_id:
+            del(products[product_id-1])
+            return products
+    return None
 
 

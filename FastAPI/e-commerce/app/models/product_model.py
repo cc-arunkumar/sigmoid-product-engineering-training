@@ -1,14 +1,8 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class Product(BaseModel):
-    name: str = None
-    price: float
-    category: str
-    stock: int
-
-class ProductPatch(BaseModel):
-    name: Optional[str] = None
-    price: Optional[float] = None
-    category: Optional[str] = None
-    stock: Optional[int] = None
+    name: Optional[str] = Field(min_length=1, max_length=50, example="Laptop")
+    price: float = Field(gt=0, example=100000)
+    category: str = Field(..., example="Electronics")
+    stock: int = Field(..., example=10)

@@ -51,6 +51,23 @@ def update_product(product_details, product_id):
         return {"Product not found"}
     
 
+# PATCH to partially update product
+def patch_product(product_updates, product_id):
+    updated = False
+    for i in range(0, len(products)):
+        if products[i]["id"] == product_id:
+            update_data = product_updates.dict(exclude_unset=True)
+            for key, value in update_data.items():
+                products[i][key] = value
+            updated = True
+            break
+    
+    if updated:
+        return {"Updated Successfully"}
+    else:
+        return {"Product not found"}
+    
+
 
     # DELETE to delete product
 def delete_product(product_id):

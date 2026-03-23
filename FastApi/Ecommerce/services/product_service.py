@@ -49,4 +49,20 @@ def update_product(product_details, product_id):
         return {"Updated Successfully"}
     else:
         return {"Product not found"}
+    
+
+
+    # DELETE to delete product
+def delete_product(product_id):
+    index = None
+    for i in range(0, len(products)):
+        if products[i]["id"] == product_id:
+            index = i
+            break
+    
+    if index == None:
+        return {"Please enter a valid index"}
+    else:
+        products.pop(index)
+        return {"Product deleted successfully"}
 

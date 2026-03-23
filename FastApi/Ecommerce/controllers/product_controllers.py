@@ -1,5 +1,5 @@
 from fastapi import APIRouter , HTTPException
-from services.product_service import get_all_products , get_product_by_id , create_product , update_product
+from services.product_service import get_all_products , get_product_by_id , create_product , update_product , delete_product
 from models.products_model import Product
 
 router  = APIRouter(
@@ -37,5 +37,12 @@ def add_product(product_details :Product):
 @router.put("/{product_id}")
 def modify_product(product_details : Product, product_id : int):
     product = update_product(product_details=product_details, product_id=product_id)
+    return product
+
+
+
+@router.delete("/{product_id}")
+def remove_product(product_id : int):
+    product = delete_product(product_id=product_id)
     return product
   

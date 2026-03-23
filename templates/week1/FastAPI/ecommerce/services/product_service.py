@@ -36,3 +36,11 @@ def create_product(product_data):
     products.append(new_product)
 
     return new_product
+
+# UPDATE Product
+def update_product(product_data, product_id: int):
+    for product in products:
+        if product_id == product["id"]:
+            product.update(product_data)
+            return product
+    return "Product not found"

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from services.product_service import get_all_products, get_product_by_id, create_product
+from services.product_service import get_all_products, get_product_by_id, create_product, update_product
 from models.product_model import Product
 
 router = APIRouter(
@@ -24,3 +24,8 @@ def get_product_id(product_id: int):
 @router.post("/")
 def add_product(product: Product):
     return create_product(product)
+
+@router.put("/{product_id}")
+def update_product_data(product: Product, product_id: int):
+    return update_product(product, product_id)
+

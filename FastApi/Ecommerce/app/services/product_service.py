@@ -34,3 +34,21 @@ def create_product(product: Product):
     new_product["id"] = len(products) + 1
     products.append(new_product)
     return new_product
+def update_product(product_id: int, updated_product: Product):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            products[index] = updated_product.dict()
+            products[index]["id"] = product_id
+            return products[index]
+    return None
+def delete_product(product_id: int):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            return products.pop(index)
+    return None
+def update_partial_product(product_id: int, updated_fields: dict):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            products[index].update(updated_fields)
+            return products[index]
+    return None

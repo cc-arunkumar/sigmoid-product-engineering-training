@@ -1,12 +1,19 @@
 from fastapi import FastAPI, APIRouter
+from app.services.product_service import get_all_products
 
 router = APIRouter(
     prefix="/api/products",
     tags = ["products"]
 )
 
+@router.get("/")
+def get_products():
+    products=get_all_products()
+    return {"products":products}
 
 
-@router.get("/health")
-def get_health():
-    return {"message":"Product service is healthy   "} 
+
+
+# @router.get("/health")
+# def get_health():
+#     return {"message":"Product service is healthy   "} 

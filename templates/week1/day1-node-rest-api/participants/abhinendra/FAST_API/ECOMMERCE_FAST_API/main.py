@@ -10,3 +10,4 @@ app.include_router(product_router)
 @app.get("/")
 def home():
     return {"message": "FastAPI server is not running!"}
+

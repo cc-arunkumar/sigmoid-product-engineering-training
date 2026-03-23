@@ -42,10 +42,12 @@
 // });
 // import express from "express"
 // Add to app.js TOP (temporary)
+
 require("dotenv").config();
 // console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
 // console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 const express = require("express");
+const errorhandler = require("./middleware/errorHandler");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const { apiLimiter } = require("./middleware/rateLimiter");
@@ -53,10 +55,11 @@ const passport = require("./config/passport");
 const connectMongo = require("./config/mongo.JS");
 const {connectSQL, sequelize} = require("./config/sql");
 const app = express();
+
 connectMongo();
 connectSQL();
 sequelize.sync()
-const errorhandler = require("./middleware/errorHandler");
+
 const logger = require("./middleware/logger");
 //named export version
 //const {productRouter}=require("./routes/productRoutes");

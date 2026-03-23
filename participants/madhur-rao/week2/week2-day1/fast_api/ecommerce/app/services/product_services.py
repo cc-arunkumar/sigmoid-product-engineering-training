@@ -1,4 +1,4 @@
-products = (
+products = [
     {
         "id":1,
         "name":"Laptop",
@@ -13,7 +13,7 @@ products = (
         "category":"Electronics",
         "stock":200
     }
-)
+]
 
 def get_all_products():
     return products
@@ -30,4 +30,20 @@ def create_product(product):
     new_prod["id"] = len(products)+1
 
     products.append(new_prod)
+    return new_prod
+
+def update_product_by_id(product_id:int,product):
+    new_prod={}
+    for prod in products:
+        if prod["id"] == product_id:
+            new_prod = prod
+            break
+    if not new_prod:
+        return None
+    product = product.dict()
+    new_prod["name"] = product["name"]
+    new_prod["price"] = product["price"]
+    new_prod["category"] = product["category"]
+    new_prod["stock"] = product["stock"]
+
     return new_prod

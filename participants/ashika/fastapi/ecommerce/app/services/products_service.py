@@ -28,4 +28,13 @@ def get_product_by_id(product_id: int):
         if product["id"]==product_id:
             return product
         
-    return None    
+    return None   
+
+def create_product(product_data):
+     newProduct=product_data.dict()
+
+     newProduct["id"]=len(products)+1
+
+     products.append(newProduct)
+
+     return products

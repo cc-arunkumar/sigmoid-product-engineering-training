@@ -48,6 +48,24 @@ def update_product(product_id : int, updated_product):
     return None        
 
 
+def update_partially(product_id : int, patched_product):
+    for product in products:
+        if product["id"] == product_id :
+            patched_data = patched_product.dict(exclude_unset=True)
+
+        #exclude_unset-True means:
+        #In pydantic model, fields can be:
+        #1. Set explicitly (user provided a value)
+        #2. Unset (User didn't provide it all, even if a default exist)
+        # "Only include fields that were actually provided when creating this object"
+
+    for key, value in patched_data.items():
+        product[key] = value
+
+    return product
+
+
+
     
 
 

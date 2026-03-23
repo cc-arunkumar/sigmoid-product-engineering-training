@@ -1,3 +1,4 @@
+from models.product_model import Product,ProductPatch
 products = [
     {"id": 1, "name": "iPhone 15", "price": 80000, "stock": 10, "category": "Electronics"},
     {"id": 2, "name": "Samsung Galaxy S23", "price": 75000, "stock": 15, "category": "Electronics"},
@@ -19,13 +20,13 @@ def create_product(product_data):
     new_product["id"]=len(products)+1
     products.append(new_product)
     return products
-def update_product(product_id: int, product_data):
+def update_product(product_id: int, product_data:Product):
     product = get_product_by_id(product_id)
     if not product:
         return None
     product.update(product_data.dict())
     return product
-def patch_product(product_id: int, update_data: dict):
+def patch_product(product_id: int, update_data:ProductPatch):
     product = get_product_by_id(product_id)
     if not product:
         return None

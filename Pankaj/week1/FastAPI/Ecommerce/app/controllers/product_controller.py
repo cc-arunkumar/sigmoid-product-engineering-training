@@ -1,9 +1,21 @@
-from fastapi import FastAPI
-from app.coontrollers.product_controller import router as product_router
+from fastapi import APIRouter, HTTPException
+from app.services.product_service import get_all_products, get_product_by_id
 
-app = FastAPI()
+router = APIRouter(
+    prefix="/api/products",
+    tags=["Products"]
+)
 
-app.include_router(product_router)
-@app.get("/")
-def home():
-    return {"message":"FastAPI Ecommerce Application is running!!"}
+@router.get("/")
+def get_products():
+    return get_all_products()
+
+
+@router.get("/{product_id}")
+def get_product(product_id: int):
+    product = get_product_by_id(product_id)
+    
+    if product:
+        return product
+    
+    raise HTTPException(status_code=404, detail="Product not found")

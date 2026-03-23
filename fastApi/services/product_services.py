@@ -22,3 +22,31 @@ def create_product(product_data):
     new_product["id"] = len(products) + 1
     products.append(new_product)
     return products
+
+#PUT update product
+def update_product(product_id : int, product_data):
+    for product in products:
+        if(product["id"] == product_id):
+            product.update(product_data.dict())
+            return product
+    return None
+
+#PATCH update product partially
+def patch_product(product_id: int, update_data: dict):
+    product = get_product_by_id(product_id)
+    if not product:
+        return None
+    # Update only provided fields
+    for key, value in update_data.items():
+        if key in product:
+            product[key] = value
+    return product
+
+#DELETE delete product
+def delete_product(product_id: int):
+    product = get_product_by_id(product_id)
+    if not product:
+        return None
+    products.remove(product)
+    return product
+

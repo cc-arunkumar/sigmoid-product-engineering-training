@@ -2,7 +2,7 @@ from fastapi import APIRouter , HTTPException ;
 
 # from ..Services.product_services import get_all_products
 
-from Services.product_services import get_all_products , get_product_by_id , post_product  , up_product
+from Services.product_services import get_all_products , get_product_by_id , post_product  , up_product , patch_product , delete_product
 from models.product_model import Product 
 
 
@@ -38,3 +38,12 @@ def post_prod(product : Product):
 @router.put("/{prod_id}")
 def put_prod(prod_id : int , product : Product ):
     return up_product(product , prod_id) ; 
+
+@router.delete("/{prod_id}")
+def delete_prd(prod_id : int):
+    return delete_product(prod_id)
+
+
+@router.patch("/{prod_id}")
+def patch_data(data : Product , prod_id : int):
+    return patch_product(data , prod_id) 

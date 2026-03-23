@@ -1,7 +1,14 @@
 from fastapi import FastAPI
+from app.routes.product_routes import router as product_router
 
 app = FastAPI()
 
-@app.get("/")
-def home():
-    return {"message" : "FastAPI server is running"}
+app.include_router(
+    product_router,
+    prefix="/api/products",
+    tags=["Products"] 
+    )
+
+
+
+

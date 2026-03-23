@@ -35,3 +35,11 @@ def create_product(product):
 
     products.append(new_product)
     return new_product
+
+def update_product(product_id: int, updated_data):
+    for product in products:
+        if product["id"] == product_id:
+            update_fields = updated_data.dict(exclude_unset=True)
+            product.update(update_fields)
+            return product
+    return None

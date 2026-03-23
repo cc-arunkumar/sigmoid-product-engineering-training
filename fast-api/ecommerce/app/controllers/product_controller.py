@@ -5,7 +5,8 @@ from app.services.product_service import get_product_by_id
  
 from app.services.product_service import create_product
 from app.services.product_service import update_product
-from app.models.product_model import Product   
+from app.services.product_service import partial_update_product
+from app.models.product_model import Product , ProductUpdate  
 router = APIRouter(
     prefix="/api/products",
     tags=["products"]
@@ -45,3 +46,10 @@ def delete_product_endpoint(product_id: int):
     if not success:
         return HTTPException(status_code=404, detail="Product not found")
     return {"message": "Product deleted successfully"}
+
+@router.patch("/{product_id}")
+def partial_update_product_endpoint(product_id: int, product: ProductUpdate):
+    updated_product = partial_update_product(product_id, product)
+    if not updated_product:
+        return HTTPException(status_code=404, detail="Product not found")
+    return updated_product

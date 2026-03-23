@@ -47,3 +47,15 @@ def delete_product(product_id: int):
             del products[index]
             return True
     return False
+#Patch
+def partial_update_product(product_id: int, product_data):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            updated_product={**product, **product_data.dict(exclude_unset=True)}
+            products[index] = updated_product
+            return updated_product
+    return None
+
+
+
+

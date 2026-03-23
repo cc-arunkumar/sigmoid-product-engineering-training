@@ -5,7 +5,10 @@ router = APIRouter(
     prefix="/api/products",
     tags=["products"]
 )
-
+@router.get("/")
+def get_products():
+    products= get_all_products()
+    return products
 
 @router.get("/health")
 def health_check():

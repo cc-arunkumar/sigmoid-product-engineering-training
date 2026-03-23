@@ -3,6 +3,8 @@ from app.services.product_service import get_all_products
 from app.services.product_service import get_all_products, get_product_by_id
 from app.services.product_service import create_product
 from app.services.product_service import update_product
+from app.services.product_service import delete_product
+
 from app.models.product_model import Product
 router=APIRouter(
     prefix="/api/product",
@@ -31,3 +33,10 @@ def update_product_id(product_id: int, updated_product: Product):
     if not updated_product_data:
         raise HTTPException(status_code=404, detail="Product not found")
     return {"product": updated_product_data}
+
+@router.delete("/{product_id}")
+def delete_product_id(product_id: int):
+    deleted_product = delete_product(product_id)
+    if not deleted_product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"message": "Product deleted successfully"}

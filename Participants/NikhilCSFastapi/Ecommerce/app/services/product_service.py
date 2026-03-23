@@ -59,19 +59,31 @@ def update_product(product_data,product_id:int):
     # return None
 
 # PATCH A PRODUCT
-# def patch_product(product_data,product_id:int):
+def patch_product(product_data,product_id:int):
     # alternative1
     # unsafe patch no variable datatype check and no invalid key check possible 
     # patched_details=product_data
     # fields_to_patch=patched_details.keys()
     # for product in products:
     #     if product["id"]==product_id:
-    #         for field in fields_to_patch:
+            # for field in fields_to_patch:
     #             product[field]=patched_details[field]
     #         return patched_details
     # return None
 
     # alternative2
+    for product in products:
+        if product['id'] == product_id:
+            patch_data = product_data.dict(exclude_unset=True)
+        # exclude unset=True means:
+        # 1. Set explicitly to unset fields provided by users
+        # 2. Unset user didn't provide it all, even if default exist
+        # *Only include fields that were actually provided when creating this*
+            for key,value in patch_data.items():
+                product[key] = value
+            return product
+    return None
+
     
 def delete_product_by_id(product_id:int):
     for product in products:

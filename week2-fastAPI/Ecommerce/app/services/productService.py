@@ -34,3 +34,13 @@ def createProduct(product: Product):
     product["id"] = len(products) + 1
     products.append(product)
     return product
+
+def updateProduct(productId: int, productData: Product):
+    for index, product in enumerate(products):
+        if product["id"] == productId:
+            productData = productData.dict()
+            productData["id"] = product["id"]
+            products[index] = productData
+            return products[index]
+    return None
+        

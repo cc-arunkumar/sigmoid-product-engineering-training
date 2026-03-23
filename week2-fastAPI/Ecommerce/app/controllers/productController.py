@@ -21,3 +21,10 @@ def getProductById(productId: int):
 @router.post("/")
 def createProduct(product: Product):
     return productService.createProduct(product)
+
+@router.put("/{productId}")
+def updateProduct(productId: int, productData: Product):
+    product = productService.updateProduct(productId, productData)
+    if(product is None): 
+        raise HTTPException(status_code = 404, detail = "Product not found")
+    return product

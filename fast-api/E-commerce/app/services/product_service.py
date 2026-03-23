@@ -32,4 +32,10 @@ def add_product(product_data):
     
     return new_product
 
+def update_product(product):
+    n_product= product.dict()
+    
+
+    
+
 

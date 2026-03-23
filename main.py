@@ -6,6 +6,7 @@ app = FastAPI()
 app.include_router(product_router) ; 
 
 @app.get("/")
+
 def home():
     return {"Massage": "Fastapi server is running"}
 

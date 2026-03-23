@@ -1,0 +1,57 @@
+const { Sequelize } = require("sequelize");
+
+require("dotenv").config();
+
+
+// Create Sequelize instance
+
+const sequelize = new Sequelize(
+
+//     SQL_HOST=localhost
+// SQL_USER=root
+// SQL_PASSWORD=root123
+// SQL_DATABASE=ecommerce
+// SQL_PORT=3306
+    process.env.SQL_DATABASE,
+
+    process.env.SQL_USER,
+
+    process.env.SQL_PASSWORD,
+
+    {
+
+        host: process.env.SQL_HOST,
+
+        port: process.env.SQL_USER,
+
+        dialect: "mysql",
+
+        logging: false
+
+    }
+
+);
+
+
+// Test connection
+
+const connectSQL = async () => {
+
+    try {
+
+        await sequelize.authenticate();
+
+        console.log("MySQL connected successfully");
+
+    } catch (error) {
+
+        console.error("MySQL connection failed:", error.message);
+
+        process.exit(1);
+
+    }
+
+};
+
+
+module.exports = { sequelize, connectSQL };

@@ -10,7 +10,8 @@ const authorize=require("../middleware/authorize.js");  //
 const cache=require("../middleware/cache.js");
 
 //Public routes
-router.get("/api/products", cache(60000), productController.getAllProducts);
+// router.get("/api/products", cache(60000), productController.getAllProducts);
+router.get("/api/products",  productController.getAllProducts);
 router.get("/api/products/:id", cache(60000), productController.getProductById);
 
 //Admin only routes

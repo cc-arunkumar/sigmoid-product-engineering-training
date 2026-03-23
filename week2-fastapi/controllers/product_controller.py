@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from services.product_service import get_all_products,get_product_by_id
+from models.product_model import Product
+from services.product_service import get_all_products,get_product_by_id,create_product
 router = APIRouter(
     prefix="/api/product",
     tags=["Products"]  
@@ -15,6 +16,9 @@ def get_product(product_id: int):
         raise HTTPException(status_code=404, detail="Product not found")
     
     return product
+@router.post("/")
+def add_product(product :Product):
+    return create_product(product)
 @router.get("/health")
 def health_check():
     return {"status": "Product APIs running!"}

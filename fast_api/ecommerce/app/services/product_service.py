@@ -36,9 +36,49 @@ def get_product_by_id(product_id:int):
 #CREATE PRODUCTS
 def create_product(product_data):
     newprod=product_data.dict()
-    newid=len(products)+1
-    newprod["id"]=newid
+    newprod["id"]=len(products)+1
     products.append(newprod)
     return products
+
+#PUT PRODUCTS
+def put_products(product_id:int,product_data):
+    proddata=product_data.dict()
+    for product in products:
+        if product["id"]==product_id:
+            product["name"]=proddata["name"]
+            product["price"]=proddata["price"]
+            product["category"]=proddata["category"]
+            product["stock"]=proddata["stock"]
+            return product
+    return None
+
+
+
+# #PATCH PRODUCT
+# def patch_product(product_id:int,product_data):
+#     proddata=product_data.dict()
+#     for product in products:
+#         if product["id"]==product_id:
+#             if proddata["name"]!=None:
+#                 product["name"]=proddata["name"]
+#             if proddata["price"]!=None:
+#                 product["price"]=proddata["price"]
+#             if proddata["category"]!=None:
+#                 product["category"]=proddata["category"]
+#             if proddata["stock"]!=None:
+#                 product["stock"]=proddata["stock"]
+#             return product
+#     return None
+
+
+
     
-#DELETE PRODUCTS
+# #DELETE PRODUCTS
+# def delete_product(product_id:int):
+#     for product in products:
+#         if product["id"]==product_id:
+#             del(products[product_id-1])
+#             return products
+#     return None
+
+

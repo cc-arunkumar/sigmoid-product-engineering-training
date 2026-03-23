@@ -5,3 +5,9 @@ class Product(BaseModel):
     price:int
     category:str
     stock:int
+
+class ProductPatch(BaseModel):
+    name: str | None = None
+    price: int | None = None
+    category: str | None = None
+    stock: int | None = None

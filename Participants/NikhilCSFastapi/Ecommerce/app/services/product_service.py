@@ -33,6 +33,7 @@ def create_product(product_data):
     return new_product
 # UPDATE A PRODUCT
 def update_product(product_data,product_id:int):
+    # alternative 1
     # pydantic is a class,product data is an instance or an object of pydantic class so we convert it to a dictinoary for easier processing for us 
     updated_product=product_data.dict()
     for product in products:
@@ -43,3 +44,38 @@ def update_product(product_data,product_id:int):
             product["stock"]=updated_product["stock"]
             return product
     return None
+
+    # alternative 2
+    # call get by id to see if product is there or not 
+
+    #alternative3
+    # enumerate is very useful to iterate trhrough multiple vairable sequentially and together simultaneously
+    # for index,product in enumerate(products):
+    #     if product["id"]==product_id:
+    #         updated_product=product_data.dict()
+    #         updated_product["id"]=product_id
+    #         products[index]=updated_product
+    #         return updated_product
+    # return None
+
+# PATCH A PRODUCT
+# def patch_product(product_data,product_id:int):
+    # alternative1
+    # unsafe patch no variable datatype check and no invalid key check possible 
+    # patched_details=product_data
+    # fields_to_patch=patched_details.keys()
+    # for product in products:
+    #     if product["id"]==product_id:
+    #         for field in fields_to_patch:
+    #             product[field]=patched_details[field]
+    #         return patched_details
+    # return None
+
+    # alternative2
+    
+def delete_product_by_id(product_id:int):
+    for product in products:
+        if product["id"]==product_id:
+            products.remove(product)
+            return True
+    return False

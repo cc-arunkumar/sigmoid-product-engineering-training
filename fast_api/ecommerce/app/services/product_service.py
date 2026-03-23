@@ -41,16 +41,14 @@ def create_product(product_data):
     return products
 
 #PUT PRODUCTS
-def put_products(product_id:int,product_data):
-    proddata=product_data.dict()
-    for product in products:
-        if product["id"]==product_id:
-            product["name"]=proddata["name"]
-            product["price"]=proddata["price"]
-            product["category"]=proddata["category"]
-            product["stock"]=proddata["stock"]
-            return product
-    return None
+def put_products(product_id: int, product_data):
+    proddata = product_data.dict()
+
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            products[index].update(proddata)  
+            return products[index]
+    return None 
 
 
 
@@ -74,10 +72,10 @@ def put_products(product_id:int,product_data):
 
     
 #DELETE PRODUCTS
-def delete_product(product_id:int):
-    for product in products:
-        if product["id"]==product_id:
-            del(products[product_id-1])
+def delete_product(product_id: int):
+    for i in range(len(products)):
+        if products[i]["id"] == product_id:
+            del products[i]
             return products
     return None
 

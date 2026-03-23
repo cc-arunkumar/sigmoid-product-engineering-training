@@ -53,7 +53,7 @@ def update_product(product_details, product_id):
         return {"Product not found"}
     
 
-# DELETE to delete product
+# DELETE Product
 def delete_product(product_id):
     index = None
     for i in range(0, len(products)):
@@ -66,3 +66,15 @@ def delete_product(product_id):
     else:
         products.pop(index)
         return {"Product deleted successfully"}
+
+# PATCH Product
+def patch_update(product_id: int, patch_update):
+    
+    for product in products:
+        if product["id"] == product_id:
+            patched_data = patch_update.dict(exclude_unset = True)
+            for key, value in patched_data.items():
+                product[key] = value
+            
+            return product
+    return None

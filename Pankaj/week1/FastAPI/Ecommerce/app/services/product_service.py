@@ -47,3 +47,11 @@ def patch_product(product_id: int, product_data):
     return None
 
 
+def delete_product(product_id: int):
+    for i, product in enumerate (products):
+        if product["id"] == product_id:
+            deleted_product = products.pop()
+            return deleted_product
+    return None
+
+

@@ -4,7 +4,8 @@ from app.services.product_service import (
     get_product_by_id,
     create_product,
     put_product,
-    patch_product
+    patch_product,
+    delete_product
 )
 from app.models.product_model import Product, ProductUpdate
 
@@ -51,3 +52,12 @@ def update_partial_product(product_id: int, product: ProductUpdate):
         return updated
     
     raise HTTPException(status_code=404, detail="Product not found")
+
+@router.delete("/{product_id}")
+def remove_product(product_id: int):
+    deleted = delete_product(product_id)
+    
+    if deleted:
+        return deleted
+    
+    raise HTTPException(status_code=404, detail="Product cannot be deleted")

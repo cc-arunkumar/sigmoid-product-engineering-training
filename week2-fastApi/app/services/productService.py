@@ -69,3 +69,15 @@ def delete_product(product_id:int):
          return deleted_product 
 
    return None
+
+
+#PATCH PRODUCT
+
+def patch_product(product_id:int,product_data):
+    for product in products:
+        if product["id"]==product_id:
+            update_data=product_data.dict(exclude_unset=True)
+
+            product.update(update_data)
+            return product
+    return None                       

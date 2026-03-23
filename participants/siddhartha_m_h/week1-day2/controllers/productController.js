@@ -1,4 +1,4 @@
-const products = require("../data/product");
+const Product = require("../models/product.mongo");
 
 const { successResponse } = require("../utils/apiResponse");
 
@@ -7,9 +7,12 @@ const AppError = require("../utils/appError");
 
 // GET all products
 
-exports.getAllProducts = (req, res, next) => {
-    
+exports.getAllProducts = async (req, res, next) => {
+
     try {
+
+        const products = await Product.find();
+
 
         return successResponse(res, "All products fetched successfully", products);
 
@@ -24,13 +27,11 @@ exports.getAllProducts = (req, res, next) => {
 
 // GET product by ID
 
-exports.getProductById = (req, res, next) => {
+exports.getProductById = async (req, res, next) => {
 
     try {
 
-        const productId = parseInt(req.params.id);
-
-        const product = products.find(p => p.id === productId);
+        const product = await Product.findById(req.params.id);
 
 
         if (!product) {
@@ -44,7 +45,7 @@ exports.getProductById = (req, res, next) => {
 
     } catch (error) {
 
-        return next(new AppError(error.message || "Failed to fetch product", 500));
+        return next(new AppError("Invalid product ID", 400));
 
     }
 
@@ -53,18 +54,14 @@ exports.getProductById = (req, res, next) => {
 
 // CREATE product
 
-exports.createProduct = (req, res, next) => {
-
-
+exports.createProduct = async (req, res, next) => {
 
     try {
 
         const { name, price, category, stock } = req.body;
 
 
-        const newProduct = {
-
-            id: products.length + 1,
+        const product = await Product.create({
 
             name,
 
@@ -74,13 +71,10 @@ exports.createProduct = (req, res, next) => {
 
             stock
 
-        };
+        });
 
 
-        products.push(newProduct);
-
-
-        return successResponse(res, "Product created successfully", newProduct);
+        return successResponse(res, "Product created successfully", product);
 
     } catch (error) {
 
@@ -93,41 +87,32 @@ exports.createProduct = (req, res, next) => {
 
 // UPDATE product (PUT - full update)
 
-exports.updateProduct = (req, res, next) => {
+exports.updateProduct = async (req, res, next) => {
 
     try {
 
-        const productId = parseInt(req.params.id);
-
-        const index = products.findIndex(p => p.id === productId);
+        const { name, price, category, stock } = req.body;
 
 
-        if (index === -1) {
+        const product = await Product.findByIdAndUpdate(
+
+            req.params.id,
+
+            { name, price, category, stock },
+
+            { new: true, runValidators: true }
+
+        );
+
+
+        if (!product) {
 
             return next(new AppError("Product not found", 404));
 
         }
 
 
-        const { name, price, category, stock } = req.body;
-
-
-        products[index] = {
-
-            id: productId,
-
-            name,
-
-            price,
-
-            category,
-
-            stock
-
-        };
-
-
-        return successResponse(res, "Product updated successfully", products[index]);
+        return successResponse(res, "Product updated successfully", product);
 
     } catch (error) {
 
@@ -140,13 +125,19 @@ exports.updateProduct = (req, res, next) => {
 
 // PATCH product (partial update)
 
-exports.patchProduct = (req, res, next) => {
+exports.patchProduct = async (req, res, next) => {
 
     try {
 
-        const productId = parseInt(req.params.id);
+        const product = await Product.findByIdAndUpdate(
 
-        const product = products.find(p => p.id === productId);
+            req.params.id,
+
+            req.body,
+
+            { new: true, runValidators: true }
+
+        );
 
 
         if (!product) {
@@ -154,9 +145,6 @@ exports.patchProduct = (req, res, next) => {
             return next(new AppError("Product not found", 404));
 
         }
-
-
-        Object.assign(product, req.body);
 
 
         return successResponse(res, "Product updated partially", product);
@@ -172,32 +160,25 @@ exports.patchProduct = (req, res, next) => {
 
 // DELETE product
 
-exports.deleteProduct = (req, res, next) => {
+exports.deleteProduct = async (req, res, next) => {
 
     try {
 
-        const productId = parseInt(req.params.id);
-
-        const index = products.findIndex(p => p.id === productId);
+        const product = await Product.findByIdAndDelete(req.params.id);
 
 
-        if (index === -1) {
+        if (!product) {
 
             return next(new AppError("Product not found", 404));
 
         }
 
 
-        const deletedProduct = products.splice(index, 1);
-
-
-        return successResponse(res, "Product deleted successfully", deletedProduct);
+        return successResponse(res, "Product deleted successfully", product);
 
     } catch (error) {
 
         return next(new AppError(error.message || "Failed to delete product", 500));
 
     }
-
 };
-

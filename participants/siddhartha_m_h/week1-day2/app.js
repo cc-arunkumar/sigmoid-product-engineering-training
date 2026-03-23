@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const productRoutes = require('./routes/product');
 const orderRoutes = require('./routes/order');
@@ -6,6 +7,9 @@ const errorHandler = require('./middleware/errorHandler')
 const authRoutes = require('./routes/authRoutes')
 const {apiLimiter} = require('./middleware/rateLimiter')
 const app = express();
+const { connectDB } = require('./config/mongo');
+
+connectDB();
 
 app.use(express.json());
 app.use(logger);

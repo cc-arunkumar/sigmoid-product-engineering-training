@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException
-from services.product_services import get_all_products, get_product_by_id
+from services.product_services import get_all_products, get_product_by_id, create_product
+from models.product_model import Product
 
 router = APIRouter(
     prefix = "/api/product",
@@ -20,6 +21,11 @@ def get_product(product_id : int):
 
     return product
 
+@router.post("/")
+def add_product(product: Product):
+    return create_product(product)
+
 @router.get("/health")
 def health_check():
     return {"status" : "Product APIs running !"}
+

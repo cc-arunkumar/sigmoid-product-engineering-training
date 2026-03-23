@@ -35,11 +35,13 @@ def create_product(input_product):
 
 # UPDATE PRODUCT
 def update_product(input_product, product_id: int):
-    for product in products:
-        if product_id == product["id"]:
-            product.update(input_product)  
-            return product
-    return "Product not found"
+    for i in range(len(products)):
+        if products[i]["id"] == product_id:
+            input_product["id"] = product_id   
+            products[i] = input_product        
+            return input_product
+
+    return None
 
 #DELETE Product
 def delete_product(product_id:int):

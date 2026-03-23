@@ -12,6 +12,13 @@ products = [
         "price": 250000,
         "category": "Electronics",
         "stock": 15
+    },{
+
+        "id": 3,
+        "name": "Book",
+        "price": 2500,
+        "category": "Stationary",
+        "stock": 20
     }
 ]
 

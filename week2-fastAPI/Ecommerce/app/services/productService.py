@@ -1,3 +1,4 @@
+from app.models.productModel import Product
 products = [
     {
         "id": 1,
@@ -27,3 +28,9 @@ def getProductById(productId: int):
     for product in products:
         if(product["id"] == productId): return product
     return None
+
+def createProduct(product: Product):
+    product = product.dict()
+    product["id"] = len(products) + 1
+    products.append(product)
+    return product

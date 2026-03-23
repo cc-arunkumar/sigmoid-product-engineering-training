@@ -32,3 +32,31 @@ def create_product(input_product):
     products.append(new_product)
 
     return new_product
+
+# UPDATE PRODUCT
+def update_product(input_product, product_id: int):
+    for product in products:
+        if product_id == product["id"]:
+            product.update(input_product)  
+            return product
+    return "Product not found"
+
+#DELETE Product
+def delete_product(product_id:int):
+    for product in products:
+        if product_id == product["id"]:
+            products.remove(product)
+            return product
+    return "Product not found"
+
+#PATCH Product
+def patch_product(product_id: int, input_product):
+    for product in products:
+        if product["id"] == product_id:
+            product.update(input_product)  
+            return product
+
+    return "Product not found"
+
+
+

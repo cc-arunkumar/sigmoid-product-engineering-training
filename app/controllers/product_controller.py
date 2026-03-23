@@ -7,11 +7,12 @@ router = APIRouter(
     tags=["products"]
 )
 
-
+# home route
 @router.get("/")
 def get_products():
     return get_all_products()
 
+# health check route
 @router.get("/health")
 def health_check():
     return {"status": "Product API is running"}

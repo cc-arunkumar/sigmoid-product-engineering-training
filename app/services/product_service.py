@@ -16,5 +16,6 @@ products= [
 
     }
 ]
+# get all the products 
 def get_all_products():
     return products

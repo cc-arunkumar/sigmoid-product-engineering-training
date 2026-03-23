@@ -65,3 +65,10 @@ def patch_update(product_id:int,patch_update: products):
             return product
     return None
 
+# delete product
+def delete_prod(product_id: int):
+    for product in products:
+        if product["id"] == product_id:
+            products.remove(product)
+            return product
+    return None

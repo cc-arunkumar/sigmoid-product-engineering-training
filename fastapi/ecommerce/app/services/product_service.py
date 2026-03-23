@@ -32,7 +32,16 @@ def get_product_by_id(product_id: int):
     return None
 # Add product
 def create_product(product_data):
-    new_product = product_data.dict()
-    new_product["id"] = len(products) + 101  
+    new_product ={ "id": len(products) + 101 , **product_data.dict() } 
     products.append(new_product)
     return new_product
+
+# Update product
+def update_product(product_id: int, product_data):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            updated_product = { "id": product_id, **product_data.dict() }
+            products[index] = updated_product
+            return updated_product
+    return None
+

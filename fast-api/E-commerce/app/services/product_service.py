@@ -1,5 +1,6 @@
-products=[{
-     "id": 1,
+products = [
+    {
+        "id": 1,
         "name": "Laptop",
         "category": "Electronics",
         "price": 75000,
@@ -11,7 +12,9 @@ products=[{
         "category": "Electronics",
         "price": 25000,
         "stock": 25
-}]
+    }
+]
+
 def get_all_products():
     return products
 
@@ -21,21 +24,25 @@ def get_product_by_id(product_id: int):
         if product["id"] == product_id:
             return product
     return None
-def add_product(product_data):
-    new_product= product_data.dict()
 
-    
 
-    new_product["id"]= len(products)+1
+def create_product(product_data):
+    new_product = product_data  
+
+    new_product["id"] = len(products) + 1
     products.append(new_product)
 
-    
     return new_product
 
-def update_product(product):
-    n_product= product.dict()
-    
 
-    
+def update_product(product_id: int, updated_data):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            n_product = updated_data  
+            n_product["id"] = product_id
 
+            products[index] = n_product   
 
+            return n_product
+
+    return None  

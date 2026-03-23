@@ -1,9 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from typing import Optional
 class Product(BaseModel):
-    name: Optional[str] = None
-    price: Optional[float] = None
+    # with validations
+    name: Optional[str] = Field(None,min_length=3,max_length=50) 
+    price: Optional[float] = Field(None,gt=0,lt=99999)
     category: Optional[str] = None
-    stock: Optional[int] = None
+    stock: Optional[int] = Field(None,gt=0)
 
 

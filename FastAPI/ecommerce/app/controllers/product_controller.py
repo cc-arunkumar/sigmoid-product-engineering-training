@@ -29,3 +29,24 @@ def add_product(product: Product):
     print("-------------> controller")
     return create_product(product)
               
+              
+@router.put("/{product_id}")
+def update_product_api(product_id: int, product: Product):
+    result = update_product(product_id, product)
+    if not result:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return result              
+
+@router.patch("/{product_id}")
+def patch_product_api(product_id: int, product: Product):
+    result = patch_product(product_id, product)
+    if not result:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return result
+
+@router.delete("/{product_id}")
+def delete_product_api(product_id: int):
+    result = delete_product(product_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"message": "Product deleted successfully"}

@@ -29,3 +29,10 @@ def create_product(product_data):
     new_product['id'] = len(products) + 1
     products.append(new_product)
     return new_product
+
+def update_product(product_id: int, product_data):
+    for product in products:
+        if product['id'] == product_id:
+            product.update(product_data.dict(exclude_unset=True))
+            return product
+    return None

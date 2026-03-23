@@ -1,3 +1,5 @@
+from app.models.product_model import Product
+
 products = [
     {
         "id": 1,
@@ -30,9 +32,24 @@ def create_product(product_data):
     products.append(new_product)
     return new_product
 
-def update_product(product_id: int, product_data):
-    for product in products:
-        if product['id'] == product_id:
-            product.update(product_data.dict(exclude_unset=True))
-            return product
+def replace_product(product_id: int, product_data: Product):
+    for index, prod in enumerate(products):
+        if prod["id"] == product_id:
+            updated_product = {
+                "id": product_id,
+                **product_data.dict()
+            }
+            products[index] = updated_product
+            return updated_product
     return None
+
+
+def delete_product(product_id: int):
+    for index, prod in enumerate(products):
+        if prod["id"] == product_id:
+            del products[index]
+            return True
+    return False   
+
+
+

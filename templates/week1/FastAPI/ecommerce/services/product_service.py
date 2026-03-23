@@ -25,3 +25,14 @@ def get_product_by_id(product_id: int):
         if product["id"] == product_id:
             return product
     return None
+
+#POST Product
+def create_product(product_data):
+    new_product = product_data.dict()
+
+    #Generating ID manually
+    new_product["id"] = len(products) + 1
+
+    products.append(new_product)
+
+    return new_product

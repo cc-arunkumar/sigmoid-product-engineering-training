@@ -38,11 +38,15 @@ def create_product(product_data):
     return new_product
 
 # UPDATE Product
-def update_product(product_data, product_id: int):
+def update_product(product_id: int, product_data: dict):
     for product in products:
-        if product_id == product["id"]:
-            product.update(product_data)
-            return product
+        if product["id"] == product_id:
+
+            updated_item = {"id": product_id, **product_data}
+            
+            idx = products.index(product)
+            products[idx] = updated_item
+            return updated_item
     return "Product not found"
 
 # DELETE Product
@@ -52,3 +56,20 @@ def delete_product(product_id: int):
             products.remove(product)
             return product
     return "Product not found"
+
+# PATCH Product
+def patch_product(product_id: int, patch_update):
+    for product in products:
+        if product["id"] == product_id:
+            patched_data = patch_update.dict(exclude_unset = True)
+
+            # exclude_unset = True means:
+            # In pydantic model, fields can be:
+            # 1. Set explicitly (user provided a value)
+            # 2. Unset (User didn't provide it all, even if a default exist)
+
+            for key, value in patched_data.items():
+                product[key] = value
+            
+            return product
+    return None

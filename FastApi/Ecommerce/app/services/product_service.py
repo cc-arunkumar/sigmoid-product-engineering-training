@@ -43,3 +43,12 @@ def update_product(product_id: int, updated_data):
             product.update(update_fields)
             return product
     return None
+
+def replace_product(product_id: int, new_data):
+    for index, product in enumerate(products):
+        if product["id"] == product_id:
+            replaced = new_data.dict()
+            replaced["id"] = product_id
+            products[index] = replaced
+            return products[index]
+    return None

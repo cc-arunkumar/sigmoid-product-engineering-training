@@ -12,7 +12,7 @@ const logger = require("./middlewares/logger");
 const error = require("./middlewares/errorHandler")
 const {apiLimiter} = require("./middlewares/rateLimiter")
 const passport = require("./config/passport");
-
+const { connectSQL } = require("./config/sqlConnection");
 
 app.use(apiLimiter);
 app.use(passport.initialize());
@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.use(logger);
 connectDB(); 
-
+connectSQL();
  
 
 app.get('/', (req, res) => { 

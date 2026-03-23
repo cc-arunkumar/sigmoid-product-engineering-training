@@ -22,3 +22,8 @@ products = [
 
 def getAllProducts():
     return products
+
+def getProductById(productId: int):
+    for product in products:
+        if(product["id"] == productId): return product
+    return None

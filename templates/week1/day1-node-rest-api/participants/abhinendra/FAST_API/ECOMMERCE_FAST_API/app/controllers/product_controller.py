@@ -1,8 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
-from app.services.product_service import get_all_products,get_product_by_id,create_product,update_product_by_id
+from app.services.product_service import get_all_products,get_product_by_id,create_product,update_product_by_id,patch_update,delete_product_by_id
 
 from app.models.product_model import Product,patch_product
+
+from sqlalchemy.orm import Session
+
+from app.core.config import get_db
 
 router = APIRouter(
     prefix="/api/products",
@@ -10,15 +14,15 @@ router = APIRouter(
 )
 
 @router.get("/")
-def get_products():
-    return get_all_products()
+def get_products(db : Session = Depends(get_db)):
+    return get_all_products(db)
 
 
 
 #GET products by ID
 @router.get("/{product_id}")
-def get_product(product_id: int):
-    product = get_product_by_id(product_id)
+def get_product(product_id: int,db : Session = Depends(get_db)):
+    product = get_product_by_id(db , product_id)
 
     if not product:
         raise HTTPException(status_code= 404, detail= "Product not Found")
@@ -28,15 +32,15 @@ def get_product(product_id: int):
 
 #CREATE product
 @router.post("/")
-def add_product(product : Product):
-    return create_product(product)
+def add_product(product : Product,db : Session = Depends(get_db)):
+    return create_product(db , product)
 
 
 #update product using put
 
 @router.put("/{product_id}")
-def update_product(product_id: int, product: Product):
-    updated_product = update_product_by_id(product_id, product)
+def update_product(product_id: int, product: Product, db : Session = Depends(get_db)):
+    updated_product = update_product_by_id(db, product_id, product)
 
     if updated_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -45,8 +49,8 @@ def update_product(product_id: int, product: Product):
 
 #update partial product
 @router.patch("/{product_id}")
-def update_partial_product(product_id:int, patch_data: patch_product):
-    patched_product = patch_update(product_id, patch_data)
+def update_partial_product(product_id:int, patch_data: patch_product,db : Session = Depends(get_db)):
+    patched_product = patch_update(db,product_id, patch_data)
 
     if not patched_product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -55,7 +59,7 @@ def update_partial_product(product_id:int, patch_data: patch_product):
 
 #delete product
 @router.delete("/{product_id}")
-def delete_product(product_id: int):
+def delete_product(product_id: int,db : Session = Depends(get_db)):
     deleted_product = delete_product_by_id(product_id)
 
     if deleted_product is None:

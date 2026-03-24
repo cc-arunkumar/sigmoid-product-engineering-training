@@ -5,10 +5,16 @@ from db.base import Base
 
 app=FastAPI()
 
-#create tables
-Base.metadata.create_all(bind=engine)
-
 app.include_router(product_router)
+
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+@app.on_event("startup")
+async def on_startup():
+    await create_tables()
+
 
 @app.get("/")
 def home():

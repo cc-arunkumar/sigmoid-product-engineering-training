@@ -1,73 +1,61 @@
-from app.models.product_model import ProductCreate, ProductUpdate
+from sqlalchemy.orm import Session
+from app.models.product_model import Product
 
-products = [
-    {
-        "id": 1,
-        "name": "Laptop",
-        "price": 500000,
-        "category": "Electronics",
-        "stock": 10
-    },
-    {
-        "id": 2,
-        "name": "Mobile",
-        "price": 250000,
-        "category": "Electronics",
-        "stock": 15
-    },{
+from app.schemas.product_schema import ProductCreate, ProductUpdate
 
-        "id": 3,
-        "name": "Book",
-        "price": 2500,
-        "category": "Stationary",
-        "stock": 20
-    }
-]
 
-next_id = 100
+def get_all_products(db : Session):
+    return db.query(Product).all();
 
-def get_all_products():
-    return products;
-
-def get_product_by_id(product_id : int):
-    for product in products:
-        if product["id"] == product_id:
-            return product
+def get_product_by_id(product_id : int,db:Session ):
     
-    return None
+    return db.query(Product).filter(Product.id == product_id).first()
 
-def create_prduct(prdouct_data : ProductCreate):
-    global next_id
-    new_product = prdouct_data.model_dump()
-    new_product["id"] =  next_id
-    products.append(new_product)
-    next_id += 1
+def create_prduct(product_data : ProductCreate, db : Session):
+   
+    new_product = Product(**product_data.model_dump())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
     return new_product
-
-def update_product(product_id : int, product_data : ProductCreate):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            updated_product = product_data.model_dump()
-            updated_product["id"] = product_id
-            products[index] = updated_product
-            return updated_product
-    
-    return None
     
 
-def patch_update_product(product_id : int,product_data : ProductUpdate ):
-    product = get_product_by_id(product_id)
+def update_product(product_id : int, product_data : ProductCreate, db : Session):
+    product = get_product_by_id(db, product_id)
     if not product:
         return None
+
+    data = product_data.model_dump()
+    product.name = data["name"]
+    product.price = data["price"]
+    product.category = data["category"]
+    product.stock = data["stock"]
+
+    db.commit()
+    db.refresh(product)
+    return product
     
-    updated_data = product_data.model_dump(exclude_unset=True)
-    product.update(updated_data)
+
+def patch_update_product(product_id : int,product_data : ProductUpdate, db : Session ):
+    product = get_product_by_id(db, product_id)
+    if not product:
+        return None
+
+    data = product_data.model_dump(exclude_unset=True)
+
+    for key, value in data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
     return product
 
-def delete_product(product_id : int):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            deleted_product = products.pop(index)
-            return deleted_product
-    
-    return None
+def delete_product(product_id : int, db : Session):
+    product = get_product_by_id(db, product_id)
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+    return product

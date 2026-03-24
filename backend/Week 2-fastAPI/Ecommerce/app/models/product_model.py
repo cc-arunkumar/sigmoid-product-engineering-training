@@ -1,19 +1,11 @@
-from pydantic import BaseModel, Field
-from typing import Optional
+from sqlalchemy import Column, Integer, String, Float
+from app.database import Base
 
+class Product(Base):
+    __tablename__ = "products"
 
-class ProductCreate(BaseModel):
-    name: str = Field(..., min_length=1)
-    price: float = Field(..., gt=0)
-    category: Optional[str] = None
-    stock: int = Field(default=0, ge=0)
-
-
-class ProductUpdate(BaseModel):
-    name: Optional[str] = None
-    price: Optional[int] = Field(default=None, gt=0)
-    category: Optional[str] = None
-    stock: Optional[int] = Field(default=None, ge=0)
-
-class Product(ProductCreate):
-    id : int
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    price = Column(Float, nullable=False)
+    category = Column(String(100), nullable=True)
+    stock = Column(Integer, default=0)

@@ -108,13 +108,13 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
     return product
 
 
-# 🔹 CREATE product
+# CREATE product
 @router.post("/")
 def add_product(product: Product, db: Session = Depends(get_db)):
     return create_product(db, product)
 
 
-# 🔹 PUT (full update)
+# PUT (full update)
 @router.put("/{product_id}")
 def replace_product(product_id: int, product: Product, db: Session = Depends(get_db)):
     updated_product = update_product(db, product_id, product)
@@ -125,7 +125,7 @@ def replace_product(product_id: int, product: Product, db: Session = Depends(get
     return updated_product
 
 
-# 🔹 PATCH (partial update)
+# PATCH (partial update)
 @router.patch("/{product_id}")
 def update_partial_product(
     product_id: int,
@@ -140,7 +140,7 @@ def update_partial_product(
     return updated_product
 
 
-# 🔹 DELETE product
+#  DELETE product
 @router.delete("/{product_id}")
 def remove_product(product_id: int, db: Session = Depends(get_db)):
     deleted_product = delete_product(db, product_id)

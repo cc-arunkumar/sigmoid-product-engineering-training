@@ -65,17 +65,17 @@ from sqlalchemy.orm import Session
 from db.base import ProductTable
 
 
-# 🔹 GET all products
+# GET all products
 def get_all_products(db: Session):
     return db.query(ProductTable).all()
 
 
-# 🔹 GET product by ID
+# GET product by ID
 def get_product_by_id(db: Session, product_id: int):
     return db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
 
-# 🔹 CREATE product
+# CREATE product
 def create_product(db: Session, product_data):
     new_product = ProductTable(**product_data.dict())
 
@@ -86,7 +86,7 @@ def create_product(db: Session, product_data):
     return new_product
 
 
-# 🔹 UPDATE (PUT - full replace)
+# UPDATE (PUT - full replace)
 def update_product(db: Session, product_id: int, updated_data):
     product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
@@ -102,7 +102,7 @@ def update_product(db: Session, product_id: int, updated_data):
     return product
 
 
-# 🔹 PATCH (partial update)
+# PATCH (partial update)
 def patch_product(db: Session, product_id: int, patch_data):
     product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
@@ -120,7 +120,7 @@ def patch_product(db: Session, product_id: int, patch_data):
     return product
 
 
-# 🔹 DELETE product
+# DELETE product
 def delete_product(db: Session, product_id: int):
     product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 

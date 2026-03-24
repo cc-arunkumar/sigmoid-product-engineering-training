@@ -49,4 +49,3 @@ def delete_product_api(product_id: int):
     result = delete_product(product_id)
     if not result:
         raise HTTPException(status_code=404, detail="Product not found")
-    return {"message": "Product deleted successfully"}

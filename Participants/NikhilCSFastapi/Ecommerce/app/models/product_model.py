@@ -7,7 +7,7 @@ class Product(BaseModel):
     # either can be string or none both works means Optional[str],now optional[str]=Field(some validation) means validation has to be followed 
     price:int=Field(lt=90000,gt=800)
     category:str=None
-    # must be string or crash 
+    # must be there or crash if no value given to it then it will be None but key is mentioned 
     stock:int=Field(gt=3)
-
+#  autocommit is set to be false and we didnt commit by ourself manually using .coif the sesion is over our changes wont relfect on to the db and db goet our previous stoed point ,we commit to save data permanently else it goes away 
     #lt means less than,gt means greater than

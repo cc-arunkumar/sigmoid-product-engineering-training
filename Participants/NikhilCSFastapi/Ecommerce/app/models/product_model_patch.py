@@ -6,7 +6,9 @@ from typing import Optional
 class ProductPatch(BaseModel):
     name:Optional[str]=Field(None,min_length=3,max_length=20)
     # either can be string or none both works means Optional[str],now optional[str]=Field(some validation) means validation has to be followed 
+    #None or default=None also works 
     price:Optional[int]=Field(None,lt=90000,gt=800)
     category:Optional[str]=None
     # must be string or crash 
     stock:Optional[int]=Field(None, gt=3)
+

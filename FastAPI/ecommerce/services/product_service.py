@@ -1,52 +1,59 @@
-products = [
-    {
-        "id":1,
-        "name":"Laptop",
-        "price":500000,
-        "category":"Electronics",
-        "stock":10
-        },
-    {
-        "id":2,
-        "name":"Mobile",
-        "price":250000,
-        "category":"Electronics",
-        "stock":15
-        }
-]
+from sqlalchemy.orm import Session 
+from db.base import ProductTable
 
-def get_all_products():
-    return products
+def get_all_products (db: Session): 
+    return db.query (ProductTable).all()
 
-def get_product_by_id(product_id:int):
-    for product in products:
-        if product["id"]==product_id:
-            return product
-    return None
+# def get_product_by_id(db:Session, product_id:int):
+#     return db.queryfirst() 
 
-#POST Product
-def create_product(product_data):
-    new_product=product_data.dict()
-    new_product["id"]=len(products)+1
-    products.append(new_product)
+def get_product_by_id(db: Session, product_id: int): 
+    return db.query (ProductTable).filter(ProductTable.id==product_id).first()
+
+def create_product(db: Session, product_data): 
+    new_product= ProductTable(**product_data.dict())
+    
+    db.add(new_product) 
+    db.commit() 
+    db.refresh(new_product)
+    
     return new_product
 
-# PUT 
-def update_product_by_id(product_id: int, updated_product):
-    for product in products:
-        if product["id"] == product_id:
-            product.update(updated_product.dict())
-            return product
-    return None
+def update_product(db: Session, product_id: int, updated_data): 
+    product= db.query(ProductTable).filter(ProductTable.id==product_id).first()
+    
+    if not product:
+        return None
+    
+    for key, value in updated_data.dict().items(): 
+        setattr(product, key, value)
+    
+    db.commit()
+    db.refresh(product)
+    
+    return product
 
-# PATCH Product
-def patch_update(product_id:int,patch_update):
-    for product in products:
-        if product["id"]==product_id:
-            patched_data=patch_update.dict(exclude_unset=True)
-            for key, value in patched_data.items():
-                product[key]=value
-            return product
-    return None    
+def patch_product(db: Session, product_id: int, patch_data): 
+    product=db.query(ProductTable).filter(ProductTable.id==product_id).first()
+    
+    if not product:
+        return None
+    update_data= patch_data.dict(exclude_unset=True)
+    
+    for key, value in update_data.items(): 
+        setattr(product, key, value)
+        
+    db.commit()
+    db.refresh(product)
+    
+    return product
 
-            # pydantic Field validations successfully
+def delete_product(db: Session, product_id: int):
+    product= db.query(ProductTable).filter(ProductTable.id == product_id).first()
+    if not product: 
+        return None
+    
+    db.delete(product)
+    db.commit()
+    
+    return product

@@ -1,14 +1,15 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 
-class Product(BaseModel):
-    name:str=Field(min_length=3,max_length=50)
-    price:int=Field(gt=0,lt=99999)
-    category:str=None
-    stock:int=None
+class Product (BaseModel):
+    name:str = Field(min_length=3, max_length=50)
+    price:float
+    category:str
+    stock:int
 
-class ProductUpdate(BaseModel):
-    name:Optional[str]=Field(min_length=3,max_length=50)
-    price:Optional[int]=Field(gt=0,lt=99999)
-    category:Optional[str]=Field(None, min_length=3, max_length=30)
-    stock:Optional[int]=Field(None, gt=0)
+# Model for PATCH API
+class ProductPatch (BaseModel):
+    name: Optional[str] = Field(default=None, min_length=3, max_length=50)
+    price: Optional [float] = None
+    category: Optional [str] = None
+    stock: Optional[int] = None

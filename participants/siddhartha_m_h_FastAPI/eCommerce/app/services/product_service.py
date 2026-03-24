@@ -1,60 +1,63 @@
-from fastapi import HTTPException
+from app.db.base import ProductTable
+from sqlalchemy.orm import Session
 
-products = [
-    {
-        "id" : 1,
-        "name" : "iPhone 14 Pro Max",
-        "price" : 1099.99,
-        "category" : "Smartphones",
-        "stock" : 50
-    },
-    {
-        "id" : 2,
-        "name" : "Samsung Galaxy S23 Ultra",
-        "price" : 1199.99,
-        "category" : "Smartphones",
-        "stock" : 30
-    }
-]
 
-def get_all_products():
-    return products
+def get_all_products(db: Session):
+    return db.query(ProductTable).all()
 
-def get_product_by_id(product_id: int):
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None
+def get_product_by_id(db: Session, product_id: int):
+    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-def create_product(product_data):
-    new_product = product_data.dict()
-    if product_data.price < 0:
-        raise HTTPException(status_code=400, detail="Price cannot be negative")
-    new_product["id"] = len(products) + 1
-    products.append(new_product)
+def create_product(db: Session, product_data):
+    new_product = ProductTable(**product_data.dict())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+
     return new_product
 
-def update_product(product_id: int, product_data):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            updated_product = product_data.dict()
-            updated_product["id"] = product_id
-            products[index] = updated_product
-            return updated_product
-    return None
 
-def delete_product(product_id: int):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            del products[index]
-            return True
-    return False
+def update_product(db: Session, product_id: int, updated_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-def patch_product(product_id: int, product_data):
-    for product in products:
-        if product["id"] == product_id:
-            patched_data = product_data.dict(exclude_unset=True)
-            for key, value in patched_data.items():
-                product[key] = value
-            return product
-    return None
+    if not product:
+        return None
+    
+    for key,value in updated_data.dict().items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+def delete_product(db: Session, product_id: int):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+    
+    db.delete(product)
+    db.commit()
+
+    return product
+
+    
+    
+
+def patch_product(db: Session, product_id: int, patch_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+    
+    update_data = patch_data.dict(exclude_unset = True)
+
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product

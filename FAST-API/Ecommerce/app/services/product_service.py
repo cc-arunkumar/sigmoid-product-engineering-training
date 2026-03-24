@@ -1,73 +1,58 @@
-products = [
-    {
-        "id" : 1,
-        "name" : "computer",
-        "price" : 250000,
-        "category": "electronics",
-        "stock" : 10
-    },
-    {
-        "id" : 2,
-        "name" : "laptop",
-        "price" : 50000,
-        "category": "electronics",
-        "stock" : 20
-    }
-]
+from sqlalchemy.orm import Session 
+from app.db.base import ProductTable
 
 
-# GET ALL PRODUCTS
-def get_all_products():
-    return products
+def get_all_products(db: Session):
+    return db.query (ProductTable).all()
 
 
-#GET PRODUCTS BY ID
-def get_product_by_id(product_id : int):
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None    
+def get_product_by_id(db: Session, product_id: int):
+    return db.query (ProductTable).filter(ProductTable.id  == product_id).first()
 
 
-#POST PRODUCT
-def create_product(product_data):
-    new_product = product_data.dict()
-    #generating the id manually
-    new_product["id"] = len(products) + 1
-    products.append(new_product)
-    return new_product
+def create_product(db: Session, product_data):
+    new_product = ProductTable(**product_data.dict())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
     
+    return new_product
 
-#PUT PRODUCT
-def update_product(product_id : int, updated_product):
-    prod = updated_product.dict()
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            products[index].update(prod)
-            return products[index]
-    return None        
 
-#PATCH PRODUCT
-def update_partially(product_id : int, patched_product):
-    for product in products:
-        if product["id"] == product_id :
-            patched_data = patched_product.dict(exclude_unset=True)
+def update_product (db: Session, product_id: int, updated_data):
 
-        #exclude_unset-True means:
-        #In pydantic model, fields can be:
-        #1. Set explicitly (user provided a value)
-        #2. Unset (User didn't provide it all, even if a default exist)
-        # "Only include fields that were actually provided when creating this object"
-
-    for key, value in patched_data.items():
-        product[key] = value
-
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+    if not product:
+        return None
+    for key, value in updated_data.dict().items():
+        setattr(product, key, value)
+    db.commit()
+    db.refresh(product)
     return product
 
-#DELETE PRODUCT
-def delete_product(product_id: int):
-    for i in range(len(products)):
-        if products[i]["id"] == product_id:
-            del products[i]
-            return products
-    return None
+
+def patch_product(db: Session, product_id: int, patch_data):
+
+    product =  db.query(ProductTable).filter(ProductTable.id == product_id).first()
+    if not product:
+        return None
+    
+    update_data = patch_data.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+def delete_product (db: Session, product_id: int):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+    
+    db.delete(product)
+    db.commit()
+    return product

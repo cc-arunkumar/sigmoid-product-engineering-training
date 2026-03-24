@@ -10,9 +10,10 @@ class Product(BaseModel):
     stock : int = Field(gt = -1)
 
 
-class ProductPartial(BaseModel):
+class ProductPatch(BaseModel):
     name : Optional[str] = Field(default=None, min_length=3 , max_length=20)
     price : Optional[int] = Field(default=None,gt = 0 , lt = 99999)
     category :Optional[str] = None
     stock : Optional[int] = Field(default=None,gt = -1)
 
+    

@@ -1,63 +1,58 @@
-products = [
-{
-    "id":1,
-    "name":"Laptop",
-    "price":500000,
-    "category":"Electronics",
-    "stock":10
-},
-{
-    "id":2,
-    "name":"Mobile",
-    "price":250000,
-    "category":"Electronics",
-    "stock":15
-}
-]
+from sqlalchemy.orm import Session 
+from app.db.base import ProductTable
 
-# CRUD Operations
 
-# Read All
-def get_all_products():
-    return products
+def get_all_products(db: Session):
+    return db.query (ProductTable).all()
 
-# Read by id
-def get_product_by_id(product_id:int):
-    for product in products:
-        if product["id"]==product_id:
-            return product
-    return None
 
-# Create
-def create_product(product_data):
-    new_product=product_data.dict()
-    new_product["id"]=len(products)+1
-    products.append(new_product)
+def get_product_by_id(db: Session, product_id: int):
+    return db.query (ProductTable).filter(ProductTable.id  == product_id).first()
+
+
+def create_product(db: Session, product_data):
+    new_product = ProductTable(**product_data.dict())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+    
     return new_product
 
-# Update
-def update_product(product_id:int, updated_data):
-    for product in products:
-        if product["id"]==product_id:
-            product.update(updated_data.dict())
-            return product
-    return None
 
-# Partial Update
-def patch_product(product_id: int, update_data: dict):
-    product = get_product_by_id(product_id)
+def update_product (db: Session, product_id: int, updated_data):
+
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
     if not product:
         return None
-    # Update only provided fields
-    for key, value in update_data.items():
-        if key in product:
-            product[key] = value
+    for key, value in updated_data.dict().items():
+        setattr(product, key, value)
+    db.commit()
+    db.refresh(product)
     return product
 
-# Delete
-def delete_product(product_id:int):
-    for product in products:
-        if product["id"]==product_id:
-            products.remove(product)
-            return True
-    return False
+
+def patch_product(db: Session, product_id: int, patch_data):
+
+    product =  db.query(ProductTable).filter(ProductTable.id == product_id).first()
+    if not product:
+        return None
+    
+    update_data = patch_data.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+def delete_product (db: Session, product_id: int):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+    
+    db.delete(product)
+    db.commit()
+    return product

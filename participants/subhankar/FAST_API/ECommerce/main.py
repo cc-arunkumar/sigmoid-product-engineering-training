@@ -1,10 +1,16 @@
 from fastapi import FastAPI
-import app.controller.product_controller as product_controller
+from app.controller.product_controller import router as product_router
+from app.db.database import engine
+from app.db.base import Base
 
-app=FastAPI()
 
-app.include_router(product_controller.router)
+app = FastAPI()
+# Create tables
+Base.metadata.create_all(bind=engine)
+
 
 @app.get("/")
 def home():
-    return{"Message":"FastAPI is running !"}
+    return {"message": "FastAPI server is running"}
+app.include_router(product_router)
+

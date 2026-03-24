@@ -3,16 +3,15 @@ from typing import Optional
 
 class Product(BaseModel):
     name: str = Field(min_length=3, max_length=50)
-    price: float =  Field(gt=0, lt=9999999)
+    price: float 
     category: str
     stock: int
 
-class ProductUpdate(BaseModel):
-    name: Optional[str] 
-    price: Optional[float] 
+class ProductPatch(BaseModel):
+    name: Optional[str] = Field(default=None, min_length=3, max_length=50)
+    price: Optional[float]= None 
     category: Optional[str] = None
     stock: Optional[int] = None
     
 
-    
-    
+ 

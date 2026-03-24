@@ -1,10 +1,35 @@
+# from fastapi import FastAPI
+# from controllers.product_controller import router as products_router
+# app = FastAPI()
+
+# app.include_router(products_router)
+
+# @app.get("/")
+# def home():
+#     return "hello_hi"
+
 from fastapi import FastAPI
-from controllers.product_controller import router as products_router
+from controllers.product_controller import router as product_router
+from db.database import engine, base
+
 app = FastAPI()
 
-app.include_router(products_router)
 
+# Create tables on startup
+@app.on_event("startup")
+def startup_event():
+    try:
+        base.metadata.create_all(bind=engine)
+        print("Tables created / DB connected")
+    except Exception as e:
+        print(" DB Error:", e)
+
+
+# 🔹 Root route
 @app.get("/")
 def home():
-    return "hello_hi"
+    return {"message": "FASTAPI SERVER IS RUNNING"}
 
+
+# 🔹 Include routes
+app.include_router(product_router)

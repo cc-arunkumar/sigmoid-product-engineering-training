@@ -1,80 +1,64 @@
-products = [
-{
-"id":1,
-"name":"Laptop",
-"price":500000,
-"category":"Electronics",
-"stock":10
-},
-{
-"id":2,
-"name":"Mobile",
-"price":250000,
-"category":"Electronics",
-"stock":15
-}
-]
+from sqlalchemy.orm import Session
+from db.base import ProductTable
 
 
-# Get Product ALL
-def get_all_products():
-    return products
-
-# Get Product By ID 
-def get_product_by_id(prod_id):
-    for prod in products: 
-        if prod["id"] == prod_id:
-            return prod 
-    return None
-
-def post_product(data):
-    new_product = data.dict()
-    new_product["id"] = len(products)+1 
-
-    products.append(new_product)
-
-    return new_product 
-
-# def up_product(data, id):
-#     updated_product = data.dict()
-#     updated_product["id"] = id
-#     # enumerate = gives index + value
-#     for i, prod in enumerate(products):
-#         if prod["id"] == id:
-#             products[i] = updated_product
-#             return updated_product
-
-#     return {"error": "Product not found"}
+def get_all_products(db: Session):
+    return db.query(ProductTable).all()
 
 
-
-def up_product(data , id):
-    update_product = data.dict()
-    update_product["id"] = id 
-
-    for prod in products : 
-        if prod["id"] == id:
-            prod.update(update_product)
-            return update_product
-        
-    return {"error" : "can not find the product"}
-
-def patch_product(data, id):
-    update_data = data.dict(exclude_unset=True)
-    # set only those feild that i am passing not aisa kuch ki har field dena hi hia isme aisa kuch hai ki ha jo jo dia hai , aur baki ka agar nahi dia hai to sabko nahi dena hai 
-
-    for prod in products:
-        if prod["id"] == id:
-            prod.update(update_data)
-            return prod
-
-    return {"error": "Product not found"}
+def get_product_by_id(db: Session, product_id: int):
+    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
 
-def delete_product(id):
-    for prod in products:
-        if prod["id"] == id:
-            products.remove(prod)
-            return {"message": "Product deleted"}
+def create_product(db: Session, product_data):
+    new_product = ProductTable(**product_data.dict())
 
-    return {"error": "Product not found"}
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+
+    return new_product
+
+
+def update_product(db: Session, product_id: int, updated_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    for key, value in updated_data.dict().items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+def patch_product(db: Session, product_id: int, patch_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    update_data = patch_data.dict(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+def delete_product(db: Session, product_id: int):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+
+    return product

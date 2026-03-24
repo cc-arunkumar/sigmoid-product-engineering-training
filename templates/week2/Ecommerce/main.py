@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 from controllers.product_controller import router as product_router
+from db.database import engine
+from db.base import Base
 
 app = FastAPI()
 
-app.include_router(product_router)
+Base.metadata.create_all(bind=engine)
 
 @app.get("/") #DEFAULT
 
 def home():
-    return{"message" : "FastAPI server is running"}
-    
+    return{"message" : "FastAPI server is running"}   
 
+app.include_router(product_router)

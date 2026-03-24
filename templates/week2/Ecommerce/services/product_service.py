@@ -1,53 +1,55 @@
-products = [
-    {
-        "id" : 1,
-        "name" : "Laptop",
-        "price" : 2000,
-        "category" : "Electronics",
-        "stock" : 10
-    },
-    {
-        "id" : 2,
-        "name" : "Mobile",
-        "price" : 10000,
-        "category" : "Electronics",
-        "stock" : 4
-    }
-]   
+from sqlalchemy.orm import Session
+from db.base import ProductTable
 
-def get_all_products(): #GET ALL PRODUCTS
-    return products
+def get_all_products(db: Session): #GET ALL PRODUCTS
+    return db.query(ProductTable).all()
 
-def get_product_by_id(product_id: int): #GET BY ID 
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None
+def get_product_by_id(db: Session, product_id:int): #GET BY ID 
+    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-def create_product(product_data):  #ADD PRODUCT
-    new_product = product_data.dict()
-    new_product["id"] = len(products) + 1
-    products.append(new_product)
+def create_product(db: Session, product_data):  #ADD PRODUCT
+    new_product = ProductTable(**product_data.dict())
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
     return new_product
 
-def update_product(product_id: int, updated_data):  #UPDATE PRODUCT
-    updated_data = updated_data.dict()
-    for product in products:
-        if product["id"] == product_id:
-            product["name"] = updated_data.get("name", product["name"])
-            product["price"] = updated_data.get("price", product["price"])
-            product["category"] = updated_data.get("category", product["category"])
-            product["stock"] = updated_data.get("stock", product["stock"])
+def update_product(db: Session, product_id: int, updated_data):  #UPDATE PRODUCT
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-        return updated_data
-    return None
+    if not product:
+        return None
 
-def patch_update(product_id: int, patch_update):
-    for product in products:
-        if product["id"] == product_id:
-            patched_product = patch_update.dict(exclude_unset = True)
+    for key, val in update_product.dict().items():
+        setattr(product, key, val)
 
-            for key, value in patched_product.items():
-                product[key] = value
-        return product
-    return None 
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+def patch_update(db: Session, product_id: int, patch_data):  #PATCH
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+    
+    updated_data = patch_data.dict(exclude_unset=True)
+
+    for key, val in update_product.dict().items():
+        setattr(product, key, val)
+
+    db.commit()
+    db.refresh(product)
+
+
+def delete_product(db: Session, product_id: int):  #DELETE
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+
+    return product

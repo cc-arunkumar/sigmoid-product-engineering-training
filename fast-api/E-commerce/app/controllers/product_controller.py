@@ -5,7 +5,7 @@ from app.services.product_service import (
     create_product,
     update_product,patch_update
 )
-from app.models.product_model import Product
+from app.models.product_model import Product, ProductUpdate
 
 
 router = APIRouter(
@@ -39,7 +39,7 @@ def u_product(product_id: int, product: Product):
 
 # PATCH Product
 @router.patch("/{product_id}")
-def update_partial_product(product_id: int, patch_data: Product):
+def update_partial_product(product_id: int, patch_data: ProductUpdate):
     patched_product = patch_update(product_id, patch_data)
 
     if not patched_product:

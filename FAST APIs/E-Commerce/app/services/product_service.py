@@ -1,63 +1,70 @@
-products = [
-    {"id": 1, "name": "Laptop", "price": 50000, "category": "Electronics", "stock": 10},
-    {"id": 2, "name": "Mobile", "price": 20000, "category": "Electronics", "stock": 20},
-]
+from sqlalchemy.orm import Session
+from app.db.base import ProductTable
 
-# Get all product
-def get_all_products():
-    return products
 
-# Get product by id
-def get_product_by_id(product_id: int):
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None
-    
-# POST product
-def create_product(product_data):
-    new_product = product_data.dict()
+# GET all products
+def get_all_products(db: Session):
+    return db.query(ProductTable).all()
 
-    # Generating ID manually
-    new_product["id"] = len(products)+1
-    products.append(new_product)
+
+# GET product by ID
+def get_product_by_id(db: Session, product_id: int):
+    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+
+# CREATE product
+def create_product(db: Session, product_data):
+    new_product = ProductTable(**product_data.dict())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
 
     return new_product
 
-# PUT product
-def replace_product(product_id: int, new_data):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            replaced = new_data.dict()
-            replaced["id"] = product_id
-            products[index] = replaced
-            return products[index]
-    return None
+
+# UPDATE (PUT - full replace)
+def update_product(db: Session, product_id: int, updated_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    for key, value in updated_data.dict().items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
 
 
-# PATCH Product
-def patch_update(product_id: int, patch_update):
-    for product in products:
-        if product["id"] == product_id:
-            patched_data = patch_update.dict(exclude_unset=True)
+# PATCH (partial update)
+def patch_product(db: Session, product_id: int, patch_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-            # exclude_unset=True means:
-            # In pydantic model, fields can be:
-            # 1. Set explicitly (user provided a value)
-            # 2. Unset (user didn't provide it at all, even if a default exists)
+    if not product:
+        return None
 
-            # "Only include fields that were actually provided when creating this object"
-            for key, value in patched_data.items():
-                product[key] = value
+    update_data = patch_data.dict(exclude_unset=True)
 
-            return product
+    for key, value in update_data.items():
+        setattr(product, key, value)
 
-    return None
+    db.commit()
+    db.refresh(product)
+
+    return product
+
 
 # DELETE product
-def delete_product(product_id: int):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            products.pop(index)
-            return True
-    return False
+def delete_product(db: Session, product_id: int):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+
+    return product

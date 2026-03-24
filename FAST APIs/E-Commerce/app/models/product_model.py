@@ -9,7 +9,7 @@ class Product(BaseModel):
     stock: Optional[int] = None
 
 
-class ProductUpdate(BaseModel):
+class ProductPatch(BaseModel):
     name: Optional[str] = Field(None, min_length=3, max_length=50)
     price: Optional[int] = Field(None, gt=0, lt=9999)
     category: Optional[str] = None

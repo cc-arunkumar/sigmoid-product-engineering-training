@@ -1,59 +1,72 @@
 from app.models.productModel import Product, PatchProduct
-
-products = [
-    {"id": 1, "name": "Laptop", "price": 100000, "category": "Electronics", "stock": 10},
-    {"id": 2, "name": "Mobile", "price": 30000, "category": "Electronics", "stock": 80},
-    {"id": 3, "name": "Headphones", "price": 3000, "category": "Electronics", "stock": 150}
-]
+from app.db.base import ProductTable
+from sqlalchemy.orm import Session
 
 
-def getAllProducts():
-    return products
+def getAllProducts(db: Session):
+    return db.query(ProductTable).all()
 
 
-def getProductById(productId: int):
-    return next((p for p in products if p["id"] == productId), None)
+def getProductById(productId: int, db: Session):
+    return db.query(ProductTable).filter(ProductTable.id == productId).first()
 
 
-def createProduct(product: Product):
+def createProduct(product: Product, db: Session):
     data = product.model_dump()
 
-    new_id = max([p["id"] for p in products], default=0) + 1
-    data["id"] = new_id
+    new_product = ProductTable(**data)
 
-    products.append(data)
-    return data
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
 
-
-def updateProduct(productId: int, productData: Product):
-    for index, product in enumerate(products):
-        if product["id"] == productId:
-            data = productData.model_dump()
-            data["id"] = productId
-            products[index] = data
-            return data
-    return None
+    return new_product
 
 
-def patchUpdate(productId: int, patchData: PatchProduct):
-    for product in products:
-        if product["id"] == productId:
-            updates = patchData.model_dump(exclude_unset=True)
+def updateProduct(productId: int, productData: Product, db: Session):
+    product = db.query(ProductTable).filter(ProductTable.id == productId).first()
 
-            if not updates:
-                return product
+    if not product:
+        return None
 
-            for key, value in updates.items():
-                product[key] = value
+    update_data = productData.model_dump()
 
-            return product
+    for key, value in update_data.items():
+        setattr(product, key, value)
 
-    return None
+    db.commit()
+    db.refresh(product)
+
+    return product
 
 
-def deleteProduct(productId: int):
-    for index, product in enumerate(products):
-        if product["id"] == productId:
-            return products.pop(index)
+def patchUpdate(productId: int, patchData: PatchProduct, db: Session):
+    product = db.query(ProductTable).filter(ProductTable.id == productId).first()
 
-    return None
+    if not product:
+        return None
+
+    update_data = patchData.model_dump(exclude_unset=True)
+
+    if not update_data:
+        return product  # or raise error if you want strict PATCH
+
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+def deleteProduct(productId: int, db: Session):
+    product = db.query(ProductTable).filter(ProductTable.id == productId).first()
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+
+    return product

@@ -1,14 +1,21 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "mysql+pymysql://root:mysql%40Klpn2026@localhost:3306/Ecommerce_DB"
+DATABASE_URL = "mysql+aiomysql://root:mysql%40Klpn2026@localhost:3306/ecommerce_db"
 
-engine = create_engine (DATABASE_URL)
-
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
+# Async engine
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=True
 )
 
+# Async session factory
+SessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
+
+# Base class for models
 Base = declarative_base()

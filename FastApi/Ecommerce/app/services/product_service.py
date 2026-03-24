@@ -1,35 +1,29 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from app.db.base import ProductTable
 
 
-# GET All Products
-def get_all_products(db: Session):
-    return db.query(ProductTable).all()
+async def get_all_products(db: AsyncSession):
+    result = await db.execute(select(ProductTable))
+    return result.scalars().all()
 
 
-# GET Product by ID
-def get_product_by_id(db: Session, product_id: int):
-    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def get_product_by_id(db: AsyncSession, product_id: int):
+    result = await db.execute(select(ProductTable).filter(ProductTable.id == product_id))
+    return result.scalars().first()
 
 
-# POST - Create Product
-def create_product(db: Session, product_details):
+async def create_product(db: AsyncSession, product_details):
     new_product = ProductTable(**product_details.dict())
-
     db.add(new_product)
-    db.commit()
-    db.refresh(new_product)
-
+    await db.commit()
+    await db.refresh(new_product)
     return new_product
 
 
-# PUT - Update Product (Full Update)
-def update_product(db: Session, product_details, product_id: int):
-    product = (
-        db.query(ProductTable)
-        .filter(ProductTable.id == product_id)
-        .first()
-    )
+async def update_product(db: AsyncSession, product_details, product_id: int):
+    result = await db.execute(select(ProductTable).filter(ProductTable.id == product_id))
+    product = result.scalars().first()
 
     if not product:
         return None
@@ -37,46 +31,34 @@ def update_product(db: Session, product_details, product_id: int):
     for key, value in product_details.dict().items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
-
+    await db.commit()
+    await db.refresh(product)
     return product
 
 
-# DELETE Product
-def delete_product(db: Session, product_id: int):
-    product = (
-        db.query(ProductTable)
-        .filter(ProductTable.id == product_id)
-        .first()
-    )
+async def delete_product(db: AsyncSession, product_id: int):
+    result = await db.execute(select(ProductTable).filter(ProductTable.id == product_id))
+    product = result.scalars().first()
 
     if not product:
         return None
 
-    db.delete(product)
-    db.commit()
-
+    await db.delete(product)
+    await db.commit()
     return product
 
 
-# PATCH - Partial Update
-def patch_update(db: Session, product_id: int, patch_update):
-    product = (
-        db.query(ProductTable)
-        .filter(ProductTable.id == product_id)
-        .first()
-    )
+async def patch_update(db: AsyncSession, product_id: int, patch_update):
+    result = await db.execute(select(ProductTable).filter(ProductTable.id == product_id))
+    product = result.scalars().first()
 
     if not product:
         return None
 
     update_data = patch_update.dict(exclude_unset=True)
-
     for key, value in update_data.items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
-
+    await db.commit()
+    await db.refresh(product)
     return product

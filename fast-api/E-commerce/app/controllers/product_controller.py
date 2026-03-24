@@ -3,9 +3,10 @@ from app.services.product_service import (
     get_all_products,
     get_product_by_id,
     create_product,
-    update_product
+    update_product,patch_update
 )
 from app.models.product_model import Product
+
 
 router = APIRouter(
     prefix="/api/products",
@@ -36,3 +37,12 @@ def u_product(product_id: int, product: Product):
 
     return updated_p   
 
+# PATCH Product
+@router.patch("/{product_id}")
+def update_partial_product(product_id: int, patch_data: Product):
+    patched_product = patch_update(product_id, patch_data)
+
+    if not patched_product:
+        raise HTTPException(status_code=404, detail="Product not found!")
+
+    return patched_product

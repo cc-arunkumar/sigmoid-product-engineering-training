@@ -1,54 +1,82 @@
-from app.models.product_model import Product
-products=[
-    {
-        "id":1,
-        "name":"laptop",
-        "price":50000,
-        "category":"Electronics",
-        "stock":10
+from sqlalchemy.orm import Session
+from app.db.base import ProductTable
 
-    },
-    {
-        "id":2,
-        "name":"mobile",
-        "price":60000,
-        "category":"Electronics",
-        "stock":20
 
-    }
+# GET All Products
+def get_all_products(db: Session):
+    return db.query(ProductTable).all()
 
-]
-def get_all_products():
-    return products
 
-def get_product_by_id(product_id:int):
-    for product in products:
-        if product["id"]==product_id:
-            return product
-    return None    
+# GET Product by ID
+def get_product_by_id(db: Session, product_id: int):
+    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-def create_product(product_data):
-    new_product=product_data.dict()
-    new_product["id"]=len(products)+1
-    products.append(new_product)
+
+# POST - Create Product
+def create_product(db: Session, product_details):
+    new_product = ProductTable(**product_details.dict())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+
     return new_product
 
-def update_product(product_id: int, updated_product: Product):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            products[index] = updated_product.dict()
-            products[index]["id"] = product_id
-            return products[index]
-    return None
 
-def delete_product(product_id: int):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            return products.pop(index)
-    return None
-def update_partial_product(product_id: int, updated_fields: dict):
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            products[index].update(updated_fields)
-            return products[index]
-    return None
+# PUT - Update Product (Full Update)
+def update_product(db: Session, product_details, product_id: int):
+    product = (
+        db.query(ProductTable)
+        .filter(ProductTable.id == product_id)
+        .first()
+    )
+
+    if not product:
+        return None
+
+    for key, value in product_details.dict().items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+# DELETE Product
+def delete_product(db: Session, product_id: int):
+    product = (
+        db.query(ProductTable)
+        .filter(ProductTable.id == product_id)
+        .first()
+    )
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+
+    return product
+
+
+# PATCH - Partial Update
+def patch_update(db: Session, product_id: int, patch_update):
+    product = (
+        db.query(ProductTable)
+        .filter(ProductTable.id == product_id)
+        .first()
+    )
+
+    if not product:
+        return None
+
+    update_data = patch_update.dict(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product

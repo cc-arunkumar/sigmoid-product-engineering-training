@@ -1,52 +1,53 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from app.db.base import ProductTable
-def get_all_products(db:Session):
-    return db.query(ProductTable).all()
+from app.models.product_model import Product, ProductUpdate
 
 
-def get_product_by_id(db:Session, product_id: int):
-    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
-       
+async def get_all_products(db: AsyncSession):
+    result = await db.execute(select(ProductTable))
+    return result.scalars().all()
 
-def create_product(db :Session, product_data: ProductTable):
+
+async def get_product_by_id(db: AsyncSession, product_id: int):
+    result = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    return result.scalar_one_or_none()
+
+
+async def create_product(db: AsyncSession, product_data: Product):
     new_product = ProductTable(**product_data.dict())
 
     db.add(new_product)
-    db.commit()
-    db.refresh(new_product)
+    await db.commit()
+    await db.refresh(new_product)
 
     return new_product
 
 
-    
-def update_product(db:Session, product_id: int, updated_data: ProductTable):
-    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def update_product(db: AsyncSession, product_id: int, updated_data: Product):
+    result = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    product = result.scalar_one_or_none()
     if not product:
         return None
 
     for key, value in updated_data.dict(exclude_unset=True).items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
+    await db.commit()
+    await db.refresh(product)
     return product
 
-            
 
 # PATCH Product
-def patch_update(db:Session, product_id: int, patch_data):
-    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def patch_update(db: AsyncSession, product_id: int, patch_data: ProductUpdate):
+    result = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    product = result.scalar_one_or_none()
     if not product:
         return None
-    
-    update_data = patch_data.dict(exclude_unset=True)
 
     for key, value in patch_data.dict(exclude_unset=True).items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
+    await db.commit()
+    await db.refresh(product)
     return product
-
-       
-

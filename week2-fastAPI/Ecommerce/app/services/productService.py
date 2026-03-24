@@ -1,30 +1,38 @@
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.productModel import Product, PatchProduct
 from app.db.base import ProductTable
-from sqlalchemy.orm import Session
 
 
-def getAllProducts(db: Session):
-    return db.query(ProductTable).all()
+async def getAllProducts(db: AsyncSession):
+    result = await db.execute(select(ProductTable))
+    return result.scalars().all()
 
 
-def getProductById(productId: int, db: Session):
-    return db.query(ProductTable).filter(ProductTable.id == productId).first()
+async def getProductById(productId: int, db: AsyncSession):
+    result = await db.execute(
+        select(ProductTable).where(ProductTable.id == productId)
+    )
+    return result.scalar_one_or_none()
 
 
-def createProduct(product: Product, db: Session):
+async def createProduct(product: Product, db: AsyncSession):
     data = product.model_dump()
 
     new_product = ProductTable(**data)
 
     db.add(new_product)
-    db.commit()
-    db.refresh(new_product)
+    await db.commit()
+    await db.refresh(new_product)
 
     return new_product
 
 
-def updateProduct(productId: int, productData: Product, db: Session):
-    product = db.query(ProductTable).filter(ProductTable.id == productId).first()
+async def updateProduct(productId: int, productData: Product, db: AsyncSession):
+    result = await db.execute(
+        select(ProductTable).where(ProductTable.id == productId)
+    )
+    product = result.scalar_one_or_none()
 
     if not product:
         return None
@@ -34,14 +42,17 @@ def updateProduct(productId: int, productData: Product, db: Session):
     for key, value in update_data.items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
+    await db.commit()
+    await db.refresh(product)
 
     return product
 
 
-def patchUpdate(productId: int, patchData: PatchProduct, db: Session):
-    product = db.query(ProductTable).filter(ProductTable.id == productId).first()
+async def patchUpdate(productId: int, patchData: PatchProduct, db: AsyncSession):
+    result = await db.execute(
+        select(ProductTable).where(ProductTable.id == productId)
+    )
+    product = result.scalar_one_or_none()
 
     if not product:
         return None
@@ -49,24 +60,27 @@ def patchUpdate(productId: int, patchData: PatchProduct, db: Session):
     update_data = patchData.model_dump(exclude_unset=True)
 
     if not update_data:
-        return product  # or raise error if you want strict PATCH
+        return product
 
     for key, value in update_data.items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
+    await db.commit()
+    await db.refresh(product)
 
     return product
 
 
-def deleteProduct(productId: int, db: Session):
-    product = db.query(ProductTable).filter(ProductTable.id == productId).first()
+async def deleteProduct(productId: int, db: AsyncSession):
+    result = await db.execute(
+        select(ProductTable).where(ProductTable.id == productId)
+    )
+    product = result.scalar_one_or_none()
 
     if not product:
         return None
 
-    db.delete(product)
-    db.commit()
+    await db.delete(product)
+    await db.commit()
 
     return product

@@ -1,3 +1,6 @@
+from sqlalchemy.orm import Session
+from app.db.base import ProductTable
+
 products=[
     {
        "id":1,
@@ -17,55 +20,72 @@ products=[
 ]
 
 # get all products
-def getallProduct():
-   return products
+def getallProduct(db:Session):
+   return db.query(ProductTable).all()
  
 
 # get product by id
 
-def get_product_by_id(product_id):
-    for product in products:
-        if product["id"]==product_id:
-            return product
+def get_product_by_id(db:Session,product_id):
+    # for product in products:
+    #     if product["id"]==product_id:
+    #         return product
         
-    return None   
+    return db.query(ProductTable).filter(ProductTable.id==product_id).first()
 
 #add product
-def create_product(product_data):
-     newProduct=product_data.dict()
+def create_product(db:Session,product_data):
+     newProduct=ProductTable(**product_data.dict())
 
-     newProduct["id"]=len(products)+1
-
-     products.append(newProduct)
+     db.add(newProduct)
+     db.commit()
+     db.refresh(newProduct)
 
      return newProduct
 
 #update by using put
-def update_product(product_id, product_data):
-     updateproduct=product_data.dict()
-     for product in products:
-        if product["id"]==product_id:
-           product.update(updateproduct)
-           return product  
+def update_product(db:Session,product_id, product_data):
+     product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+     if not product:
+        return {"error": "Product not found"}
+
+     update_data = product_data.dict()
+
+     for key, value in update_data.items():
+        setattr(product, key, value)
+
+    # 4. Commit changes
+     db.commit()
+     db.refresh(product)
+
+     return product
             
      return {"error": "Product not found"}
 
 #update by using patch
-def patch_product(product_id, product_data):
-    updateproduct=product_data.dict(exclude_unset = True)
-    for product in products:
-        if product["id"]==product_id:
-           product.update(updateproduct)
-           return product  
-            
-    return {"error": "Product not found"}
+def patch_product(db:Session,product_id, product_data):
+     product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
+     if not product:
+        return {"error": "Product not found"}
+
+     update_data = product_data.dict(exclude_unset=True)
+
+     for key, value in update_data.items():
+        setattr(product, key, value)
+
+    # 4. Commit changes
+     db.commit()
+     db.refresh(product)
+
+     return product
+            
 #delete product
-def del_product(product_id):
-    for product in products:
-        if product["id"]==product_id:
-        
-           products.remove(product)
-           return {"message":"product deleted" ,"products":products}
-        
-    return {"error": "Product not found"}    
+def del_product(db:Session,product_id):
+     product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+     if not product:
+        return {"error": "Product not found"}
+     db.delete(product)
+     db.commit() 
+     return {"error": "Product not found"}    

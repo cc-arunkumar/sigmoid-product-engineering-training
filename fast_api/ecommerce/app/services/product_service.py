@@ -1,79 +1,72 @@
-products=[{
-    "id":1,
-    "name":"Laptop",
-    "price":50000,
-    "category":"Electronics",
-    "stock":50
-},
-{
-    "id":2,
-    "name":"Iphone",
-    "price":85000,
-    "category":"Electronics",
-    "stock":50
-},
-{
-    "id":3,
-    "name":"Tablet",
-    "price":25000,
-    "category":"Electronics",
-    "stock":50
-}
-]
-
-#GET ALL PRODUCTS
-def get_all_products():
-    return products
+from sqlalchemy.orm import Session
+from app.db.base import PrdouctTable
 
 
-#GET PRODUCTS BY ID
-def get_product_by_id(product_id:int):
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None
-
-#CREATE PRODUCTS
-def create_product(product_data):
-    newprod=product_data.dict()
-    newprod["id"]=len(products)+1
-    products.append(newprod)
-    return products
-
-#PUT PRODUCTS
-def put_products(product_id: int, product_data):
-    proddata = product_data.dict()
-
-    for index, product in enumerate(products):
-        if product["id"] == product_id:
-            products[index].update(proddata)  
-            return products[index]
-    return None 
+# GET ALL PRODUCTS
+def get_all_products(db: Session):
+    return db.query(PrdouctTable).all()
 
 
-
-#PATCH PRODUCT
-def patch_product(product_id: int, product_data):
-    proddata = product_data.dict()
-
-    for product in products:
-        if product["id"] == product_id:
-            for key, value in proddata.items():
-                if value is not None:
-                    product[key] = value
-            return product
-
-    return None
+# GET PRODUCT BY ID
+def get_product_by_id(product_id: int, db: Session):
+    return db.query(PrdouctTable).filter(PrdouctTable.id == product_id).first()
 
 
+# CREATE PRODUCT
+def create_product(product_data, db: Session):
+    new_product = PrdouctTable(
+        name=product_data.name,
+        price=product_data.price,
+        category=product_data.category,
+        stock=product_data.stock
+    )
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+    return new_product
 
-    
-#DELETE PRODUCTS
-def delete_product(product_id: int):
-    for i in range(len(products)):
-        if products[i]["id"] == product_id:
-            del products[i]
-            return products
-    return None
+
+# PUT PRODUCT (FULL UPDATE)
+def put_products(product_id: int, product_data, db: Session):
+    product = db.query(PrdouctTable).filter(PrdouctTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    product.name = product_data.name
+    product.price = product_data.price
+    product.category = product_data.category
+    product.stock = product_data.stock
+
+    db.commit()
+    db.refresh(product)
+    return product
 
 
+# PATCH PRODUCT (PARTIAL UPDATE)
+def patch_product(product_id: int, product_data, db: Session):
+    product = db.query(PrdouctTable).filter(PrdouctTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    update_data = product_data.dict(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+# DELETE PRODUCT
+def delete_product(product_id: int, db: Session):
+    product = db.query(PrdouctTable).filter(PrdouctTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+    return product

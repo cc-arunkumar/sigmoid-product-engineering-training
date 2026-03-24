@@ -42,7 +42,12 @@ def update_product(product_id: int, updated_data):  #UPDATE PRODUCT
         return updated_data
     return None
 
-# def patch_product(product_id: int, updated_data):
-#     updated_data = updated_data.dict()
-#     for product in products:
-#         if product["id"] == product_id:
+def patch_update(product_id: int, patch_update):
+    for product in products:
+        if product["id"] == product_id:
+            patched_product = patch_update.dict(exclude_unset = True)
+
+            for key, value in patched_product.items():
+                product[key] = value
+        return product
+    return None 

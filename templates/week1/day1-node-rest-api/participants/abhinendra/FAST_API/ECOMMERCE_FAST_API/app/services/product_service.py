@@ -16,23 +16,31 @@
 # ]
 
 
+from sqlalchemy import select
+
 from sqlalchemy.orm import Session
 
 from app.db.base import ProductTable
 
 
-def get_all_products(db:Session):
+async def get_all_products(db:Session):
     # return products
-    return db.query(ProductTable).all()
+    # return db.query(ProductTable).all()
+    result = await db.execute(select (ProductTable))
+    return result.scalars().all()
 
-def get_product_by_id(db:Session, product_id:int):
+async def get_product_by_id(db:Session, product_id:int):
     # for product in products:
     #     if product["id"]==product_id:
     #         return product
     # return None
-    return db.query(ProductTable).filter(ProductTable.id==product_id)
+    # return db.query(ProductTable).filter(ProductTable.id==product_id)
+    result = await db.execute(
+        select (ProductTable).where(ProductTable.id == product_id)
+    )
+    return result.scalar_one_or_none()
 
-def create_product(db:Session,product_data):
+async def create_product(db:Session,product_data):
     # new_product= product_data.dict()
 
     # #Generating ID manually
@@ -44,10 +52,12 @@ def create_product(db:Session,product_data):
     new_product= ProductTable(**product_data.dict())
 
     db.add(new_product)
-    db.commit()
-    db.refresh(new_product)
+    await db.commit()
+    # db.refresh(new_product)
 
-    return new_product
+    # return new_product
+
+
 
 # def update_product_by_id(product_id: int, product_data):
 #     for index, product in enumerate(products):
@@ -63,8 +73,15 @@ def create_product(db:Session,product_data):
 #     return None
 
 #update by using put
-def update_product_by_id(db:Session,product_id: int , product_data):
-    product = db.query(ProductTable).filter(ProductTable.id==product_id).first()
+async def update_product_by_id(db ,product_id: int , product_data):
+    # product = db.query(ProductTable).filter(ProductTable.id==product_id).first()
+
+    result = await db.execute(
+        select(ProductTable).where(ProductTable.id== product_id)
+    )
+
+    product= result.scalar_one_or_none()
+
 
     if not product:
         return None
@@ -72,8 +89,8 @@ def update_product_by_id(db:Session,product_id: int , product_data):
     for key, value in product_data.dict().items():
         setattr(product,key,value)
 
-    db.commit()
-    db.refresh(product)
+    # db.commit()
+    # db.refresh(product)
 
     return product
     #  updateproduct=product_data.dict()
@@ -88,49 +105,76 @@ def update_product_by_id(db:Session,product_id: int , product_data):
 
 #update partial product
 
-def patch_update(product_id:int, patch_update):
+# def patch_update(product_id:int, patch_update):
     
-    # for product in products:
-    #     if product[id]==product_id:
-    #         patched_data=patch_update.dict(exclude_unset=True)
+#     # for product in products:
+#     #     if product[id]==product_id:
+#     #         patched_data=patch_update.dict(exclude_unset=True)
 
-    #         for key, value in patched_data.items():
-    #             product[key]= value
+#     #         for key, value in patched_data.items():
+#     #             product[key]= value
             
-    #         return product
+#     #         return product
         
-    # return None
-    product = db.query(ProductTable).filter(ProductTable.id==product_id)
+#     # return None
+#     product = db.query(ProductTable).filter(ProductTable.id==product_id).first()
+
+#     if not product:
+#         return None
+
+#     update_data= patch_update.dict(exclude_unset= True)
+
+#     for key , value in update_data.items():
+#         setattr(product, key, value)
+
+#     db.commit()
+#     db.refresh(product)
+
+#     return product
+
+async def patch_update(product_id: int, patch_update, db):
+
+    # product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    result =await db.execute(
+        select(ProductTable).where(ProductTable.id==product_id)
+    )
+
+    product = result.scalar_one_or_none()
 
     if not product:
         return None
 
-    update_data= patch_update.dict(exclude_unset= True)
+    update_data = patch_update.dict(exclude_unset=True)
 
-    for key , value in update_data.items():
+    for key, value in update_data.items():
         setattr(product, key, value)
 
-    db.commit()
-    db.refresh(product)
+    await db.commit()
+    await db.refresh(product)
 
     return product
 
 
 #delete product
 
-def delete_product_by_id(product_id: int):
+async def delete_product_by_id(db, product_id: int):
     # for index, product in enumerate(products):
     #     if product["id"] == product_id:
     #         deleted_product = products.pop(index)  # remove from list
     #         return deleted_product
 
     # return None
-    product= db.query(ProductTable).filter(ProductTable.id==product_id)
+    # product= db.query(ProductTable).filter(ProductTable.id==product_id)
+    result = await db.execute(
+        select(ProductTable).where(ProductTable.id==product_id)
+    )
+    product = result.scalar_one_or_none()
 
     if not product:
         return None
     
-    db.delete(product)
-    db.commit()
+    await db.delete(product)
+    await db.commit()
 
     return product

@@ -73,3 +73,9 @@ def update_product_partial_by_id(product_id:int,data):
         return product
     return None
         
+def delete_product_by_id(product_id:int):
+    for product in products:
+        if product["id"] == product_id:
+            products.remove(product)
+            return product
+    return None    

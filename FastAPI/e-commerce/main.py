@@ -1,5 +1,10 @@
 from fastapi import FastAPI
 import app.controllers.product_controller as product_controller
+from app.db.database import engine
+from app.db.base import Base
+
+# Create tables
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 app.include_router(product_controller.router)

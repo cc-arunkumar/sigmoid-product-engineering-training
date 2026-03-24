@@ -1,5 +1,0 @@
-mysql.server start
-pip install fastapi uvicorn sqlalchemy pymysql
-pip3 install pymysql sqlalchemy
-
-// source venv/bin/activate .explore

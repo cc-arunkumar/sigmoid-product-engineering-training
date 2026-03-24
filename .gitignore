@@ -167,3 +167,6 @@ Thumbs.db
 # ------------------------------
 *.pid
 *.seed
+
+# **/file.txt
+FastAPI/ecommerce/file.txt

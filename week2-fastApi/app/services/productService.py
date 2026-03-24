@@ -1,83 +1,64 @@
-products = [
-    {
-        "id": 1,
-        "name": "Laptop",
-        "price": 100000,
-        "category": "Electronics",
-        "stock": 10
-    }, {
-        "id": 2,
-        "name": "Mobile",
-        "price": 30000,
-        "category": "Electronics",
-        "stock": 80
-    }, {
-        "id": 3,
-        "name": "oneplus_headphone",
-        "price": 300,
-        "category": "Electronics",
-        "stock": 150
-    },
-    {
-        "id": 4,
-        "name": "samsung_galaxy",
-        "price": 30000,
-        "category": "Electronics",
-        "stock": 15000
-    }
-]
-def getAllProducts():
-    return products
+from sqlalchemy.orm import Session
+from app.db.base import ProductTable
 
-    # GET Products By Id
-def get_product_by_id(product_id: int):
-    for product in products:
-        if product["id"] == product_id:
-            return product
-    return None
 
-# POST Product
+def get_all_products(db: Session):
+    return db.query(ProductTable).all()
 
-def create_product(product_data):
-    new_product = product_data.dict()
 
-    # Generating ID manually
-    new_product["id"] = len(products) + 1
+def get_product_by_id(db: Session, product_id: int):
+    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-    products.append(new_product)
+
+def create_product(db: Session, product_data):
+    new_product = ProductTable(**product_data.dict())
+
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
 
     return new_product
 
-# PUT PRODUCT
-def update_product(product_id, product_data):
-    for product in products:
-        if product["id"] == product_id:
-            updated_data = product_data.dict()   # or model_dump() (Pydantic v2)
 
-            product.update(updated_data)
-            return product
+def update_product(db: Session, product_id: int, updated_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-    return None
+    if not product:
+        return None
 
+    for key, value in updated_data.dict().items():
+        setattr(product, key, value)
 
-#DELETE PRODUCT
+    db.commit()
+    db.refresh(product)
 
-def delete_product(product_id:int):
-   for index, product in enumerate(products):
-      if product["id"] == product_id:
-         deleted_product = products.pop(index)
-         return deleted_product 
-
-   return None
+    return product
 
 
-#PATCH PRODUCT
+def patch_product(db: Session, product_id: int, patch_data):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
 
-def patch_product(product_id:int,product_data):
-    for product in products:
-        if product["id"]==product_id:
-            update_data=product_data.dict(exclude_unset=True)
+    if not product:
+        return None
 
-            product.update(update_data)
-            return product
-    return None                       
+    update_data = patch_data.dict(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(product, key, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+def delete_product(db: Session, product_id: int):
+    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+
+    if not product:
+        return None
+
+    db.delete(product)
+    db.commit()
+
+    return product

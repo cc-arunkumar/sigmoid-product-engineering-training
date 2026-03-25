@@ -14,7 +14,6 @@ app.get('/', (req, res) => {
   `);
 });
 
-// Login → GitHub
 app.get('/login', (req, res) => {
   const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=read:user`;
   res.redirect(redirectUrl);

@@ -6,8 +6,6 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine) 
 
-
-
 app.include_router(product_router) ; 
 
 @app.get("/")

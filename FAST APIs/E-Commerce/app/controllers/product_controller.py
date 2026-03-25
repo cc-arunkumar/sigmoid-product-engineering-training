@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from sqlalchemy.orm import Session
 from app.services.product_service import (
     get_all_products,
     get_product_by_id,
@@ -21,13 +21,13 @@ router = APIRouter(
 
 # GET all products
 @router.get("/")
-def get_products(db: Session = Depends(get_db)):
-    return get_all_products(db)
+async def get_products(db: AsyncSession = Depends(get_db)):
+    return await get_all_products(db)
 
 # GET product by ID
 @router.get("/{product_id}")
-def get_product(product_id: int, db: Session = Depends(get_db)):
-    product = get_product_by_id(db, product_id)
+async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
+    product = await get_product_by_id(db, product_id)
 
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -36,13 +36,13 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 
 # CREATE product
 @router.post("/")
-def add_product(product: Product, db: Session = Depends(get_db)):
-    return create_product(db, product)
+async def add_product(product: Product, db: AsyncSession = Depends(get_db)):
+    return await create_product(db, product)
 
 # PUT (full update)
 @router.put("/{product_id}")
-def replace_product(product_id: int, product: Product, db: Session = Depends(get_db)):
-    updated_product = update_product(db, product_id, product)
+async def replace_product(product_id: int, product: Product, db: AsyncSession = Depends(get_db)):
+    updated_product = await update_product(db, product_id, product)
 
     if not updated_product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -52,12 +52,12 @@ def replace_product(product_id: int, product: Product, db: Session = Depends(get
 
 # PATCH (partial update)
 @router.patch("/{product_id}")
-def update_partial_product(
+async def update_partial_product(
     product_id: int,
     product: ProductPatch,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
-    updated_product = patch_product(db, product_id, product)
+    updated_product = await patch_product(db, product_id, product)
 
     if not updated_product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -67,8 +67,8 @@ def update_partial_product(
 
 # DELETE product
 @router.delete("/{product_id}")
-def remove_product(product_id: int, db: Session = Depends(get_db)):
-    deleted_product = delete_product(db, product_id)
+async def remove_product(product_id: int, db: AsyncSession = Depends(get_db)):
+    deleted_product = await delete_product(db, product_id)
 
     if not deleted_product:
         raise HTTPException(status_code=404, detail="Product not found")

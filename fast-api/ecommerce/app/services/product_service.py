@@ -14,18 +14,20 @@
 #         "stock": 20
 #     }
 # ]
-from sqlalchemy.orm import Session
+from sqlalchemy import select
 from app.db.base import Product as ProductTable
 #GET ALL PRODUCTS
-def get_all_products(db: Session):
-    return db.query(ProductTable).all()
+async def get_all_products(db):
+    result = await db.execute(select(ProductTable))
+    return result.scalars().all()
 
 #GET PRODUCT BY ID
-def get_product_by_id(db: Session, product_id: int):
-    return db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def get_product_by_id(db, product_id: int):
+    result = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    return result.scalar_one_or_none()
 
 #POST PRODUCT
-def create_product(db: Session, product_data):
+async def create_product(db, product_data):
     new_product = ProductTable(**product_data.dict())
     db.add(new_product)
     db.commit()
@@ -33,8 +35,9 @@ def create_product(db: Session, product_data):
     return new_product
   
 #put product
-def update_product(db: Session, product_id: int, product_data):
-    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def update_product(db, product_id: int, product_data):
+    product = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    product = product.scalar_one_or_none()
     if not product:
         return None
     for key, value in product_data.dict(exclude_unset=True).items():
@@ -44,17 +47,19 @@ def update_product(db: Session, product_id: int, product_data):
     return product
 
 #delete product
-def delete_product(db: Session, product_id: int):
-    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def delete_product(db, product_id: int):
+    product = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    product = product.scalar_one_or_none()
     if not product:
         return False
-    db.delete(product)
-    db.commit()
+    await db.delete(product)
+    await db.commit()
     return product
             
 #Patch
-def partial_update_product(db: Session, product_id: int, product_data):
-    product = db.query(ProductTable).filter(ProductTable.id == product_id).first()
+async def partial_update_product(db, product_id: int, product_data):
+    product = await db.execute(select(ProductTable).where(ProductTable.id == product_id))
+    product = product.scalar_one_or_none()
     if not product:
         return None
     for key, value in product_data.dict(exclude_unset=True).items():

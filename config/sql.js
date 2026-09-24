@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
 
 //     SQL_HOST=localhost
 // SQL_USER=root
-// SQL_PASSWORD=root123
+// SQL_PASSWORD=
 // SQL_DATABASE=ecommerce
 // SQL_PORT=3306
     process.env.SQL_DATABASE,
